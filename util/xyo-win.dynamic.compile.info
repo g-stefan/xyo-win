@@ -1,0 +1,7 @@
+--dll xyo-win
+--source-is-separate
+--no-version
+--use-project=xyo-pixel32
+--use-lib=secur32
+--use-lib=adsiid
+--use-lib=activeds

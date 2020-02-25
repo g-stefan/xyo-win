@@ -1,0 +1,6 @@
+--lib xyo-win
+--source-is-separate
+--use-project=xyo-pixel32.static
+--use-lib=secur32
+--use-lib=adsiid
+--use-lib=activeds

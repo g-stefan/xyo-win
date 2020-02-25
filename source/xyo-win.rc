@@ -1,0 +1,15 @@
+//
+// XYO Win
+//
+// Copyright (c) 2020 Grigore Stefan <g_stefan@yahoo.com>
+// Created by Grigore Stefan <g_stefan@yahoo.com>
+//
+// MIT License (MIT) <http://opensource.org/licenses/MIT>
+//
+
+#include "xyo-application-version--os-windows-rc.hpp"
+#include "xyo-win-version.hpp"
+#include "xyo-win-copyright.hpp"
+
+XYO_APPLICATION_VERSION_INFO(XYO_WIN,"xyo-win.dll","XYO Win");
+
