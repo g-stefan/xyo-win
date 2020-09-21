@@ -18,5 +18,5 @@ echo "Error: %ACTION%"
 exit 1
 :StepX
 
-call :cmdX xyo-cc --mode=%ACTION% @util/xyo-win.static.compile.info
-call :cmdX xyo-cc --mode=%ACTION% @util/xyo-win.dynamic.compile.info
+call :cmdX xyo-cc --mode=%ACTION% @util/xyo-win.static.compile
+call :cmdX xyo-cc --mode=%ACTION% @util/xyo-win.dynamic.compile
