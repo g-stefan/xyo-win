@@ -110,7 +110,7 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
@@ -143,8 +143,8 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[1], v1.value());
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
@@ -177,9 +177,9 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[2], v2.value());
-			VariantCopy(&pDispParams.rgvarg[1], v1.value());
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
+			Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
@@ -212,10 +212,10 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[3], v3.value());
-			VariantCopy(&pDispParams.rgvarg[2], v2.value());
-			VariantCopy(&pDispParams.rgvarg[1], v1.value());
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
+			Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
+			Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
@@ -248,11 +248,11 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[4], v4.value());
-			VariantCopy(&pDispParams.rgvarg[3], v3.value());
-			VariantCopy(&pDispParams.rgvarg[2], v2.value());
-			VariantCopy(&pDispParams.rgvarg[1], v1.value());
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
+			Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
+			Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
+			Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
@@ -285,12 +285,12 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[5], v5.value());
-			VariantCopy(&pDispParams.rgvarg[4], v4.value());
-			VariantCopy(&pDispParams.rgvarg[3], v3.value());
-			VariantCopy(&pDispParams.rgvarg[2], v2.value());
-			VariantCopy(&pDispParams.rgvarg[1], v1.value());
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[5], v5.value());
+			Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
+			Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
+			Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
+			Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
@@ -323,13 +323,13 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[6], v6.value());
-			VariantCopy(&pDispParams.rgvarg[5], v5.value());
-			VariantCopy(&pDispParams.rgvarg[4], v4.value());
-			VariantCopy(&pDispParams.rgvarg[3], v3.value());
-			VariantCopy(&pDispParams.rgvarg[2], v2.value());
-			VariantCopy(&pDispParams.rgvarg[1], v1.value());
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[6], v6.value());
+			Variant::variantCopy(&pDispParams.rgvarg[5], v5.value());
+			Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
+			Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
+			Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
+			Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
@@ -362,14 +362,14 @@ namespace XYO {
 			for (k = 0; k < pDispParams.cArgs; k++) {
 				VariantInit(&pDispParams.rgvarg[k]);
 			}
-			VariantCopy(&pDispParams.rgvarg[7], v7.value());
-			VariantCopy(&pDispParams.rgvarg[6], v6.value());
-			VariantCopy(&pDispParams.rgvarg[5], v5.value());
-			VariantCopy(&pDispParams.rgvarg[4], v4.value());
-			VariantCopy(&pDispParams.rgvarg[3], v3.value());
-			VariantCopy(&pDispParams.rgvarg[2], v2.value());
-			VariantCopy(&pDispParams.rgvarg[1], v1.value());
-			VariantCopy(&pDispParams.rgvarg[0], v0.value());
+			Variant::variantCopy(&pDispParams.rgvarg[7], v7.value());
+			Variant::variantCopy(&pDispParams.rgvarg[6], v6.value());
+			Variant::variantCopy(&pDispParams.rgvarg[5], v5.value());
+			Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
+			Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
+			Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
+			Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
+			Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
 			VariantClear(&varResult_);
 			VariantInit(&varResult_);
 			retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);

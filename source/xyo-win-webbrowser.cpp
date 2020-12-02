@@ -365,7 +365,7 @@ namespace XYO {
 
 		HRESULT WebBrowser::OnPosRectChange(LPCRECT lprcPosRect) {
 			IOleInPlaceObject *inplace;
-			if (!browser_->QueryInterface(IID_IOleInPlaceObject, (void **) &inplace)) {
+			if (SUCCEEDED(browser_->QueryInterface(IID_IOleInPlaceObject, (void **) &inplace))) {
 				inplace->SetObjectRects(lprcPosRect, lprcPosRect);
 				inplace->Release();
 			};
@@ -887,18 +887,18 @@ namespace XYO {
 				browser_->SetHostNames(L"Microsoft Internet Explorer", 0);
 				GetClientRect(*this, &rect);
 				browser_->AddRef();
-				if (!OleSetContainedObject((struct IUnknown *) browser_, TRUE)) {
-					if (!browser_->DoVerb(OLEIVERB_SHOW, NULL, (IOleClientSite *)this, -1, *this, &rect)) {
-						if (!browser_->QueryInterface(IID_IWebBrowser2, (void **) &webBrowser2)) {
-							if (!webBrowser2->QueryInterface(IID_IConnectionPointContainer, (void **) &conPtCon)) {
-								if (!conPtCon->FindConnectionPoint(DIID_DWebBrowserEvents2, &connectionPoint_)) {
+				if (SUCCEEDED(OleSetContainedObject((struct IUnknown *) browser_, TRUE))) {
+					if (SUCCEEDED(browser_->DoVerb(OLEIVERB_SHOW, NULL, (IOleClientSite *)this, -1, *this, &rect))) {
+						if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **) &webBrowser2))) {
+							if (SUCCEEDED(webBrowser2->QueryInterface(IID_IConnectionPointContainer, (void **) &conPtCon))) {
+								if (SUCCEEDED(conPtCon->FindConnectionPoint(DIID_DWebBrowserEvents2, &connectionPoint_))) {
 									connectionPoint_->Advise((DWebBrowserEvents2 *)this, &adviseCookie_);
 									retVal = 1;
 								};
 								conPtCon->Release();
 							};
 
-							if (browser_->QueryInterface(IID_IOleInPlaceActiveObject, (void **) &oleInPlaceActiveObject_) != S_OK) {
+							if (FAILED(browser_->QueryInterface(IID_IOleInPlaceActiveObject, (void **) &oleInPlaceActiveObject_))) {
 								oleInPlaceActiveObject_ = NULL;
 							};
 
@@ -958,7 +958,7 @@ namespace XYO {
 					break;
 				case WM_SIZE: {
 						::IWebBrowser2 *iWebBrowser2_;
-						if (!browser_->QueryInterface(IID_IWebBrowser2, (void **) &iWebBrowser2_)) {
+						if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **) &iWebBrowser2_))) {
 							iWebBrowser2_->put_Width(LOWORD(lParam));
 							iWebBrowser2_->put_Height(HIWORD(lParam));
 							iWebBrowser2_->Release();
@@ -991,7 +991,7 @@ namespace XYO {
 				return 0;
 			}
 
-			if (!browser_->QueryInterface(IID_IWebBrowser2, (void **) &WebBrowser2)) {
+			if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **) &WebBrowser2))) {
 
 				size_t newSize = url.length() + 1;
 				wchar_t *url_ = new wchar_t[newSize];
@@ -1000,7 +1000,7 @@ namespace XYO {
 				VariantInit(&myURL);
 				myURL.vt = VT_BSTR;
 				myURL.bstrVal = SysAllocString((BSTR) url_);
-				delete url_;
+				delete[] url_;
 
 				WebBrowser2->Navigate2(&myURL, 0, 0, 0, 0);
 

@@ -223,16 +223,17 @@ namespace XYO {
 			};
 
 			HRESULT removeUserAccountOnAD(wchar_t *ComputerNameAndUser) {
-
 				HRESULT hr = S_OK;
 				IADsUser *padsUser = NULL;
 				IADsContainer *padsContainer = NULL;
 				BSTR ADsClass;
+				wchar_t sUser[5];
+				wcscpy(sUser,L"user");
 				hr = ADsGetObject(ComputerNameAndUser, IID_IADsUser, (LPVOID *)&padsUser);
 				if(SUCCEEDED(hr)) {
 					hr = padsUser->get_Class(&ADsClass);
 					if(SUCCEEDED(hr)) {
-						if(lstrcmpiW(ADsClass, L"user") == 0) {
+						if(lstrcmpiW(ADsClass, sUser) == 0) {
 							SysFreeString(ADsClass);
 							hr = padsUser->get_Parent(&ADsClass);
 							if(SUCCEEDED(hr)) {
@@ -243,7 +244,7 @@ namespace XYO {
 									if(SUCCEEDED(hr)) {
 										removeUserFromItsGroups(padsUser, ADsClass);
 										padsUser->Release();
-										padsContainer->Delete(L"user", ADsClass);
+										padsContainer->Delete(sUser, ADsClass);
 										SysFreeString(ADsClass);
 										padsContainer->Release();
 										return hr;

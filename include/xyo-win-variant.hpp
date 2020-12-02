@@ -33,12 +33,12 @@ namespace XYO {
 
 				inline Variant::Variant(const Variant &x) {
 					VariantInit(&var_);
-					VariantCopy(&var_, &x.var_);
+					variantCopy(&var_, &x.var_);						
 				};
 
 				inline Variant::Variant(const VARIANTARG &x) {
 					VariantInit(&var_);
-					VariantCopy(&var_, const_cast<VARIANTARG *> (&x));
+					variantCopy(&var_, const_cast<VARIANTARG *> (&x));
 				};
 
 				inline Variant::Variant(VARIANT_BOOL x) {
@@ -119,7 +119,7 @@ namespace XYO {
 
 				inline Variant &operator=(const VARIANTARG &x) {
 					VariantClear(&var_);
-					VariantCopy(&var_, const_cast<VARIANTARG *> (&x));
+					variantCopy(&var_, const_cast<VARIANTARG *> (&x));
 					return *this;
 				};
 
@@ -276,6 +276,13 @@ namespace XYO {
 
 				inline operator IDispatch **() {
 					return var_.ppdispVal;
+				};
+
+				static void variantCopy(VARIANTARG *pvargDest, const VARIANTARG *pvargSrc) {
+					if(VariantCopy(pvargDest, pvargSrc)!=S_OK){
+						VariantClear(pvargDest);
+						VariantInit(pvargDest);
+					};
 				};
 
 		};

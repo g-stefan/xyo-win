@@ -157,7 +157,7 @@ namespace XYO {
 					DeleteDC(hdcDesktop);
 					DeleteDC(hdcCapture);
 					DeleteObject(bmpCapture);
-					delete imageBI;
+					delete[] imageBI;
 					return false;
 				};
 
@@ -189,8 +189,8 @@ namespace XYO {
 					DeleteDC(hdcDesktop);
 					DeleteDC(hdcCapture);
 					DeleteObject(bmpCapture);
-					delete imageBI;
-					delete imageFile;
+					delete[] imageBI;
+					delete[] imageFile;
 					return false;
 				};
 
@@ -201,14 +201,14 @@ namespace XYO {
 					DeleteDC(hdcDesktop);
 					DeleteDC(hdcCapture);
 					DeleteObject(bmpCapture);
-					delete imageBI;
+					delete[] imageBI;
 					return true;
 				};
 
 				DeleteDC(hdcDesktop);
 				DeleteDC(hdcCapture);
 				DeleteObject(bmpCapture);
-				delete imageBI;
+				delete[] imageBI;
 
 				return false;
 			};
