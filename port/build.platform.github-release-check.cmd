@@ -5,7 +5,7 @@ rem Created by Grigore Stefan <g_stefan@yahoo.com>
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 
-echo -^> git-release-check xyo-win
+echo -^> github-release-check xyo-win
 
 set PROJECT=xyo-win
 if not exist source\%PROJECT%.version.ini echo Error - no version & exit 1
