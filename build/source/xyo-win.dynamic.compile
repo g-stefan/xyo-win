@@ -1,5 +1,5 @@
 --dll xyo-win
---source-is-separate
+--build-include
 --no-version
 --use-project=xyo-pixel32
 --use-lib=secur32

@@ -1,5 +1,5 @@
 --lib xyo-win
---source-is-separate
+--build-include
 --use-project=xyo-pixel32.static
 --use-lib=secur32
 --use-lib=adsiid
