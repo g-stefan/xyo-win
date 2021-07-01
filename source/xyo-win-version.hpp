@@ -10,10 +10,10 @@
 #ifndef XYO_WIN_VERSION_HPP
 #define XYO_WIN_VERSION_HPP
 
-#define XYO_WIN_VERSION_ABCD                 1,4,0,5
-#define XYO_WIN_VERSION_STR                 "1.4.0"
-#define XYO_WIN_VERSION_STR_BUILD           "5"
-#define XYO_WIN_VERSION_STR_DATETIME        "2021-03-15 12:30:24"
+#define XYO_WIN_VERSION_ABCD                 2,0,0,6
+#define XYO_WIN_VERSION_STR                 "2.0.0"
+#define XYO_WIN_VERSION_STR_BUILD           "6"
+#define XYO_WIN_VERSION_STR_DATETIME        "2021-07-01 17:02:13"
 
 #ifndef XYO_RC
 
