@@ -3,8 +3,7 @@ rem Public domain
 rem http://unlicense.org/
 rem Created by Grigore Stefan <g_stefan@yahoo.com>
 
-echo -^> sign xyo-win
+echo - %BUILD_PROJECT% ^> clean
 
-pushd output
-for /r %%i in (*.dll) do call grigore-stefan.sign "XYO Win" "%%i"
-popd
+if exist output\ rmdir /Q /S output
+if exist temp\ rmdir /Q /S temp
