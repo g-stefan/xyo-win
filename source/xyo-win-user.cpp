@@ -8,7 +8,7 @@
 //
 
 #ifndef SECURITY_WIN32
-#define SECURITY_WIN32
+#	define SECURITY_WIN32
 #endif
 
 #include <windows.h>
@@ -37,11 +37,9 @@ namespace XYO {
 				IUnknown *pUnk;
 				IEnumVARIANT *pEnum;
 
-
 				IADsMembers *pGroups;
 				HRESULT hr = S_OK;
 				hr = pUser->Groups(&pGroups);
-
 
 				if (FAILED(hr)) {
 					return hr;
@@ -54,7 +52,6 @@ namespace XYO {
 					return hr;
 				};
 
-
 				hr = pUnk->QueryInterface(IID_IEnumVARIANT, (void **)&pEnum);
 				pUnk->Release();
 
@@ -64,7 +61,7 @@ namespace XYO {
 
 				VariantInit(&var);
 				hr = pEnum->Next(1, &var, &lFetch);
-				while(hr == S_OK) {
+				while (hr == S_OK) {
 					if (lFetch == 1) {
 						pDisp = V_DISPATCH(&var);
 						pDisp->QueryInterface(IID_IADsGroup, (void **)&pADs);
@@ -80,31 +77,30 @@ namespace XYO {
 
 				hr = pEnum->Release();
 				return S_OK;
-
 			};
 
 			HRESULT createUserAccountOnAD(wchar_t *UserName, wchar_t *FullName, wchar_t *Description, wchar_t *Password, wchar_t *ComputerName, wchar_t *ComputerNameAndUser, wchar_t *ThisComputerNameAndUser) {
 
 				HRESULT hr;
-				BSTR  _ComputerName;
-				BSTR  _User;
-				BSTR  _UserName;
-				BSTR  _Password;
-				BSTR  _FullName;
-				BSTR  _Description;
-				BSTR  _userAccountControl;
-				BSTR  _sAMAccountName;
-				BSTR  _userFlags;
-				BSTR  _ComputerNameAndUser;
+				BSTR _ComputerName;
+				BSTR _User;
+				BSTR _UserName;
+				BSTR _Password;
+				BSTR _FullName;
+				BSTR _Description;
+				BSTR _userAccountControl;
+				BSTR _sAMAccountName;
+				BSTR _userFlags;
+				BSTR _ComputerNameAndUser;
 				IADsContainer *pUsers = NULL;
 				IDispatch *pDisp = NULL;
 				IADsUser *padsUser = NULL;
 
-				if((ComputerName == NULL) ||
-					(UserName == NULL) ||
-					(Password == NULL) ||
-					(FullName == NULL) ||
-					(Description == NULL)) {
+				if ((ComputerName == NULL) ||
+				    (UserName == NULL) ||
+				    (Password == NULL) ||
+				    (FullName == NULL) ||
+				    (Description == NULL)) {
 					return E_INVALIDARG;
 				};
 
@@ -119,55 +115,55 @@ namespace XYO {
 				_userFlags = SysAllocString(L"UserFlags");
 				_ComputerNameAndUser = SysAllocString(ComputerNameAndUser);
 
-				if((_ComputerName == NULL) ||
-					(_User == NULL) ||
-					(_UserName == NULL) ||
-					(_Password == NULL) ||
-					(_FullName == NULL) ||
-					(_userAccountControl == NULL) ||
-					(_sAMAccountName == NULL) ||
-					(_userFlags == NULL) ||
-					(_ComputerNameAndUser == NULL) ||
-					(_Description == NULL)) {
-					if(_ComputerName != NULL) {
+				if ((_ComputerName == NULL) ||
+				    (_User == NULL) ||
+				    (_UserName == NULL) ||
+				    (_Password == NULL) ||
+				    (_FullName == NULL) ||
+				    (_userAccountControl == NULL) ||
+				    (_sAMAccountName == NULL) ||
+				    (_userFlags == NULL) ||
+				    (_ComputerNameAndUser == NULL) ||
+				    (_Description == NULL)) {
+					if (_ComputerName != NULL) {
 						SysFreeString(_ComputerName);
 					}
-					if(_User != NULL) {
+					if (_User != NULL) {
 						SysFreeString(_User);
 					}
-					if(_UserName != NULL) {
+					if (_UserName != NULL) {
 						SysFreeString(_UserName);
 					}
-					if(_Password != NULL) {
+					if (_Password != NULL) {
 						SysFreeString(_Password);
 					}
-					if(_FullName != NULL) {
+					if (_FullName != NULL) {
 						SysFreeString(_FullName);
 					}
-					if(_Description != NULL) {
+					if (_Description != NULL) {
 						SysFreeString(_Description);
 					}
-					if(_userAccountControl != NULL) {
+					if (_userAccountControl != NULL) {
 						SysFreeString(_userAccountControl);
 					}
-					if(_userFlags != NULL) {
+					if (_userFlags != NULL) {
 						SysFreeString(_userFlags);
 					}
-					if(_sAMAccountName != NULL) {
+					if (_sAMAccountName != NULL) {
 						SysFreeString(_sAMAccountName);
 					}
-					if(_ComputerNameAndUser != NULL) {
+					if (_ComputerNameAndUser != NULL) {
 						SysFreeString(_ComputerNameAndUser);
 					}
 					return E_OUTOFMEMORY;
 				};
 
 				hr = ADsGetObject(_ComputerName, IID_IADsContainer, (LPVOID *)&pUsers);
-				if(SUCCEEDED(hr)) {
+				if (SUCCEEDED(hr)) {
 					hr = pUsers->Create(_User, _UserName, &pDisp);
-					if(SUCCEEDED(hr)) {
+					if (SUCCEEDED(hr)) {
 						hr = pDisp->QueryInterface(IID_IADsUser, (void **)&padsUser);
-						if(SUCCEEDED(hr)) {
+						if (SUCCEEDED(hr)) {
 							VARIANT value;
 							VariantInit(&value);
 							value.vt = VT_BSTR;
@@ -182,14 +178,14 @@ namespace XYO {
 							hr = padsUser->put_PasswordRequired(TRUE);
 							VariantInit(&value);
 							hr = padsUser->Get(_userAccountControl, &value);
-							if(SUCCEEDED(hr)) {
+							if (SUCCEEDED(hr)) {
 								value.lVal |= ADS_UF_DONT_EXPIRE_PASSWD;
 								hr = padsUser->Put(_userAccountControl, value);
 							};
 							VariantClear(&value);
 							VariantInit(&value);
 							hr = padsUser->Get(_userFlags, &value);
-							if(SUCCEEDED(hr)) {
+							if (SUCCEEDED(hr)) {
 								value.lVal |= ADS_UF_DONT_EXPIRE_PASSWD;
 								hr = padsUser->Put(_userFlags, value);
 							};
@@ -197,9 +193,8 @@ namespace XYO {
 							hr = padsUser->SetInfo();
 							padsUser->Release();
 
-
 							hr = ADsGetObject(ThisComputerNameAndUser, IID_IADsUser, (LPVOID *)&padsUser);
-							if(SUCCEEDED(hr)) {
+							if (SUCCEEDED(hr)) {
 								hr = addToUserGroupsUser(padsUser, _ComputerNameAndUser);
 								padsUser->Release();
 							};
@@ -219,7 +214,6 @@ namespace XYO {
 				SysFreeString(_userFlags);
 				SysFreeString(_ComputerNameAndUser);
 				return hr;
-
 			};
 
 			HRESULT removeUserAccountOnAD(wchar_t *ComputerNameAndUser) {
@@ -228,20 +222,20 @@ namespace XYO {
 				IADsContainer *padsContainer = NULL;
 				BSTR ADsClass;
 				wchar_t sUser[5];
-				wcscpy(sUser,L"user");
+				wcscpy(sUser, L"user");
 				hr = ADsGetObject(ComputerNameAndUser, IID_IADsUser, (LPVOID *)&padsUser);
-				if(SUCCEEDED(hr)) {
+				if (SUCCEEDED(hr)) {
 					hr = padsUser->get_Class(&ADsClass);
-					if(SUCCEEDED(hr)) {
-						if(lstrcmpiW(ADsClass, sUser) == 0) {
+					if (SUCCEEDED(hr)) {
+						if (lstrcmpiW(ADsClass, sUser) == 0) {
 							SysFreeString(ADsClass);
 							hr = padsUser->get_Parent(&ADsClass);
-							if(SUCCEEDED(hr)) {
+							if (SUCCEEDED(hr)) {
 								hr = ADsGetObject(ADsClass, IID_IADsContainer, (LPVOID *)&padsContainer);
 								SysFreeString(ADsClass);
-								if(SUCCEEDED(hr)) {
+								if (SUCCEEDED(hr)) {
 									hr = padsUser->get_Name(&ADsClass);
-									if(SUCCEEDED(hr)) {
+									if (SUCCEEDED(hr)) {
 										removeUserFromItsGroups(padsUser, ADsClass);
 										padsUser->Release();
 										padsContainer->Delete(sUser, ADsClass);
@@ -262,7 +256,6 @@ namespace XYO {
 					padsUser->Release();
 				};
 				return hr;
-
 			};
 
 			HRESULT removeUserFromItsGroups(IADsUser *pUser, BSTR UserName) {
@@ -273,7 +266,6 @@ namespace XYO {
 				IDispatch *pDisp;
 				IUnknown *pUnk;
 				IEnumVARIANT *pEnum;
-
 
 				IADsMembers *pGroups;
 				HRESULT hr = S_OK;
@@ -290,7 +282,6 @@ namespace XYO {
 					return hr;
 				}
 
-
 				hr = pUnk->QueryInterface(IID_IEnumVARIANT, (void **)&pEnum);
 				pUnk->Release();
 				if (FAILED(hr)) {
@@ -299,11 +290,11 @@ namespace XYO {
 
 				VariantInit(&var);
 				hr = pEnum->Next(1, &var, &lFetch);
-				while(hr == S_OK) {
+				while (hr == S_OK) {
 					if (lFetch == 1) {
 						pDisp = V_DISPATCH(&var);
 						pDisp->QueryInterface(IID_IADsGroup, (void **)&pADs);
-						if(pADs) {
+						if (pADs) {
 							pADs->Remove(UserName);
 							pADs->Release();
 						};
@@ -314,29 +305,26 @@ namespace XYO {
 				};
 				hr = pEnum->Release();
 				return S_OK;
-
 			};
 
 			bool hideUserFromWelcomeScreen(wchar_t *_user_name) {
 
-				if(Registry::createKeyW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts")) {
-					if(Registry::createKeyW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList")) {
-						if(Registry::writeDWordW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList", _user_name, 0x00010000)) {
+				if (Registry::createKeyW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts")) {
+					if (Registry::createKeyW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList")) {
+						if (Registry::writeDWordW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList", _user_name, 0x00010000)) {
 							return false;
 						};
 					};
 				};
 				return false;
-
 			};
 
 			bool showUserInWelcomeScreen(wchar_t *_user_name) {
 
-				if(Registry::deleteKeyW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList", _user_name, TRUE)) {
+				if (Registry::deleteKeyW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList", _user_name, TRUE)) {
 					return true;
 				};
 				return false;
-
 			};
 
 			bool createUserAccountAsCurrentUserPrivilegeOnLocalComputer(wchar_t *_user_name, wchar_t *_password, wchar_t *_full_name, wchar_t *_description) {
@@ -350,7 +338,7 @@ namespace XYO {
 				int k;
 
 				bufferSize = (DWORD)2048;
-				if(GetComputerNameExW(ComputerNameDnsFullyQualified, (LPWSTR)buffer, &bufferSize)) {
+				if (GetComputerNameExW(ComputerNameDnsFullyQualified, (LPWSTR)buffer, &bufferSize)) {
 					wcscpy(computerName, L"WinNT://");
 					wcscpy(computerNameAndUser, computerName);
 					wcscpy(thisNameAndUser, computerName);
@@ -363,24 +351,22 @@ namespace XYO {
 					wcscat(computerNameAndUser, L",User");
 
 					bufferSize = (DWORD)2048;
-					if(GetUserNameExW(NameSamCompatible, (LPWSTR)buffer, &bufferSize)) {
+					if (GetUserNameExW(NameSamCompatible, (LPWSTR)buffer, &bufferSize)) {
 
 						wcscat(thisNameAndUser, buffer);
 						wcscat(thisNameAndUser, L",User");
-						for(k = 0; thisNameAndUser[k] != 0; ++k) {
-							if(thisNameAndUser[k] == L'\\') {
+						for (k = 0; thisNameAndUser[k] != 0; ++k) {
+							if (thisNameAndUser[k] == L'\\') {
 								thisNameAndUser[k] = L'/';
 							};
 						};
-						if(FAILED(createUserAccountOnAD(_user_name, _full_name, _description, _password, computerName, computerNameAndUser, thisNameAndUser))) {
+						if (FAILED(createUserAccountOnAD(_user_name, _full_name, _description, _password, computerName, computerNameAndUser, thisNameAndUser))) {
 						} else {
 							return true;
 						};
-
 					};
 				};
 				return false;
-
 			};
 
 			bool deleteUserAccountOnLocalComputer(wchar_t *_user_name) {
@@ -390,7 +376,7 @@ namespace XYO {
 				wchar_t computerNameAndUser[1024];
 
 				bufferSize = (DWORD)2048;
-				if(GetComputerNameExW(ComputerNameDnsFullyQualified, (LPWSTR)buffer, &bufferSize)) {
+				if (GetComputerNameExW(ComputerNameDnsFullyQualified, (LPWSTR)buffer, &bufferSize)) {
 
 					wcscpy(computerNameAndUser, L"WinNT://");
 					wcscat(computerNameAndUser, buffer);
@@ -399,26 +385,22 @@ namespace XYO {
 					wcscat(computerNameAndUser, L",User");
 					showUserInWelcomeScreen(_user_name);
 
-					if(FAILED(removeUserAccountOnAD(computerNameAndUser))) {
+					if (FAILED(removeUserAccountOnAD(computerNameAndUser))) {
 					} else {
 						return true;
 					};
-
 				};
 				return false;
-
 			};
 
 			bool createHiddenUserAccountAsCurrentUserPrivilegeOnLocalComputer(wchar_t *_user_name, wchar_t *_password, wchar_t *_full_name, wchar_t *_description) {
-				if(createUserAccountAsCurrentUserPrivilegeOnLocalComputer(_user_name, _full_name, _password, _description)) {
+				if (createUserAccountAsCurrentUserPrivilegeOnLocalComputer(_user_name, _full_name, _password, _description)) {
 					hideUserFromWelcomeScreen(_user_name);
 					return true;
 				};
 				return false;
-
 			};
 
 		};
 	};
 };
-

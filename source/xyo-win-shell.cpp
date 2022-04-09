@@ -8,7 +8,7 @@
 //
 
 #ifndef SECURITY_WIN32
-#define SECURITY_WIN32
+#	define SECURITY_WIN32
 #endif
 
 #include <windows.h>
@@ -42,65 +42,62 @@ namespace XYO {
 					return false;
 				};
 
-				if (CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (void **) &pShellLink) == S_OK) {
+				if (CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (void **)&pShellLink) == S_OK) {
 
-					if(pShellLink->SetWorkingDirectory(workingDirectory) != S_OK) {
+					if (pShellLink->SetWorkingDirectory(workingDirectory) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(pShellLink->SetPath(path) != S_OK) {
+					if (pShellLink->SetPath(path) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(pShellLink->SetArguments(arguments) != S_OK) {
+					if (pShellLink->SetArguments(arguments) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(pShellLink->SetIconLocation(iconPath, iconIndex) != S_OK) {
+					if (pShellLink->SetIconLocation(iconPath, iconIndex) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(runAsAdministrator) {
+					if (runAsAdministrator) {
 
-						if(pShellLink->QueryInterface(IID_IShellLinkDataList, (void **) &pShellLinkDataList) != S_OK) {
+						if (pShellLink->QueryInterface(IID_IShellLinkDataList, (void **)&pShellLinkDataList) != S_OK) {
 							pShellLink->Release();
 							return false;
 						};
 
-						if(pShellLinkDataList->GetFlags(&dwFlags) != S_OK) {
+						if (pShellLinkDataList->GetFlags(&dwFlags) != S_OK) {
 							pShellLinkDataList->Release();
 							pShellLink->Release();
 							return false;
 						};
-
 
 						dwFlags |= SLDF_RUNAS_USER;
 
-						if(pShellLinkDataList->SetFlags(dwFlags) != S_OK) {
+						if (pShellLinkDataList->SetFlags(dwFlags) != S_OK) {
 							pShellLinkDataList->Release();
 							pShellLink->Release();
 							return false;
 						};
 
-
 						pShellLinkDataList->Release();
-
 					};
 
-					if(pShellLink->QueryInterface(IID_IPersistFile, (void **) &pPersistFile) != S_OK) {
+					if (pShellLink->QueryInterface(IID_IPersistFile, (void **)&pPersistFile) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
 					wchar_t *outputFileS;
 					StringUtf16 outputFileU16(TUtfConvert<utf16, utf8>::from(outputFile));
-					outputFileS=(wchar_t *)SysAllocString((BSTR)outputFileU16.value());
+					outputFileS = (wchar_t *)SysAllocString((BSTR)outputFileU16.value());
 
-					if(pPersistFile->Save(outputFileS, TRUE) != S_OK) {
+					if (pPersistFile->Save(outputFileS, TRUE) != S_OK) {
 						SysFreeString((BSTR)outputFileS);
 						pPersistFile->Release();
 						pShellLink->Release();
@@ -128,64 +125,61 @@ namespace XYO {
 					return false;
 				};
 
-				if (CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLinkW, (void **) &pShellLink) == S_OK) {
+				if (CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLinkW, (void **)&pShellLink) == S_OK) {
 
-					if(pShellLink->SetWorkingDirectory(workingDirectory) != S_OK) {
+					if (pShellLink->SetWorkingDirectory(workingDirectory) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(pShellLink->SetPath(path) != S_OK) {
+					if (pShellLink->SetPath(path) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(pShellLink->SetArguments(arguments) != S_OK) {
+					if (pShellLink->SetArguments(arguments) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(pShellLink->SetIconLocation(iconPath, iconIndex) != S_OK) {
+					if (pShellLink->SetIconLocation(iconPath, iconIndex) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
-					if(runAsAdministrator) {
+					if (runAsAdministrator) {
 
-						if(pShellLink->QueryInterface(IID_IShellLinkDataList, (void **) &pShellLinkDataList) != S_OK) {
+						if (pShellLink->QueryInterface(IID_IShellLinkDataList, (void **)&pShellLinkDataList) != S_OK) {
 							pShellLink->Release();
 							return false;
 						};
 
-						if(pShellLinkDataList->GetFlags(&dwFlags) != S_OK) {
+						if (pShellLinkDataList->GetFlags(&dwFlags) != S_OK) {
 							pShellLinkDataList->Release();
 							pShellLink->Release();
 							return false;
 						};
-
 
 						dwFlags |= SLDF_RUNAS_USER;
 
-						if(pShellLinkDataList->SetFlags(dwFlags) != S_OK) {
+						if (pShellLinkDataList->SetFlags(dwFlags) != S_OK) {
 							pShellLinkDataList->Release();
 							pShellLink->Release();
 							return false;
 						};
 
-
 						pShellLinkDataList->Release();
-
 					};
 
-					if(pShellLink->QueryInterface(IID_IPersistFile, (void **) &pPersistFile) != S_OK) {
+					if (pShellLink->QueryInterface(IID_IPersistFile, (void **)&pPersistFile) != S_OK) {
 						pShellLink->Release();
 						return false;
 					};
 
 					wchar_t *outputFileS;
-					outputFileS=(wchar_t *)SysAllocString((BSTR)outputFile);
+					outputFileS = (wchar_t *)SysAllocString((BSTR)outputFile);
 
-					if(pPersistFile->Save(outputFileS, TRUE) != S_OK) {
+					if (pPersistFile->Save(outputFileS, TRUE) != S_OK) {
 						SysFreeString((BSTR)outputFileS);
 						pPersistFile->Release();
 						pShellLink->Release();
@@ -206,4 +200,3 @@ namespace XYO {
 		};
 	};
 };
-

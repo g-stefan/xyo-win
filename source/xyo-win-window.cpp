@@ -25,10 +25,10 @@ namespace XYO {
 
 		Window::operator HINSTANCE() {
 #ifdef XYO_APPLICATION_32BIT
-			return (HINSTANCE) GetWindowLong(hWnd_, GWL_HINSTANCE);
+			return (HINSTANCE)GetWindowLong(hWnd_, GWL_HINSTANCE);
 #endif
 #ifdef XYO_APPLICATION_64BIT
-			return (HINSTANCE) GetWindowLongPtr(hWnd_, GWLP_HINSTANCE);
+			return (HINSTANCE)GetWindowLongPtr(hWnd_, GWLP_HINSTANCE);
 #endif
 		};
 
@@ -50,20 +50,20 @@ namespace XYO {
 		};
 
 		LRESULT CALLBACK Window::windowProcedure_(HWND hWnd,
-			UINT uMsg,
-			WPARAM wParam,
-			LPARAM lParam) {
+		                                          UINT uMsg,
+		                                          WPARAM wParam,
+		                                          LPARAM lParam) {
 			Window *vWindow;
 			if (uMsg == WM_NCCREATE) {
-				vWindow = (Window *) (((LPCREATESTRUCT) lParam)->lpCreateParams);
+				vWindow = (Window *)(((LPCREATESTRUCT)lParam)->lpCreateParams);
 				vWindow->incReferenceCount();
 				vWindow->hWnd_ = hWnd;
 
 #ifdef XYO_APPLICATION_32BIT
-				SetWindowLong(hWnd, 0, (DWORD) vWindow);
+				SetWindowLong(hWnd, 0, (DWORD)vWindow);
 #endif
 #ifdef XYO_APPLICATION_64BIT
-				SetWindowLongPtr(hWnd, 0, (LONG_PTR) vWindow);
+				SetWindowLongPtr(hWnd, 0, (LONG_PTR)vWindow);
 #endif
 
 				if (vWindow->notifyOnCreate_) {
@@ -72,10 +72,10 @@ namespace XYO {
 			};
 
 #ifdef XYO_APPLICATION_32BIT
-			vWindow = (Window *) GetWindowLong(hWnd, 0);
+			vWindow = (Window *)GetWindowLong(hWnd, 0);
 #endif
 #ifdef XYO_APPLICATION_64BIT
-			vWindow = (Window *) GetWindowLongPtr(hWnd, 0);
+			vWindow = (Window *)GetWindowLongPtr(hWnd, 0);
 #endif
 			if (vWindow != NULL) {
 				if (uMsg == WM_NCDESTROY) {
@@ -102,38 +102,38 @@ namespace XYO {
 		};
 
 		bool Window::create(DWORD dwExStyle,
-			LPCTSTR lpClassName,
-			LPCTSTR lpWindowName,
-			DWORD dwStyle,
-			int x, int y,
-			int nWidth, int nHeight,
-			HWND hWndParent,
-			HMENU hMenu,
-			HINSTANCE hInstance) {
+		                    LPCTSTR lpClassName,
+		                    LPCTSTR lpWindowName,
+		                    DWORD dwStyle,
+		                    int x, int y,
+		                    int nWidth, int nHeight,
+		                    HWND hWndParent,
+		                    HMENU hMenu,
+		                    HINSTANCE hInstance) {
 			return (::CreateWindowEx(dwExStyle, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, this) != NULL);
 		};
 
 		bool Window::create(LPCTSTR lpClassName,
-			LPCTSTR lpWindowName,
-			DWORD dwStyle,
-			int x, int y,
-			int nWidth, int nHeight,
-			HWND hWndParent,
-			HMENU hMenu,
-			HINSTANCE hInstance) {
+		                    LPCTSTR lpWindowName,
+		                    DWORD dwStyle,
+		                    int x, int y,
+		                    int nWidth, int nHeight,
+		                    HWND hWndParent,
+		                    HMENU hMenu,
+		                    HINSTANCE hInstance) {
 			return (::CreateWindow(lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, this) != NULL);
 		};
 
 		bool Window::registerClass(WNDCLASS &wc) {
 			wc.lpfnWndProc = Window::windowProcedure_;
-			wc.cbWndExtra = sizeof (void *);
+			wc.cbWndExtra = sizeof(void *);
 			return ::RegisterClass(&wc) != 0;
 		};
 
 		bool Window::registerClass(WNDCLASSEX &wc) {
-			wc.cbSize = sizeof (WNDCLASSEX);
+			wc.cbSize = sizeof(WNDCLASSEX);
 			wc.lpfnWndProc = Window::windowProcedure_;
-			wc.cbWndExtra = sizeof (void *);
+			wc.cbWndExtra = sizeof(void *);
 			return ::RegisterClassEx(&wc) != 0;
 		};
 
@@ -156,4 +156,3 @@ namespace XYO {
 
 	};
 };
-

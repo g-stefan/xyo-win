@@ -27,9 +27,9 @@ namespace XYO {
 
 			XOle::XOle() {
 				isValid = false;
-				HRESULT initialized;				
-				initialized=OleInitialize(NULL);
-				if(initialized != OLE_E_WRONGCOMPOBJ){
+				HRESULT initialized;
+				initialized = OleInitialize(NULL);
+				if (initialized != OLE_E_WRONGCOMPOBJ) {
 					isValid = true;
 				};
 			};
@@ -45,4 +45,3 @@ namespace XYO {
 		};
 	};
 };
-

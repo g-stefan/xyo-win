@@ -11,11 +11,11 @@
 #define XYO_WIN__DEPENDENCY_HPP
 
 #ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
 #endif
 
 #ifndef SECURITY_WIN32
-#define SECURITY_WIN32
+#	define SECURITY_WIN32
 #endif
 
 #include <windows.h>
@@ -37,15 +37,15 @@
 #include <shellapi.h>
 
 #ifndef XYO_HPP
-#include "xyo.hpp"
+#	include "xyo.hpp"
 #endif
 
 #ifndef XYO_WIN__EXPORT_HPP
-#include "xyo-win--export.hpp"
+#	include "xyo-win--export.hpp"
 #endif
 
 #ifndef XYO_WIN__CONFIG_HPP
-#include "xyo-win--config.hpp"
+#	include "xyo-win--config.hpp"
 #endif
 
 #endif

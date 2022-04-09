@@ -11,32 +11,31 @@
 #define XYO_WIN_WINDOW_HPP
 
 #ifndef XYO_WIN__DEPENDENCY_HPP
-#include "xyo-win--dependency.hpp"
+#	include "xyo-win--dependency.hpp"
 #endif
 
 #ifndef XYO_WIN_INOTIFY_HPP
-#include "xyo-win-inotify.hpp"
+#	include "xyo-win-inotify.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		class Window :
-			public virtual XYO::Object {
+		class Window : public virtual XYO::Object {
 			private:
 				HWND hWnd_;
 				XYO_WIN_EXPORT static LRESULT CALLBACK windowProcedure_(HWND hWnd,
-					UINT uMsg,
-					WPARAM wParam,
-					LPARAM lParam);
+				                                                        UINT uMsg,
+				                                                        WPARAM wParam,
+				                                                        LPARAM lParam);
 				XYO_WIN_EXPORT bool destroyAndWait_();
 
 				XYO::TPointer<INotify> notifyOnCreate_;
 				XYO::TPointer<INotify> notifyOnDestroy_;
 
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(Window);
-			public:
 
+			public:
 				XYO_WIN_EXPORT Window();
 				XYO_WIN_EXPORT ~Window();
 
@@ -50,23 +49,23 @@ namespace XYO {
 				XYO_WIN_EXPORT virtual bool translateAccelerator(MSG &msg);
 
 				XYO_WIN_EXPORT bool create(DWORD dwExStyle,
-					LPCTSTR lpClassName,
-					LPCTSTR lpWindowName,
-					DWORD dwStyle,
-					int x, int y,
-					int nWidth, int nHeight,
-					HWND hWndParent,
-					HMENU hMenu,
-					HINSTANCE hInstance);
+				                           LPCTSTR lpClassName,
+				                           LPCTSTR lpWindowName,
+				                           DWORD dwStyle,
+				                           int x, int y,
+				                           int nWidth, int nHeight,
+				                           HWND hWndParent,
+				                           HMENU hMenu,
+				                           HINSTANCE hInstance);
 
 				XYO_WIN_EXPORT bool create(LPCTSTR lpClassName,
-					LPCTSTR lpWindowName,
-					DWORD dwStyle,
-					int x, int y,
-					int nWidth, int nHeight,
-					HWND hWndParent,
-					HMENU hMenu,
-					HINSTANCE hInstance);
+				                           LPCTSTR lpWindowName,
+				                           DWORD dwStyle,
+				                           int x, int y,
+				                           int nWidth, int nHeight,
+				                           HWND hWndParent,
+				                           HMENU hMenu,
+				                           HINSTANCE hInstance);
 
 				XYO_WIN_EXPORT void setNotifyOnCreate(INotify *);
 				XYO_WIN_EXPORT void setNotifyOnDestroy(INotify *);
@@ -81,4 +80,3 @@ namespace XYO {
 };
 
 #endif
-

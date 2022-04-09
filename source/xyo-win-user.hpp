@@ -11,7 +11,7 @@
 #define XYO_WIN_USER_HPP
 
 #ifndef XYO_WIN__DEPENDENCY_HPP
-#include "xyo-win--dependency.hpp"
+#	include "xyo-win--dependency.hpp"
 #endif
 
 namespace XYO {
@@ -33,4 +33,3 @@ namespace XYO {
 };
 
 #endif
-

@@ -11,14 +11,13 @@
 #define XYO_WIN_SIMPLEAPPLICATION_HPP
 
 #ifndef XYO_WIN_APPLICATION_HPP
-#include "xyo-win-application.hpp"
+#	include "xyo-win-application.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		class SimpleApplication :
-			public virtual Application {
+		class SimpleApplication : public virtual Application {
 			protected:
 				LPSTR className_;
 				LPSTR windowName_;
@@ -26,9 +25,10 @@ namespace XYO {
 				bool isTrayIconic_;
 
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(SimpleApplication);
+
 			public:
 				XYO_WIN_EXPORT SimpleApplication();
-				inline ~SimpleApplication() {};
+				inline ~SimpleApplication(){};
 
 				XYO_WIN_EXPORT void setWndclassEx(WNDCLASSEX &);
 				XYO_WIN_EXPORT void setCreateStruct(CREATESTRUCT &);
@@ -42,4 +42,3 @@ namespace XYO {
 };
 
 #endif
-

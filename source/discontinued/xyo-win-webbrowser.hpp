@@ -11,35 +11,35 @@
 #define XYO_WIN_WEBBROWSER_HPP
 
 #ifndef XYO_WIN_WINDOW_HPP
-#include "xyo-win-window.hpp"
+#	include "xyo-win-window.hpp"
 #endif
 
-#define WUM_BROWSER_DO_NAVIGATE1 (WM_USER+2000)
-#define WUM_BROWSER_DO_NAVIGATE2 (WM_USER+2001)
+#define WUM_BROWSER_DO_NAVIGATE1 (WM_USER + 2000)
+#define WUM_BROWSER_DO_NAVIGATE2 (WM_USER + 2001)
 
 namespace XYO {
 	namespace Win {
 
-		class WebBrowser :
-			public virtual Window,
-			public virtual ::IStorage,
-			public virtual ::IOleInPlaceFrame,
-			public virtual ::IOleClientSite,
-			public virtual ::IOleInPlaceSite,
-			public virtual ::IOleCommandTarget,
-			public virtual ::IDocHostUIHandler,
-			public virtual ::IDocHostShowUI,
-			public virtual ::IServiceProvider,
-			public virtual ::DWebBrowserEvents2,
-			public virtual ::IDropTarget,
-			public virtual ::IHttpSecurity,
-			public virtual ::IWindowForBindingUI,
-			public virtual ::INewWindowManager,
-			public virtual ::IAuthenticate,
-			public virtual ::IInternetSecurityManager,
-			public virtual ::IProtectFocus,
-			public virtual ::IHTMLOMWindowServices {
+		class WebBrowser : public virtual Window,
+		                   public virtual ::IStorage,
+		                   public virtual ::IOleInPlaceFrame,
+		                   public virtual ::IOleClientSite,
+		                   public virtual ::IOleInPlaceSite,
+		                   public virtual ::IOleCommandTarget,
+		                   public virtual ::IDocHostUIHandler,
+		                   public virtual ::IDocHostShowUI,
+		                   public virtual ::IServiceProvider,
+		                   public virtual ::DWebBrowserEvents2,
+		                   public virtual ::IDropTarget,
+		                   public virtual ::IHttpSecurity,
+		                   public virtual ::IWindowForBindingUI,
+		                   public virtual ::INewWindowManager,
+		                   public virtual ::IAuthenticate,
+		                   public virtual ::IInternetSecurityManager,
+		                   public virtual ::IProtectFocus,
+		                   public virtual ::IHTMLOMWindowServices {
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(WebBrowser);
+
 			protected:
 				IOleObject *browser_;
 				DWORD adviseCookie_;
@@ -50,20 +50,20 @@ namespace XYO {
 				XYO_WIN_EXPORT int releaseObject();
 
 				XYO::String browserDefaultAddress_;
-			public:
 
+			public:
 				XYO_WIN_EXPORT WebBrowser();
 				XYO_WIN_EXPORT ~WebBrowser();
 
 				XYO_WIN_EXPORT LRESULT windowProcedure(UINT uMsg, WPARAM wParam, LPARAM lParam);
 				XYO_WIN_EXPORT bool translateAccelerator(MSG &msg);
 
-				//IUnknown
+				// IUnknown
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, LPVOID *ppvObj);
 				XYO_WIN_EXPORT ULONG STDMETHODCALLTYPE AddRef();
 				XYO_WIN_EXPORT ULONG STDMETHODCALLTYPE Release();
 
-				//IStorage
+				// IStorage
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE CreateStream(const WCHAR *pwcsName, DWORD grfMode, DWORD reserved1, DWORD reserved2, IStream **ppstm);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE OpenStream(const WCHAR *pwcsName, void *reserved1, DWORD grfMode, DWORD reserved2, IStream **ppstm);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE CreateStorage(const WCHAR *pwcsName, DWORD grfMode, DWORD reserved1, DWORD reserved2, IStorage **ppstg);
@@ -80,7 +80,7 @@ namespace XYO {
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE SetStateBits(DWORD grfStateBits, DWORD grfMask);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE Stat(STATSTG *pstatstg, DWORD grfStatFlag);
 
-				//IOleInPlaceFrame
+				// IOleInPlaceFrame
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetWindow(HWND FAR *lphwnd);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE ContextSensitiveHelp(BOOL fEnterMode);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetBorder(LPRECT lprectBorder);
@@ -94,7 +94,7 @@ namespace XYO {
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE EnableModeless(BOOL fEnable);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE TranslateAccelerator(LPMSG lpmsg, WORD wID);
 
-				//IOleClientSite
+				// IOleClientSite
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE SaveObject();
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetMoniker(DWORD dwAssign, DWORD dwWhichMoniker, IMoniker **ppmk);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetContainer(LPOLECONTAINER FAR *ppContainer);
@@ -102,7 +102,7 @@ namespace XYO {
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE OnShowWindow(BOOL fShow);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE RequestNewObjectLayout();
 
-				//IOleInPlaceSite
+				// IOleInPlaceSite
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE CanInPlaceActivate();
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE OnInPlaceActivate();
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE OnUIActivate();
@@ -114,12 +114,11 @@ namespace XYO {
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE DeactivateAndUndo();
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE OnPosRectChange(LPCRECT lprcPosRect);
 
-				//IOleCommandTarget
+				// IOleCommandTarget
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE QueryStatus(const GUID *pguidCmdGroup, ULONG cCmds, OLECMD prgCmds[], OLECMDTEXT *pCmdText);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE Exec(const GUID *pguidCmdGroup, DWORD nCmdID, DWORD nCmdexecopt, VARIANT *pvaIn, VARIANT *pvaOut);
 
-
-				//IDocHostUIHandler
+				// IDocHostUIHandler
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE ShowContextMenu(DWORD dwID, POINT *ppt, IUnknown *pcmdtReserved, IDispatch *pdispReserved);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetHostInfo(DOCHOSTUIINFO *pInfo);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE ShowUI(DWORD dwID, IOleInPlaceActiveObject *pActiveObject, IOleCommandTarget *pCommandTarget, IOleInPlaceFrame *pFrame, IOleInPlaceUIWindow *pDoc);
@@ -135,20 +134,20 @@ namespace XYO {
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE TranslateUrl(DWORD dwTranslate, OLECHAR *pchURLIn, OLECHAR **ppchURLOut);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE FilterDataObject(IDataObject *pDO, IDataObject **ppDORet);
 
-				//IDocHostShowUI
+				// IDocHostShowUI
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE ShowHelp(HWND hwnd, LPOLESTR pszHelpFile, UINT uCommand, DWORD dwData, POINT ptMouse, IDispatch *pDispatchObjectHit);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE ShowMessage(HWND hwnd, LPOLESTR lpstrText, LPOLESTR lpstrCaption, DWORD dwType, LPOLESTR lpstrHelpFile, DWORD dwHelpContext, LRESULT *plResult);
 
-				//IServiceProvider
+				// IServiceProvider
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE QueryService(REFGUID guidService, REFIID riid, void **ppv);
 
-				//DWebBrowserEvents2
+				// DWebBrowserEvents2
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetTypeInfoCount(UINT *);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetTypeInfo(UINT, LCID, LPTYPEINFO *);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetIDsOfNames(REFIID, LPOLESTR *, UINT, LCID, DISPID *);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE Invoke(DISPID, REFIID, LCID, WORD, DISPPARAMS *, VARIANT *, EXCEPINFO *, UINT *);
 
-				//DWebBrowserEvents2
+				// DWebBrowserEvents2
 				XYO_WIN_EXPORT virtual void STDMETHODCALLTYPE StatusTextChange(BSTR);
 				XYO_WIN_EXPORT virtual void STDMETHODCALLTYPE ProgressChange(long, long);
 				XYO_WIN_EXPORT virtual void STDMETHODCALLTYPE CommandStateChange(long, VARIANT_BOOL);
@@ -181,25 +180,25 @@ namespace XYO {
 				XYO_WIN_EXPORT virtual void STDMETHODCALLTYPE PrintTemplateTeardown(IDispatch *);
 				XYO_WIN_EXPORT virtual void STDMETHODCALLTYPE PrivacyImpactedStateChange(VARIANT_BOOL);
 
-				//IDropTarget
+				// IDropTarget
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE DragEnter(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD *pdwEffect);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE DragLeave(void);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE Drop(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect);
 
-				//IHttpSecurity
+				// IHttpSecurity
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE OnSecurityProblem(DWORD dwProblem);
 
-				//IWindowForBindingUI
+				// IWindowForBindingUI
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetWindow(REFGUID rguidReason, HWND *phwnd);
 
-				//INewWindowManager
+				// INewWindowManager
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE EvaluateNewWindow(LPCWSTR pszUrl, LPCWSTR pszName, LPCWSTR pszUrlContext, LPCWSTR pszFeatures, BOOL fReplace, DWORD dwFlags, DWORD dwUserActionTime);
 
-				//IAuthenticate
+				// IAuthenticate
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE Authenticate(HWND *phwnd, LPWSTR *pszUsername, LPWSTR *pszPassword);
 
-				//IInternetSecurityManager
+				// IInternetSecurityManager
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE SetSecuritySite(IInternetSecurityMgrSite *pSite);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetSecuritySite(IInternetSecurityMgrSite **ppSite);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE MapUrlToZone(LPCWSTR pwszUrl, DWORD *pdwZone, DWORD dwFlags);
@@ -209,27 +208,24 @@ namespace XYO {
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE SetZoneMapping(DWORD dwZone, LPCWSTR lpszPattern, DWORD dwFlags);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetZoneMappings(DWORD dwZone, IEnumString **ppenumString, DWORD dwFlags);
 
-				//IProtectFocus
+				// IProtectFocus
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE AllowFocusChange(BOOL *pfAllow);
 
-				//IHTMLOMWindowServices
+				// IHTMLOMWindowServices
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE moveTo(LONG x, LONG y);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE moveBy(LONG x, LONG y);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE resizeTo(LONG x, LONG y);
 				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE resizeBy(LONG x, LONG y);
 
-				//Browser
+				// Browser
 				inline void setBrowserDefaultAddress(const XYO::String &url) {
 					browserDefaultAddress_ = url;
 				};
 
 				XYO_WIN_EXPORT int Navigate(XYO::String url);
-
-
 		};
 
 	};
 };
 
 #endif
-

@@ -33,7 +33,7 @@ namespace XYO {
 
 		MessageManager::WindowList::Node *MessageManager::add(Window *p) {
 			WindowList::Node *retV;
-			TPointer<TNotify<MessageManager, eventDestroy_, WindowList::Node *> > n;
+			TPointer<TNotify<MessageManager, eventDestroy_, WindowList::Node *>> n;
 
 			EnterCriticalSection(&cs_);
 			retV = windowList_.pushToTailX(p);
@@ -119,4 +119,3 @@ namespace XYO {
 
 	};
 };
-

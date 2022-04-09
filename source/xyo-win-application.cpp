@@ -26,18 +26,16 @@ namespace XYO {
 				return retV;
 			}
 
-			if(!newWindow(SW_SHOWDEFAULT, true)) {
+			if (!newWindow(SW_SHOWDEFAULT, true)) {
 				return -1;
 			};
 
 			return messageManager_->processAllMessages();
 		};
 
-		void Application::setWndclassEx(WNDCLASSEX &) {
-		};
+		void Application::setWndclassEx(WNDCLASSEX &){};
 
-		void Application::setCreateStruct(CREATESTRUCT &) {
-		};
+		void Application::setCreateStruct(CREATESTRUCT &){};
 
 		int Application::setShowCmd(int x) {
 			return x;
@@ -48,23 +46,23 @@ namespace XYO {
 		};
 
 		void Application::initWndclassEx(WNDCLASSEX &wndclassEx) {
-			memset(&wndclassEx, 0, sizeof (wndclassEx));
+			memset(&wndclassEx, 0, sizeof(wndclassEx));
 
-			wndclassEx.cbSize = sizeof (wndclassEx);
+			wndclassEx.cbSize = sizeof(wndclassEx);
 			wndclassEx.style = CS_BYTEALIGNCLIENT | CS_CLASSDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 			wndclassEx.cbClsExtra = 0;
 			wndclassEx.cbWndExtra = 0;
 			wndclassEx.hInstance = GetModuleHandle(NULL);
 			wndclassEx.hIcon = LoadIcon(wndclassEx.hInstance, IDI_APPLICATION);
 			wndclassEx.hCursor = LoadCursor(wndclassEx.hInstance, IDC_ARROW);
-			wndclassEx.hbrBackground = (HBRUSH) (COLOR_APPWORKSPACE + 1);
+			wndclassEx.hbrBackground = (HBRUSH)(COLOR_APPWORKSPACE + 1);
 			wndclassEx.lpszMenuName = NULL;
 			wndclassEx.lpszClassName = "Class.Unknown";
 			wndclassEx.hIconSm = NULL;
 		};
 
 		void Application::initCreateStruct(CREATESTRUCT &createStruct, WNDCLASSEX &wndclassEx) {
-			memset(&createStruct, 0, sizeof (createStruct));
+			memset(&createStruct, 0, sizeof(createStruct));
 			createStruct.lpCreateParams = NULL;
 			createStruct.hInstance = GetModuleHandle(NULL);
 			createStruct.hMenu = NULL;
@@ -86,7 +84,7 @@ namespace XYO {
 			initWndclassEx(wndclassEx);
 			setWndclassEx(wndclassEx);
 
-			if(regWndClass) {
+			if (regWndClass) {
 				if (!registerClass(wndclassEx)) {
 					return false;
 				};
@@ -96,13 +94,13 @@ namespace XYO {
 			setCreateStruct(createStruct);
 
 			if (!create(createStruct.dwExStyle,
-					createStruct.lpszClass,
-					createStruct.lpszName,
-					createStruct.style,
-					createStruct.x, createStruct.y, createStruct.cx, createStruct.cy,
-					createStruct.hwndParent,
-					createStruct.hMenu,
-					createStruct.hInstance)) {
+			            createStruct.lpszClass,
+			            createStruct.lpszName,
+			            createStruct.style,
+			            createStruct.x, createStruct.y, createStruct.cx, createStruct.cy,
+			            createStruct.hwndParent,
+			            createStruct.hMenu,
+			            createStruct.hInstance)) {
 				return false;
 			};
 
@@ -117,4 +115,3 @@ namespace XYO {
 
 	};
 };
-

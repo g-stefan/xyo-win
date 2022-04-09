@@ -11,14 +11,13 @@
 #define XYO_WIN_FUNCTION_HPP
 
 #ifndef XYO_WIN_VARIANT_HPP
-#include "xyo-win-variant.hpp"
+#	include "xyo-win-variant.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		class Function :
-			public virtual XYO::Object {
+		class Function : public virtual XYO::Object {
 			protected:
 				BSTR functionName_;
 				DISPID dispIdMember_;
@@ -28,6 +27,7 @@ namespace XYO {
 				UINT nArgErr_;
 
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(Function);
+
 			public:
 				XYO_WIN_EXPORT Function();
 				XYO_WIN_EXPORT ~Function();
@@ -80,4 +80,3 @@ namespace XYO {
 };
 
 #endif
-

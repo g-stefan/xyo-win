@@ -25,7 +25,7 @@ namespace XYO {
 		Function::Function() {
 			functionName_ = NULL;
 			dispIdMember_ = 0;
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
 			VariantInit(&varResult_);
 			refObject_ = NULL;
 		};
@@ -75,9 +75,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 0;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -101,9 +101,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 1;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -134,9 +134,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 2;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -168,9 +168,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 3;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -203,9 +203,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 4;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -239,9 +239,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 5;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -276,9 +276,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 6;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -314,9 +314,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 7;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -353,9 +353,9 @@ namespace XYO {
 					return retVal;
 				}
 			};
-			memset(&exceptInfo_, 0, sizeof (exceptInfo_));
-			nArgErr_ = (UINT) - 1;
-			memset(&pDispParams, 0, sizeof (pDispParams));
+			memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+			nArgErr_ = (UINT)-1;
+			memset(&pDispParams, 0, sizeof(pDispParams));
 			pDispParams.cArgs = 8;
 			pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
 			pDispParams.cNamedArgs = 0;
@@ -382,4 +382,3 @@ namespace XYO {
 
 	};
 };
-

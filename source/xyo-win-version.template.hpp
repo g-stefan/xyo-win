@@ -10,16 +10,16 @@
 #ifndef XYO_WIN_VERSION_HPP
 #define XYO_WIN_VERSION_HPP
 
-#define XYO_WIN_VERSION_ABCD                 $VERSION_ABCD
-#define XYO_WIN_VERSION_STR                 "$VERSION_VERSION"
-#define XYO_WIN_VERSION_STR_BUILD           "$VERSION_BUILD"
-#define XYO_WIN_VERSION_STR_DATETIME        "$VERSION_DATETIME"
+#define XYO_WIN_VERSION_ABCD $VERSION_ABCD
+#define XYO_WIN_VERSION_STR "$VERSION_VERSION"
+#define XYO_WIN_VERSION_STR_BUILD "$VERSION_BUILD"
+#define XYO_WIN_VERSION_STR_DATETIME "$VERSION_DATETIME"
 
 #ifndef XYO_RC
 
-#ifndef XYO_WIN__EXPORT_HPP
-#include "xyo-win--export.hpp"
-#endif
+#	ifndef XYO_WIN__EXPORT_HPP
+#		include "xyo-win--export.hpp"
+#	endif
 
 namespace XYO {
 	namespace Win {
@@ -34,4 +34,3 @@ namespace XYO {
 
 #endif
 #endif
-

@@ -11,25 +11,26 @@
 #define XYO_WIN_APPLICATION_HPP
 
 #ifndef XYO_WIN_WINDOW_HPP
-#include "xyo-win-window.hpp"
+#	include "xyo-win-window.hpp"
 #endif
 
 #ifndef XYO_WIN_MESSAGEMANAGER_HPP
-#include "xyo-win-messagemanager.hpp"
+#	include "xyo-win-messagemanager.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		class Application :
-			public virtual Window,
-			public virtual XYO::IMain {
+		class Application : public virtual Window,
+		                    public virtual XYO::IMain {
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(Application);
+
 			protected:
 				TPointer<MessageManager> messageManager_;
+
 			public:
-				inline Application() {};
-				inline ~Application() {};
+				inline Application(){};
+				inline ~Application(){};
 
 				XYO_WIN_EXPORT int main(int cmdN, char *cmdS[]);
 
@@ -44,9 +45,7 @@ namespace XYO {
 				XYO_WIN_EXPORT static void initMemory();
 		};
 
-
 	};
 };
 
 #endif
-

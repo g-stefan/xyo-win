@@ -13,7 +13,7 @@
 #include "xyo-win-copyright.hpp"
 #include "xyo-win-license.hpp"
 #ifndef XYO_WIN_NO_VERSION
-#include "xyo-win-version.hpp"
+#	include "xyo-win-version.hpp"
 #endif
 
 #include "xyo-win--dependency.hpp"

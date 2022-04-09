@@ -13,10 +13,10 @@ namespace XYO {
 	namespace Win {
 		namespace Version {
 
-			static const char *version_ = "2.7.0";
-			static const char *build_ = "24";
-			static const char *versionWithBuild_ = "2.7.0.24";
-			static const char *datetime_ = "2022-01-09 01:13:16";
+			static const char *version_ = "2.8.0";
+			static const char *build_ = "26";
+			static const char *versionWithBuild_ = "2.8.0.26";
+			static const char *datetime_ = "2022-04-04 01:45:00";
 
 			const char *version() {
 				return version_;
@@ -34,4 +34,3 @@ namespace XYO {
 		};
 	};
 };
-

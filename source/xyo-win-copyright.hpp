@@ -10,17 +10,17 @@
 #ifndef XYO_WIN_COPYRIGHT_HPP
 #define XYO_WIN_COPYRIGHT_HPP
 
-#define XYO_WIN_COPYRIGHT            "Copyright (c) Grigore Stefan"
-#define XYO_WIN_PUBLISHER            "Grigore Stefan"
-#define XYO_WIN_COMPANY              XYO_WIN_PUBLISHER
-#define XYO_WIN_CONTACT              "g_stefan@yahoo.com"
-#define XYO_WIN_FULL_COPYRIGHT       XYO_WIN_COPYRIGHT " <" XYO_WIN_CONTACT ">"
+#define XYO_WIN_COPYRIGHT "Copyright (c) Grigore Stefan"
+#define XYO_WIN_PUBLISHER "Grigore Stefan"
+#define XYO_WIN_COMPANY XYO_WIN_PUBLISHER
+#define XYO_WIN_CONTACT "g_stefan@yahoo.com"
+#define XYO_WIN_FULL_COPYRIGHT XYO_WIN_COPYRIGHT " <" XYO_WIN_CONTACT ">"
 
 #ifndef XYO_RC
 
-#ifndef XYO_WIN__EXPORT_HPP
-#include "xyo-win--export.hpp"
-#endif
+#	ifndef XYO_WIN__EXPORT_HPP
+#		include "xyo-win--export.hpp"
+#	endif
 
 namespace XYO {
 	namespace Win {

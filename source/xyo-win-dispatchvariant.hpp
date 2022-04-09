@@ -11,7 +11,7 @@
 #define XYO_WIN_DISPATCHVARIANT_HPP
 
 #ifndef XYO_WIN__DEPENDENCY_HPP
-#include "xyo-win--dependency.hpp"
+#	include "xyo-win--dependency.hpp"
 #endif
 
 namespace XYO {
@@ -22,11 +22,11 @@ namespace XYO {
 				VARIANTARG *variantArg_;
 
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(DispatchVariant);
+
 			public:
+				inline DispatchVariant(){};
 
-				inline DispatchVariant() {};
-
-				inline ~DispatchVariant() {};
+				inline ~DispatchVariant(){};
 
 				inline DispatchVariant(VARIANTARG *x) {
 					variantArg_ = x;
@@ -83,11 +83,9 @@ namespace XYO {
 				inline operator IDispatch **() {
 					return variantArg_->ppdispVal;
 				};
-
 		};
 
 	};
 };
 
 #endif
-

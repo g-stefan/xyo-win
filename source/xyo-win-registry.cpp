@@ -40,7 +40,7 @@ namespace XYO {
 				if (RegOpenKeyExA(masterkey, key, 0, KEY_ALL_ACCESS, &mykey) != ERROR_SUCCESS) {
 					return FALSE;
 				}
-				if (RegSetValueExA(mykey, reg, 0, REG_SZ, (BYTE *) _str, (DWORD)strlen(_str) + 1) == ERROR_SUCCESS) {
+				if (RegSetValueExA(mykey, reg, 0, REG_SZ, (BYTE *)_str, (DWORD)strlen(_str) + 1) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -55,7 +55,7 @@ namespace XYO {
 				if (RegOpenKeyExA(masterkey, key, 0, KEY_ALL_ACCESS, &mykey) != ERROR_SUCCESS) {
 					return FALSE;
 				}
-				if (RegSetValueExA(mykey, reg, 0, REG_DWORD, (BYTE *) & val, sizeof (unsigned long int)) == ERROR_SUCCESS) {
+				if (RegSetValueExA(mykey, reg, 0, REG_DWORD, (BYTE *)&val, sizeof(unsigned long int)) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -72,7 +72,7 @@ namespace XYO {
 					strcpy(_str, def);
 					return FALSE;
 				};
-				if (RegQueryValueExA(mykey, reg, NULL, &type, (BYTE *) _str, &sz) == ERROR_SUCCESS) {
+				if (RegQueryValueExA(mykey, reg, NULL, &type, (BYTE *)_str, &sz) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -86,12 +86,12 @@ namespace XYO {
 				HKEY mykey;
 				BOOL retval;
 				unsigned long int type = REG_DWORD;
-				unsigned long int sz = sizeof (unsigned long int);
+				unsigned long int sz = sizeof(unsigned long int);
 				if (RegOpenKeyExA(masterkey, key, 0, KEY_ALL_ACCESS, &mykey) != ERROR_SUCCESS) {
 					*_str = def;
 					return FALSE;
 				};
-				if (RegQueryValueExA(mykey, reg, NULL, &type, (BYTE *) _str, &sz) == ERROR_SUCCESS) {
+				if (RegQueryValueExA(mykey, reg, NULL, &type, (BYTE *)_str, &sz) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -170,7 +170,7 @@ namespace XYO {
 				if (RegOpenKeyExW(masterkey, key, 0, KEY_ALL_ACCESS, &mykey) != ERROR_SUCCESS) {
 					return FALSE;
 				}
-				if (RegSetValueExW(mykey, reg, 0, REG_SZ, (BYTE *) _str, (DWORD)wcslen(_str) + 1) == ERROR_SUCCESS) {
+				if (RegSetValueExW(mykey, reg, 0, REG_SZ, (BYTE *)_str, (DWORD)wcslen(_str) + 1) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -185,7 +185,7 @@ namespace XYO {
 				if (RegOpenKeyExW(masterkey, key, 0, KEY_ALL_ACCESS, &mykey) != ERROR_SUCCESS) {
 					return FALSE;
 				}
-				if (RegSetValueExW(mykey, reg, 0, REG_DWORD, (BYTE *) & val, sizeof (unsigned long int)) == ERROR_SUCCESS) {
+				if (RegSetValueExW(mykey, reg, 0, REG_DWORD, (BYTE *)&val, sizeof(unsigned long int)) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -202,7 +202,7 @@ namespace XYO {
 					wcscpy(_str, def);
 					return FALSE;
 				};
-				if (RegQueryValueExW(mykey, reg, NULL, &type, (BYTE *) _str, &sz) == ERROR_SUCCESS) {
+				if (RegQueryValueExW(mykey, reg, NULL, &type, (BYTE *)_str, &sz) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -216,12 +216,12 @@ namespace XYO {
 				HKEY mykey;
 				BOOL retval;
 				unsigned long int type = REG_DWORD;
-				unsigned long int sz = sizeof (unsigned long int);
+				unsigned long int sz = sizeof(unsigned long int);
 				if (RegOpenKeyExW(masterkey, key, 0, KEY_ALL_ACCESS, &mykey) != ERROR_SUCCESS) {
 					*_str = def;
 					return FALSE;
 				};
-				if (RegQueryValueExW(mykey, reg, NULL, &type, (BYTE *) _str, &sz) == ERROR_SUCCESS) {
+				if (RegQueryValueExW(mykey, reg, NULL, &type, (BYTE *)_str, &sz) == ERROR_SUCCESS) {
 					retval = TRUE;
 				} else {
 					retval = FALSE;
@@ -279,4 +279,3 @@ namespace XYO {
 		};
 	};
 };
-

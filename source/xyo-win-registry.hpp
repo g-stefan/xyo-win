@@ -11,9 +11,8 @@
 #define XYO_WIN_REGISTRY_H
 
 #ifndef XYO_WIN__DEPENDENCY_HPP
-#include "xyo-win--dependency.hpp"
+#	include "xyo-win--dependency.hpp"
 #endif
-
 
 namespace XYO {
 	namespace Win {
@@ -37,12 +36,8 @@ namespace XYO {
 			XYO_WIN_EXPORT BOOL deleteKeyW(HKEY, wchar_t *, wchar_t *, BOOL);
 			XYO_WIN_EXPORT BOOL getStringLengthW(HKEY masterkey, wchar_t *key, wchar_t *reg, LPDWORD out);
 
-
-
 		};
 	};
 };
 
 #endif
-
-

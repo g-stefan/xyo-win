@@ -34,66 +34,65 @@ namespace XYO {
 			browserDefaultAddress_ = "about:blank";
 		};
 
-		WebBrowser::~WebBrowser() {
-		};
+		WebBrowser::~WebBrowser(){};
 
 		// IUnknown
 
 		HRESULT WebBrowser::QueryInterface(REFIID riid, LPVOID *ppvObj) {
-			if (memcmp(&riid, &IID_IUnknown, sizeof (GUID)) == 0) {
+			if (memcmp(&riid, &IID_IUnknown, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IStorage *> (this);
-			} else if (memcmp(&riid, &IID_IStorage, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IStorage *>(this);
+			} else if (memcmp(&riid, &IID_IStorage, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IStorage *> (this);
-			} else if (memcmp(&riid, &IID_IOleClientSite, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IStorage *>(this);
+			} else if (memcmp(&riid, &IID_IOleClientSite, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IOleClientSite *> (this);
-			} else if (memcmp(&riid, &IID_IOleInPlaceSite, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IOleClientSite *>(this);
+			} else if (memcmp(&riid, &IID_IOleInPlaceSite, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IOleInPlaceSite *> (this);
-			} else if (memcmp(&riid, &IID_IOleInPlaceFrame, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IOleInPlaceSite *>(this);
+			} else if (memcmp(&riid, &IID_IOleInPlaceFrame, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IOleInPlaceFrame *> (this);
-			} else if (memcmp(&riid, &IID_IDocHostUIHandler, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IOleInPlaceFrame *>(this);
+			} else if (memcmp(&riid, &IID_IDocHostUIHandler, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IDocHostUIHandler *> (this);
-			} else if (memcmp(&riid, &DIID_DWebBrowserEvents2, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IDocHostUIHandler *>(this);
+			} else if (memcmp(&riid, &DIID_DWebBrowserEvents2, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<DWebBrowserEvents2 *> (this);
-			} else if (memcmp(&riid, &IID_IDispatch, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<DWebBrowserEvents2 *>(this);
+			} else if (memcmp(&riid, &IID_IDispatch, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IDispatch *> (this);
-			} else if (memcmp(&riid, &IID_IServiceProvider, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IDispatch *>(this);
+			} else if (memcmp(&riid, &IID_IServiceProvider, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IServiceProvider *> (this);
-			} else if (memcmp(&riid, &IID_IOleCommandTarget, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IServiceProvider *>(this);
+			} else if (memcmp(&riid, &IID_IOleCommandTarget, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IOleCommandTarget *> (this);
-			} else if (memcmp(&riid, &IID_IDropTarget, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IOleCommandTarget *>(this);
+			} else if (memcmp(&riid, &IID_IDropTarget, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IDropTarget *> (this);
-			} else if (memcmp(&riid, &IID_IHttpSecurity, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IDropTarget *>(this);
+			} else if (memcmp(&riid, &IID_IHttpSecurity, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IHttpSecurity *> (this);
-			} else if (memcmp(&riid, &IID_IWindowForBindingUI, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IHttpSecurity *>(this);
+			} else if (memcmp(&riid, &IID_IWindowForBindingUI, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IWindowForBindingUI *> (this);
-			} else if (memcmp(&riid, &IID_INewWindowManager, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IWindowForBindingUI *>(this);
+			} else if (memcmp(&riid, &IID_INewWindowManager, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<INewWindowManager *> (this);
-			} else if (memcmp(&riid, &IID_IAuthenticate, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<INewWindowManager *>(this);
+			} else if (memcmp(&riid, &IID_IAuthenticate, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IAuthenticate *> (this);
-			} else if (memcmp(&riid, &IID_IInternetSecurityManager, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IAuthenticate *>(this);
+			} else if (memcmp(&riid, &IID_IInternetSecurityManager, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IInternetSecurityManager *> (this);
-			} else if (memcmp(&riid, &IID_IProtectFocus, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IInternetSecurityManager *>(this);
+			} else if (memcmp(&riid, &IID_IProtectFocus, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IProtectFocus *> (this);
-			} else if (memcmp(&riid, &IID_IHTMLOMWindowServices, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IProtectFocus *>(this);
+			} else if (memcmp(&riid, &IID_IHTMLOMWindowServices, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IHTMLOMWindowServices *> (this);
+				*ppvObj = static_cast<IHTMLOMWindowServices *>(this);
 			} else {
 				*ppvObj = NULL;
 				return (E_NOINTERFACE);
@@ -109,7 +108,7 @@ namespace XYO {
 			return (ULONG)1;
 		};
 
-		//IStorage
+		// IStorage
 
 		HRESULT WebBrowser::CreateStream(const WCHAR *pwcsName, DWORD grfMode, DWORD reserved1, DWORD reserved2, IStream **ppstm) {
 			pwcsName;
@@ -217,7 +216,7 @@ namespace XYO {
 			return (E_NOTIMPL);
 		};
 
-		//IOleInPlaceFrame
+		// IOleInPlaceFrame
 
 		HRESULT WebBrowser::GetWindow(HWND FAR *lphwnd) {
 			*lphwnd = *this;
@@ -230,7 +229,7 @@ namespace XYO {
 		};
 
 		HRESULT WebBrowser::GetBorder(LPRECT lprectBorder) {
-			ZeroMemory(lprectBorder, sizeof (RECT));
+			ZeroMemory(lprectBorder, sizeof(RECT));
 			return (S_OK);
 		};
 
@@ -284,7 +283,7 @@ namespace XYO {
 			return (S_FALSE);
 		};
 
-		//IOleClientSite
+		// IOleClientSite
 
 		HRESULT WebBrowser::SaveObject() {
 			return (E_NOTIMPL);
@@ -315,7 +314,7 @@ namespace XYO {
 			return (E_NOTIMPL);
 		};
 
-		//IOleInPlaceSite
+		// IOleInPlaceSite
 
 		HRESULT WebBrowser::CanInPlaceActivate() {
 			return (S_OK);
@@ -332,7 +331,7 @@ namespace XYO {
 		HRESULT WebBrowser::GetWindowContext(LPOLEINPLACEFRAME FAR *lplpFrame, LPOLEINPLACEUIWINDOW FAR *lplpDoc, LPRECT lprcPosRect, LPRECT lprcClipRect, LPOLEINPLACEFRAMEINFO lpFrameInfo) {
 			lprcPosRect;
 			lprcClipRect;
-			*lplpFrame = static_cast<LPOLEINPLACEFRAME> (this);
+			*lplpFrame = static_cast<LPOLEINPLACEFRAME>(this);
 			*lplpDoc = 0;
 			lpFrameInfo->fMDIApp = FALSE;
 			lpFrameInfo->hwndFrame = *this;
@@ -365,14 +364,14 @@ namespace XYO {
 
 		HRESULT WebBrowser::OnPosRectChange(LPCRECT lprcPosRect) {
 			IOleInPlaceObject *inplace;
-			if (SUCCEEDED(browser_->QueryInterface(IID_IOleInPlaceObject, (void **) &inplace))) {
+			if (SUCCEEDED(browser_->QueryInterface(IID_IOleInPlaceObject, (void **)&inplace))) {
 				inplace->SetObjectRects(lprcPosRect, lprcPosRect);
 				inplace->Release();
 			};
 			return (S_OK);
 		};
 
-		//IDocHostUIHandler
+		// IDocHostUIHandler
 
 		HRESULT WebBrowser::ShowContextMenu(DWORD dwID, POINT *ppt, IUnknown *pcmdtReserved, IDispatch *pdispReserved) {
 			dwID;
@@ -383,7 +382,7 @@ namespace XYO {
 		};
 
 		HRESULT WebBrowser::GetHostInfo(DOCHOSTUIINFO *pInfo) {
-			pInfo->cbSize = sizeof (DOCHOSTUIINFO);
+			pInfo->cbSize = sizeof(DOCHOSTUIINFO);
 			pInfo->dwFlags = DOCHOSTUIFLAG_THEME;
 			pInfo->dwDoubleClick = DOCHOSTUIDBLCLK_DEFAULT;
 			return (S_OK);
@@ -461,7 +460,7 @@ namespace XYO {
 			return (S_FALSE);
 		};
 
-		//IDocHostShowUI
+		// IDocHostShowUI
 
 		HRESULT WebBrowser::ShowHelp(HWND hwnd, LPOLESTR pszHelpFile, UINT uCommand, DWORD dwData, POINT ptMouse, IDispatch *pDispatchObjectHit) {
 			hwnd;
@@ -484,8 +483,7 @@ namespace XYO {
 			return (S_FALSE);
 		};
 
-
-		//DWebBrowserEvents2
+		// DWebBrowserEvents2
 
 		HRESULT WebBrowser::GetTypeInfoCount(UINT *) {
 			return (E_NOTIMPL);
@@ -502,13 +500,13 @@ namespace XYO {
 			return (S_FALSE);
 		};
 
-		//IServiceProvider
+		// IServiceProvider
 
 		HRESULT WebBrowser::QueryService(REFGUID guidService, REFIID riid, void **ppv) {
 			guidService;
-			if (memcmp(&riid, &IID_IOleCommandTarget, sizeof (GUID) == 0)) {
+			if (memcmp(&riid, &IID_IOleCommandTarget, sizeof(GUID) == 0)) {
 				AddRef();
-				*ppv = static_cast<IOleCommandTarget *> (this);
+				*ppv = static_cast<IOleCommandTarget *>(this);
 			} else {
 				*ppv = NULL;
 				return (E_NOINTERFACE);
@@ -516,9 +514,9 @@ namespace XYO {
 			return (S_OK);
 		};
 
-		//IOleCommandTarget
+		// IOleCommandTarget
 
-		HRESULT WebBrowser::QueryStatus(const GUID *pguidCmdGroup, ULONG cCmds, OLECMD prgCmds[ ], OLECMDTEXT *pCmdText) {
+		HRESULT WebBrowser::QueryStatus(const GUID *pguidCmdGroup, ULONG cCmds, OLECMD prgCmds[], OLECMDTEXT *pCmdText) {
 			pguidCmdGroup;
 			cCmds;
 			prgCmds;
@@ -543,171 +541,152 @@ namespace XYO {
 			lcid;
 			riid;
 			switch (dispIdMember) {
-				case DISPID_BEFORENAVIGATE2:
-					BeforeNavigate2(pDispParams->rgvarg[6].pdispVal, // pDisp
-						pDispParams->rgvarg[5].pvarVal, // url
-						pDispParams->rgvarg[4].pvarVal, // Flags
-						pDispParams->rgvarg[3].pvarVal, // TargetFrameName
-						pDispParams->rgvarg[2].pvarVal, // PostData
-						pDispParams->rgvarg[1].pvarVal, // Headers
-						pDispParams->rgvarg[0].pboolVal); // Cancel
-					break;
-				case DISPID_CLIENTTOHOSTWINDOW:
-					ClientToHostWindow(pDispParams->rgvarg[1].plVal, pDispParams->rgvarg[0].plVal);
-					break;
-				case DISPID_COMMANDSTATECHANGE:
-					CommandStateChange(pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_DOCUMENTCOMPLETE:
-					DocumentComplete(pDispParams->rgvarg[1].pdispVal, pDispParams->rgvarg[0].pvarVal);
-					break;
-				case DISPID_DOWNLOADBEGIN:
-					DownloadBegin();
-					break;
-				case DISPID_DOWNLOADCOMPLETE:
-					DownloadComplete();
-					break;
-				case DISPID_FILEDOWNLOAD:
-					FileDownload(pDispParams->rgvarg[0].pboolVal);
-					break;
-				case DISPID_NAVIGATECOMPLETE2:
-					NavigateComplete(pDispParams->rgvarg[1].pdispVal, pDispParams->rgvarg[0].pvarVal);
-					break;
-				case DISPID_NAVIGATEERROR:
-					NavigateError(pDispParams->rgvarg[4].pdispVal, pDispParams->rgvarg[3].pvarVal, pDispParams->rgvarg[2].pvarVal, pDispParams->rgvarg[1].pvarVal, pDispParams->rgvarg[0].pboolVal);
-					break;
-				case DISPID_NEWWINDOW2:
-					NewWindow2(pDispParams->rgvarg[1].ppdispVal, pDispParams->rgvarg[0].pboolVal);
-					break;
-				case DISPID_ONFULLSCREEN:
-					OnFullScreen(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_ONMENUBAR:
-					OnMenuBar(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_ONQUIT:
-					OnQuit();
-					break;
-				case DISPID_ONSTATUSBAR:
-					OnStatusBar(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_ONTHEATERMODE:
-					OnTheaterMode(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_ONTOOLBAR:
-					OnToolBar(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_ONVISIBLE:
-					OnVisible(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_PRINTTEMPLATEINSTANTIATION:
-					PrintTemplateInstantiation(pDispParams->rgvarg[0].pdispVal);
-					break;
-				case DISPID_PRINTTEMPLATETEARDOWN:
-					PrintTemplateTeardown(pDispParams->rgvarg[0].pdispVal);
-					break;
-				case DISPID_PRIVACYIMPACTEDSTATECHANGE:
-					PrivacyImpactedStateChange(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_PROGRESSCHANGE:
-					ProgressChange(pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0].lVal);
-					break;
-				case DISPID_PROPERTYCHANGE:
-					PropertyChange(pDispParams->rgvarg[0].bstrVal);
-					break;
-				case DISPID_SETSECURELOCKICON:
-					SetSecureLockIcon(pDispParams->rgvarg[0].lVal);
-					break;
-				case DISPID_STATUSTEXTCHANGE:
-					StatusTextChange(pDispParams->rgvarg[0].bstrVal);
-					break;
-				case DISPID_TITLECHANGE:
-					TitleChange(pDispParams->rgvarg[0].bstrVal);
-					break;
-				case DISPID_WINDOWCLOSING:
-					WindowClosing(pDispParams->rgvarg[1].boolVal, pDispParams->rgvarg[0].pboolVal);
-					break;
-				case DISPID_WINDOWSETHEIGHT:
-					WindowSetHeight(pDispParams->rgvarg[0].lVal);
-					break;
-				case DISPID_WINDOWSETLEFT:
-					WindowSetLeft(pDispParams->rgvarg[0].lVal);
-					break;
-				case DISPID_WINDOWSETRESIZABLE:
-					WindowSetResizable(pDispParams->rgvarg[0].boolVal);
-					break;
-				case DISPID_WINDOWSETTOP:
-					WindowSetTop(pDispParams->rgvarg[0].lVal);
-					break;
-				case DISPID_WINDOWSETWIDTH:
-					WindowSetWidth(pDispParams->rgvarg[0].lVal);
-					break;
-				default:
-					return DISP_E_MEMBERNOTFOUND;
+			case DISPID_BEFORENAVIGATE2:
+				BeforeNavigate2(pDispParams->rgvarg[6].pdispVal,  // pDisp
+				                pDispParams->rgvarg[5].pvarVal,   // url
+				                pDispParams->rgvarg[4].pvarVal,   // Flags
+				                pDispParams->rgvarg[3].pvarVal,   // TargetFrameName
+				                pDispParams->rgvarg[2].pvarVal,   // PostData
+				                pDispParams->rgvarg[1].pvarVal,   // Headers
+				                pDispParams->rgvarg[0].pboolVal); // Cancel
+				break;
+			case DISPID_CLIENTTOHOSTWINDOW:
+				ClientToHostWindow(pDispParams->rgvarg[1].plVal, pDispParams->rgvarg[0].plVal);
+				break;
+			case DISPID_COMMANDSTATECHANGE:
+				CommandStateChange(pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_DOCUMENTCOMPLETE:
+				DocumentComplete(pDispParams->rgvarg[1].pdispVal, pDispParams->rgvarg[0].pvarVal);
+				break;
+			case DISPID_DOWNLOADBEGIN:
+				DownloadBegin();
+				break;
+			case DISPID_DOWNLOADCOMPLETE:
+				DownloadComplete();
+				break;
+			case DISPID_FILEDOWNLOAD:
+				FileDownload(pDispParams->rgvarg[0].pboolVal);
+				break;
+			case DISPID_NAVIGATECOMPLETE2:
+				NavigateComplete(pDispParams->rgvarg[1].pdispVal, pDispParams->rgvarg[0].pvarVal);
+				break;
+			case DISPID_NAVIGATEERROR:
+				NavigateError(pDispParams->rgvarg[4].pdispVal, pDispParams->rgvarg[3].pvarVal, pDispParams->rgvarg[2].pvarVal, pDispParams->rgvarg[1].pvarVal, pDispParams->rgvarg[0].pboolVal);
+				break;
+			case DISPID_NEWWINDOW2:
+				NewWindow2(pDispParams->rgvarg[1].ppdispVal, pDispParams->rgvarg[0].pboolVal);
+				break;
+			case DISPID_ONFULLSCREEN:
+				OnFullScreen(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_ONMENUBAR:
+				OnMenuBar(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_ONQUIT:
+				OnQuit();
+				break;
+			case DISPID_ONSTATUSBAR:
+				OnStatusBar(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_ONTHEATERMODE:
+				OnTheaterMode(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_ONTOOLBAR:
+				OnToolBar(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_ONVISIBLE:
+				OnVisible(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_PRINTTEMPLATEINSTANTIATION:
+				PrintTemplateInstantiation(pDispParams->rgvarg[0].pdispVal);
+				break;
+			case DISPID_PRINTTEMPLATETEARDOWN:
+				PrintTemplateTeardown(pDispParams->rgvarg[0].pdispVal);
+				break;
+			case DISPID_PRIVACYIMPACTEDSTATECHANGE:
+				PrivacyImpactedStateChange(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_PROGRESSCHANGE:
+				ProgressChange(pDispParams->rgvarg[1].lVal, pDispParams->rgvarg[0].lVal);
+				break;
+			case DISPID_PROPERTYCHANGE:
+				PropertyChange(pDispParams->rgvarg[0].bstrVal);
+				break;
+			case DISPID_SETSECURELOCKICON:
+				SetSecureLockIcon(pDispParams->rgvarg[0].lVal);
+				break;
+			case DISPID_STATUSTEXTCHANGE:
+				StatusTextChange(pDispParams->rgvarg[0].bstrVal);
+				break;
+			case DISPID_TITLECHANGE:
+				TitleChange(pDispParams->rgvarg[0].bstrVal);
+				break;
+			case DISPID_WINDOWCLOSING:
+				WindowClosing(pDispParams->rgvarg[1].boolVal, pDispParams->rgvarg[0].pboolVal);
+				break;
+			case DISPID_WINDOWSETHEIGHT:
+				WindowSetHeight(pDispParams->rgvarg[0].lVal);
+				break;
+			case DISPID_WINDOWSETLEFT:
+				WindowSetLeft(pDispParams->rgvarg[0].lVal);
+				break;
+			case DISPID_WINDOWSETRESIZABLE:
+				WindowSetResizable(pDispParams->rgvarg[0].boolVal);
+				break;
+			case DISPID_WINDOWSETTOP:
+				WindowSetTop(pDispParams->rgvarg[0].lVal);
+				break;
+			case DISPID_WINDOWSETWIDTH:
+				WindowSetWidth(pDispParams->rgvarg[0].lVal);
+				break;
+			default:
+				return DISP_E_MEMBERNOTFOUND;
 			};
 			return (S_OK);
 		};
 
-		void WebBrowser::StatusTextChange(BSTR) {
-		};
+		void WebBrowser::StatusTextChange(BSTR){};
 
-		void WebBrowser::ProgressChange(long, long) {
-		};
+		void WebBrowser::ProgressChange(long, long){};
 
-		void WebBrowser::CommandStateChange(long, VARIANT_BOOL) {
-		};
+		void WebBrowser::CommandStateChange(long, VARIANT_BOOL){};
 
-		void WebBrowser::DownloadBegin() {
-		};
+		void WebBrowser::DownloadBegin(){};
 
-		void WebBrowser::DownloadComplete() {
-		};
+		void WebBrowser::DownloadComplete(){};
 
-		void WebBrowser::TitleChange(BSTR) {
-		};
+		void WebBrowser::TitleChange(BSTR){};
 
-		void WebBrowser::PropertyChange(BSTR) {
-		};
+		void WebBrowser::PropertyChange(BSTR){};
 
-		void WebBrowser::BeforeNavigate2(IDispatch *, VARIANT *, VARIANT *, VARIANT *, VARIANT *, VARIANT *, VARIANT_BOOL *) {
-		};
+		void WebBrowser::BeforeNavigate2(IDispatch *, VARIANT *, VARIANT *, VARIANT *, VARIANT *, VARIANT *, VARIANT_BOOL *){};
 
-		void WebBrowser::NewWindow2(IDispatch **, VARIANT_BOOL *) {
-		};
+		void WebBrowser::NewWindow2(IDispatch **, VARIANT_BOOL *){};
 
-		void WebBrowser::NavigateComplete(IDispatch *, VARIANT *) {
-		};
+		void WebBrowser::NavigateComplete(IDispatch *, VARIANT *){};
 
-		void WebBrowser::NavigateError(IDispatch *, VARIANT *, VARIANT *, VARIANT *, VARIANT_BOOL *) {
-		};
+		void WebBrowser::NavigateError(IDispatch *, VARIANT *, VARIANT *, VARIANT *, VARIANT_BOOL *){};
 
-		void WebBrowser::DocumentComplete(IDispatch *, VARIANT *) {
-		};
+		void WebBrowser::DocumentComplete(IDispatch *, VARIANT *){};
 
 		void WebBrowser::OnQuit() {
 			PostMessage(*this, WM_CLOSE, 0, 0);
 		};
 
-		void WebBrowser::OnVisible(VARIANT_BOOL) {
-		};
+		void WebBrowser::OnVisible(VARIANT_BOOL){};
 
-		void WebBrowser::OnToolBar(VARIANT_BOOL) {
-		};
+		void WebBrowser::OnToolBar(VARIANT_BOOL){};
 
-		void WebBrowser::OnMenuBar(VARIANT_BOOL) {
-		};
+		void WebBrowser::OnMenuBar(VARIANT_BOOL){};
 
-		void WebBrowser::OnStatusBar(VARIANT_BOOL) {
-		};
+		void WebBrowser::OnStatusBar(VARIANT_BOOL){};
 
-		void WebBrowser::OnFullScreen(VARIANT_BOOL) {
-		};
+		void WebBrowser::OnFullScreen(VARIANT_BOOL){};
 
-		void WebBrowser::OnTheaterMode(VARIANT_BOOL) {
-		};
+		void WebBrowser::OnTheaterMode(VARIANT_BOOL){};
 
-		void WebBrowser::WindowSetResizable(VARIANT_BOOL) {
-		};
+		void WebBrowser::WindowSetResizable(VARIANT_BOOL){};
 
 		void WebBrowser::WindowSetLeft(long Value) {
 			Value;
@@ -755,8 +734,7 @@ namespace XYO {
 			x;
 		};
 
-
-		//IDropTarget
+		// IDropTarget
 		HRESULT STDMETHODCALLTYPE WebBrowser::DragEnter(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect) {
 			pDataObj, grfKeyState, pt, pdwEffect;
 			return (E_NOTIMPL);
@@ -776,31 +754,31 @@ namespace XYO {
 			return (E_NOTIMPL);
 		};
 
-		//IHttpSecurity
+		// IHttpSecurity
 		HRESULT STDMETHODCALLTYPE WebBrowser::OnSecurityProblem(DWORD dwProblem) {
 			dwProblem;
 			return (E_NOTIMPL);
 		};
 
-		//IWindowForBindingUI
+		// IWindowForBindingUI
 		HRESULT STDMETHODCALLTYPE WebBrowser::GetWindow(REFGUID rguidReason, HWND *phwnd) {
 			rguidReason, phwnd;
 			return (E_NOTIMPL);
 		};
 
-		//INewWindowManager
+		// INewWindowManager
 		HRESULT STDMETHODCALLTYPE WebBrowser::EvaluateNewWindow(LPCWSTR pszUrl, LPCWSTR pszName, LPCWSTR pszUrlContext, LPCWSTR pszFeatures, BOOL fReplace, DWORD dwFlags, DWORD dwUserActionTime) {
 			pszUrl, pszName, pszUrlContext, pszFeatures, fReplace, dwFlags, dwUserActionTime;
 			return (E_NOTIMPL);
 		};
 
-		//IAuthenticate
+		// IAuthenticate
 		HRESULT STDMETHODCALLTYPE WebBrowser::Authenticate(HWND *phwnd, LPWSTR *pszUsername, LPWSTR *pszPassword) {
 			phwnd, pszUsername, pszPassword;
 			return (E_NOTIMPL);
 		};
 
-		//IInternetSecurityManager
+		// IInternetSecurityManager
 		HRESULT STDMETHODCALLTYPE WebBrowser::SetSecuritySite(IInternetSecurityMgrSite *pSite) {
 			pSite;
 			return (E_NOTIMPL);
@@ -841,13 +819,13 @@ namespace XYO {
 			return (E_NOTIMPL);
 		};
 
-		//IProtectFocus
+		// IProtectFocus
 		HRESULT STDMETHODCALLTYPE WebBrowser::AllowFocusChange(BOOL *pfAllow) {
 			pfAllow;
 			return (E_NOTIMPL);
 		};
 
-		//IHTMLOMWindowServices
+		// IHTMLOMWindowServices
 		HRESULT STDMETHODCALLTYPE WebBrowser::moveTo(LONG x, LONG y) {
 			x, y;
 			return (E_NOTIMPL);
@@ -883,14 +861,14 @@ namespace XYO {
 
 			releaseObject();
 
-			if (OleCreate(CLSID_WebBrowser, IID_IOleObject, OLERENDER_DRAW, 0, (IOleClientSite *)this, (IStorage *)this, (void **) &browser_) == S_OK) {
+			if (OleCreate(CLSID_WebBrowser, IID_IOleObject, OLERENDER_DRAW, 0, (IOleClientSite *)this, (IStorage *)this, (void **)&browser_) == S_OK) {
 				browser_->SetHostNames(L"Microsoft Internet Explorer", 0);
 				GetClientRect(*this, &rect);
 				browser_->AddRef();
-				if (SUCCEEDED(OleSetContainedObject((struct IUnknown *) browser_, TRUE))) {
+				if (SUCCEEDED(OleSetContainedObject((struct IUnknown *)browser_, TRUE))) {
 					if (SUCCEEDED(browser_->DoVerb(OLEIVERB_SHOW, NULL, (IOleClientSite *)this, -1, *this, &rect))) {
-						if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **) &webBrowser2))) {
-							if (SUCCEEDED(webBrowser2->QueryInterface(IID_IConnectionPointContainer, (void **) &conPtCon))) {
+						if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **)&webBrowser2))) {
+							if (SUCCEEDED(webBrowser2->QueryInterface(IID_IConnectionPointContainer, (void **)&conPtCon))) {
 								if (SUCCEEDED(conPtCon->FindConnectionPoint(DIID_DWebBrowserEvents2, &connectionPoint_))) {
 									connectionPoint_->Advise((DWebBrowserEvents2 *)this, &adviseCookie_);
 									retVal = 1;
@@ -898,7 +876,7 @@ namespace XYO {
 								conPtCon->Release();
 							};
 
-							if (FAILED(browser_->QueryInterface(IID_IOleInPlaceActiveObject, (void **) &oleInPlaceActiveObject_))) {
+							if (FAILED(browser_->QueryInterface(IID_IOleInPlaceActiveObject, (void **)&oleInPlaceActiveObject_))) {
 								oleInPlaceActiveObject_ = NULL;
 							};
 
@@ -935,47 +913,47 @@ namespace XYO {
 
 		LRESULT WebBrowser::windowProcedure(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			switch (uMsg) {
-				case WM_CREATE:
-					if (!connectObject()) {
-						return -1L;
-					}
-					PostMessage(*this, WUM_BROWSER_DO_NAVIGATE1, 0, 0);
-					break;
-				case WUM_BROWSER_DO_NAVIGATE1: {
-						Navigate("about:blank");
-						PostMessage(*this, WUM_BROWSER_DO_NAVIGATE2, 0, 0);
-						return 0L;
-					};
-				case WUM_BROWSER_DO_NAVIGATE2: {
-						Navigate(browserDefaultAddress_);
-						return 0L;
-					};
-				case WM_CLOSE:
-					DestroyWindow(*this);
-					break;
-				case WM_DESTROY:
-					releaseObject();
-					break;
-				case WM_SIZE: {
-						::IWebBrowser2 *iWebBrowser2_;
-						if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **) &iWebBrowser2_))) {
-							iWebBrowser2_->put_Width(LOWORD(lParam));
-							iWebBrowser2_->put_Height(HIWORD(lParam));
-							iWebBrowser2_->Release();
-						};
-					};
-					break;
-				default:
-					return Window::windowProcedure(uMsg, wParam, lParam);
+			case WM_CREATE:
+				if (!connectObject()) {
+					return -1L;
+				}
+				PostMessage(*this, WUM_BROWSER_DO_NAVIGATE1, 0, 0);
+				break;
+			case WUM_BROWSER_DO_NAVIGATE1: {
+				Navigate("about:blank");
+				PostMessage(*this, WUM_BROWSER_DO_NAVIGATE2, 0, 0);
+				return 0L;
+			};
+			case WUM_BROWSER_DO_NAVIGATE2: {
+				Navigate(browserDefaultAddress_);
+				return 0L;
+			};
+			case WM_CLOSE:
+				DestroyWindow(*this);
+				break;
+			case WM_DESTROY:
+				releaseObject();
+				break;
+			case WM_SIZE: {
+				::IWebBrowser2 *iWebBrowser2_;
+				if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **)&iWebBrowser2_))) {
+					iWebBrowser2_->put_Width(LOWORD(lParam));
+					iWebBrowser2_->put_Height(HIWORD(lParam));
+					iWebBrowser2_->Release();
+				};
+			};
+			    break;
+			default:
+				return Window::windowProcedure(uMsg, wParam, lParam);
 			};
 			return 0L;
 		};
 
 		bool WebBrowser::translateAccelerator(MSG &msg) {
-			if(oleInPlaceActiveObject_ == NULL) {
+			if (oleInPlaceActiveObject_ == NULL) {
 				return false;
 			};
-			if(msg.hwnd == *this || IsChild(*this, msg.hwnd)) {
+			if (msg.hwnd == *this || IsChild(*this, msg.hwnd)) {
 				if (oleInPlaceActiveObject_->TranslateAccelerator(&msg) == S_OK) {
 					return true;
 				};
@@ -991,7 +969,7 @@ namespace XYO {
 				return 0;
 			}
 
-			if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **) &WebBrowser2))) {
+			if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **)&WebBrowser2))) {
 
 				size_t newSize = url.length() + 1;
 				wchar_t *url_ = new wchar_t[newSize];
@@ -999,7 +977,7 @@ namespace XYO {
 				mbstowcs_s(&convertedChars, url_, newSize, url, _TRUNCATE);
 				VariantInit(&myURL);
 				myURL.vt = VT_BSTR;
-				myURL.bstrVal = SysAllocString((BSTR) url_);
+				myURL.bstrVal = SysAllocString((BSTR)url_);
 				delete[] url_;
 
 				WebBrowser2->Navigate2(&myURL, 0, 0, 0, 0);
@@ -1007,11 +985,9 @@ namespace XYO {
 				VariantClear(&myURL);
 				WebBrowser2->Release();
 				return 1;
-
 			}
 			return 0;
 		};
 
 	};
 };
-

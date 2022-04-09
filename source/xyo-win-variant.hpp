@@ -11,18 +11,17 @@
 #define XYO_WIN_VARIANT_HPP
 
 #ifndef XYO_WIN__DEPENDENCY_HPP
-#include "xyo-win--dependency.hpp"
+#	include "xyo-win--dependency.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		class Variant:
-			public virtual XYO::Object {
+		class Variant : public virtual XYO::Object {
 			protected:
 				VARIANTARG var_;
-			public:
 
+			public:
 				inline Variant::Variant() {
 					VariantInit(&var_);
 				};
@@ -33,12 +32,12 @@ namespace XYO {
 
 				inline Variant::Variant(const Variant &x) {
 					VariantInit(&var_);
-					variantCopy(&var_, &x.var_);						
+					variantCopy(&var_, &x.var_);
 				};
 
 				inline Variant::Variant(const VARIANTARG &x) {
 					VariantInit(&var_);
-					variantCopy(&var_, const_cast<VARIANTARG *> (&x));
+					variantCopy(&var_, const_cast<VARIANTARG *>(&x));
 				};
 
 				inline Variant::Variant(VARIANT_BOOL x) {
@@ -50,13 +49,13 @@ namespace XYO {
 				inline Variant::Variant(const VARIANT_BOOL *x) {
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_BOOL;
-					var_.pboolVal = const_cast<VARIANT_BOOL *> (x);
+					var_.pboolVal = const_cast<VARIANT_BOOL *>(x);
 				};
 
 				inline Variant::Variant(const VARIANTARG *x) {
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_VARIANT;
-					var_.pvarVal = const_cast<VARIANTARG *> (x);
+					var_.pvarVal = const_cast<VARIANTARG *>(x);
 				};
 
 				inline Variant::Variant(unsigned long int x) {
@@ -94,32 +93,32 @@ namespace XYO {
 				inline Variant::Variant(const IUnknown *x) {
 					VariantInit(&var_);
 					var_.vt = VT_UNKNOWN;
-					var_.punkVal = const_cast<IUnknown *> (x);
+					var_.punkVal = const_cast<IUnknown *>(x);
 					var_.punkVal->AddRef();
 				};
 
 				inline Variant::Variant(const IDispatch *x) {
 					VariantInit(&var_);
 					var_.vt = VT_DISPATCH;
-					var_.pdispVal = const_cast<IDispatch *> (x);
+					var_.pdispVal = const_cast<IDispatch *>(x);
 					var_.pdispVal->AddRef();
 				};
 
 				inline Variant::Variant(const IUnknown **x) {
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_UNKNOWN;
-					var_.ppunkVal = const_cast<IUnknown **> (x);
+					var_.ppunkVal = const_cast<IUnknown **>(x);
 				};
 
 				inline Variant::Variant(const IDispatch **x) {
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_DISPATCH;
-					var_.ppdispVal = const_cast<IDispatch **> (x);
+					var_.ppdispVal = const_cast<IDispatch **>(x);
 				};
 
 				inline Variant &operator=(const VARIANTARG &x) {
 					VariantClear(&var_);
-					variantCopy(&var_, const_cast<VARIANTARG *> (&x));
+					variantCopy(&var_, const_cast<VARIANTARG *>(&x));
 					return *this;
 				};
 
@@ -135,7 +134,7 @@ namespace XYO {
 					VariantClear(&var_);
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_BOOL;
-					var_.pboolVal = const_cast<VARIANT_BOOL *> (x);
+					var_.pboolVal = const_cast<VARIANT_BOOL *>(x);
 					return *this;
 				};
 
@@ -143,7 +142,7 @@ namespace XYO {
 					VariantClear(&var_);
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_VARIANT;
-					var_.pvarVal = const_cast<VARIANTARG *> (x);
+					var_.pvarVal = const_cast<VARIANTARG *>(x);
 					return *this;
 				};
 
@@ -184,7 +183,7 @@ namespace XYO {
 					VariantClear(&var_);
 					VariantInit(&var_);
 					var_.vt = VT_UNKNOWN;
-					var_.punkVal = const_cast<IUnknown *> (x);
+					var_.punkVal = const_cast<IUnknown *>(x);
 					var_.punkVal->AddRef();
 					return *this;
 				};
@@ -193,7 +192,7 @@ namespace XYO {
 					VariantClear(&var_);
 					VariantInit(&var_);
 					var_.vt = VT_DISPATCH;
-					var_.pdispVal = const_cast<IDispatch *> (x);
+					var_.pdispVal = const_cast<IDispatch *>(x);
 					var_.pdispVal->AddRef();
 					return *this;
 				};
@@ -202,7 +201,7 @@ namespace XYO {
 					VariantClear(&var_);
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_UNKNOWN;
-					var_.ppunkVal = const_cast<IUnknown **> (x);
+					var_.ppunkVal = const_cast<IUnknown **>(x);
 					return *this;
 				};
 
@@ -210,7 +209,7 @@ namespace XYO {
 					VariantClear(&var_);
 					VariantInit(&var_);
 					var_.vt = VT_BYREF | VT_DISPATCH;
-					var_.ppdispVal = const_cast<IDispatch **> (x);
+					var_.ppdispVal = const_cast<IDispatch **>(x);
 					return *this;
 				};
 
@@ -234,7 +233,7 @@ namespace XYO {
 					return &var_;
 				};
 
-				inline operator VARIANT_BOOL () {
+				inline operator VARIANT_BOOL() {
 					return var_.boolVal;
 				};
 
@@ -279,16 +278,14 @@ namespace XYO {
 				};
 
 				static void variantCopy(VARIANTARG *pvargDest, const VARIANTARG *pvargSrc) {
-					if(VariantCopy(pvargDest, pvargSrc)!=S_OK){
+					if (VariantCopy(pvargDest, pvargSrc) != S_OK) {
 						VariantClear(pvargDest);
 						VariantInit(pvargDest);
 					};
 				};
-
 		};
 
 	};
 };
 
 #endif
-

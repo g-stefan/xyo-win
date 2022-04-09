@@ -8,7 +8,7 @@
 //
 
 #ifndef SECURITY_WIN32
-#define SECURITY_WIN32
+#	define SECURITY_WIN32
 #endif
 
 #include <windows.h>
@@ -28,18 +28,17 @@ namespace XYO {
 		namespace Util {
 
 			typedef struct {
-				UINT MessageId;
-				WPARAM wParam;
-				LPARAM lParam;
-			} SMessage, * PSMessage;
-
+					UINT MessageId;
+					WPARAM wParam;
+					LPARAM lParam;
+			} SMessage, *PSMessage;
 
 			static BOOL CALLBACK EnumChildProcIE_(HWND hwnd, LPARAM lParam) {
 				PSMessage psMessage = (PSMessage)lParam;
 				char buf[1024];
 				buf[0] = 0;
 				GetClassName(hwnd, buf, 1024);
-				if(strcmp(buf, "Internet Explorer_Server") == 0) {
+				if (strcmp(buf, "Internet Explorer_Server") == 0) {
 					SendMessage(hwnd, psMessage->MessageId, psMessage->wParam, psMessage->lParam);
 				};
 				return TRUE;
@@ -59,7 +58,7 @@ namespace XYO {
 				DWORD processId;
 
 				GetWindowThreadProcessId(hwnd, &processId);
-				if(processId == GetCurrentProcessId()) {
+				if (processId == GetCurrentProcessId()) {
 					PostMessage(hwnd, psMessage->MessageId, psMessage->wParam, psMessage->lParam);
 				};
 				return TRUE;
@@ -77,4 +76,3 @@ namespace XYO {
 		};
 	};
 };
-

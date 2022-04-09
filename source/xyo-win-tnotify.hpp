@@ -11,23 +11,25 @@
 #define XYO_WIN_TNOTIFY_HPP
 
 #ifndef XYO_WIN_INOTIFY_HPP
-#include "xyo-win-inotify.hpp"
+#	include "xyo-win-inotify.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		template<typename Class, typename Function, typename Data> class TNotify :
-			public virtual Object,
-			public virtual INotify {
+		template <typename Class, typename Function, typename Data>
+		class TNotify : public virtual Object,
+		                public virtual INotify {
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(TNotify);
+
 			protected:
 				TPointer<Class> object;
 				Data data;
 				Function function;
+
 			public:
-				inline TNotify() {};
-				inline ~TNotify() {};
+				inline TNotify(){};
+				inline ~TNotify(){};
 
 				inline void set(TPointer<Class> object_, Function function_, Data data_) {
 					object = object_;
@@ -42,7 +44,7 @@ namespace XYO {
 				};
 		};
 
-		template<typename Class, typename Function, typename Data>
+		template <typename Class, typename Function, typename Data>
 		void TNotify<Class, Function, Data>::notify() {
 			return (*object.*function)(data);
 		};
@@ -51,4 +53,3 @@ namespace XYO {
 };
 
 #endif
-

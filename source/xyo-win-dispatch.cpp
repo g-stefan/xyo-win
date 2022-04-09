@@ -12,25 +12,24 @@
 #include <oleauto.h>
 #include <stdio.h>
 
-#pragma warning(disable:4100)
+#pragma warning(disable : 4100)
 
 #include "xyo-win-dispatch.hpp"
 
 namespace XYO {
 	namespace Win {
 
-		void Dispatch::setDispatchFunctionsIdAndNames() {
-		};
+		void Dispatch::setDispatchFunctionsIdAndNames(){};
 
-		//IUnknown
+		// IUnknown
 
 		HRESULT STDMETHODCALLTYPE Dispatch::QueryInterface(REFIID riid, LPVOID *ppvObj) {
-			if (memcmp(&riid, &IID_IUnknown, sizeof (GUID)) == 0) {
+			if (memcmp(&riid, &IID_IUnknown, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IUnknown *> (this);
-			} else if (memcmp(&riid, &IID_IDispatch, sizeof (GUID)) == 0) {
+				*ppvObj = static_cast<IUnknown *>(this);
+			} else if (memcmp(&riid, &IID_IDispatch, sizeof(GUID)) == 0) {
 				AddRef();
-				*ppvObj = static_cast<IDispatch *> (this);
+				*ppvObj = static_cast<IDispatch *>(this);
 			} else {
 				*ppvObj = NULL;
 				return (E_NOINTERFACE);
@@ -46,7 +45,7 @@ namespace XYO {
 			return (ULONG)1;
 		};
 
-		//IDispatch
+		// IDispatch
 
 		HRESULT STDMETHODCALLTYPE Dispatch::GetTypeInfoCount(UINT *) {
 			return (E_NOTIMPL);
@@ -69,7 +68,7 @@ namespace XYO {
 		};
 
 		::IDispatch *Dispatch::getIDispatchValue() {
-			return static_cast<::IDispatch *> (this);
+			return static_cast<::IDispatch *>(this);
 		};
 
 		HRESULT Dispatch::invokeAndId(UINT mode, DISPID dispIdMember, DISPPARAMS *pDispParams, VARIANT *pVarResult, LPOLESTR *names, UINT count, DISPID *outID) {
@@ -84,5 +83,3 @@ namespace XYO {
 
 	};
 };
-
-

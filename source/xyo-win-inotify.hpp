@@ -11,14 +11,13 @@
 #define XYO_WIN_INOTIFY_HPP
 
 #ifndef XYO_WIN__DEPENDENCY_HPP
-#include "xyo-win--dependency.hpp"
+#	include "xyo-win--dependency.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		class INotify :
-			public virtual XYO::Object {
+		class INotify : public virtual XYO::Object {
 				XYO_INTERFACE(INotify);
 
 			public:

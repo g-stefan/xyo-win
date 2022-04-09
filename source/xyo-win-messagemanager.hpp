@@ -11,21 +11,23 @@
 #define XYO_WIN_MESSAGEMANAGER_HPP
 
 #ifndef XYO_WIN_WINDOW_HPP
-#include "xyo-win-window.hpp"
+#	include "xyo-win-window.hpp"
 #endif
 
 namespace XYO {
 	namespace Win {
 
-		class MessageManager :
-			public virtual Object {
+		class MessageManager : public virtual Object {
 				XYO_DISALLOW_COPY_ASSIGN_MOVE(MessageManager);
+
 			public:
-				typedef TDoubleEndedQueue<TPointer<Window> > WindowList;
+				typedef TDoubleEndedQueue<TPointer<Window>> WindowList;
+
 			protected:
 				CRITICAL_SECTION cs_;
 				WindowList windowList_;
-				void eventOnDestroy_(WindowList::Node  *window);
+				void eventOnDestroy_(WindowList::Node *window);
+
 			public:
 				XYO_WIN_EXPORT MessageManager();
 				XYO_WIN_EXPORT ~MessageManager();
