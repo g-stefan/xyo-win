@@ -1,0 +1,21 @@
+{
+	"project": {
+		"name":"xyo-win",
+		"type":"xyo-cpp",
+		"make" : "lib-and-dll",
+		"SPDX-License-Identifier": "MIT",
+		"sourcePath" : "XYO/Win",
+		"dependency" : [
+			"xyo-system",
+			"xyo-cryptography",
+			"xyo-pixel32"
+		],
+		"library" : [
+			"libpng",
+			"libz",
+			"secur32",
+			"adsiid",
+			"activeds"
+		]
+	}
+}

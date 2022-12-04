@@ -1,0 +1,11 @@
+// Win
+// Copyright (c) 2022 Grigore Stefan <g_stefan@yahoo.com>
+// MIT License (MIT) <http://opensource.org/licenses/MIT>
+// SPDX-FileCopyrightText: 2022 Grigore Stefan <g_stefan@yahoo.com>
+// SPDX-License-Identifier: MIT
+
+#include <XYO/Win/Library.rh>
+#include <XYO/Win/Copyright.rh>
+#include <XYO/Win/Version.rh>
+
+XYO_APPLICATION_VERSION_INFO(XYO_WIN,"xyo-win.dll","XYO Win")
