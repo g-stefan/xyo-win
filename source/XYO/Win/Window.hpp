@@ -17,61 +17,61 @@
 
 namespace XYO::Win {
 
-		class Window : public virtual Object {
-			private:
-				HWND hWnd_;
-				XYO_WIN_EXPORT static LRESULT CALLBACK windowProcedure_(HWND hWnd,
-				                                                        UINT uMsg,
-				                                                        WPARAM wParam,
-				                                                        LPARAM lParam);
-				XYO_WIN_EXPORT bool destroyAndWait_();
+	class Window : public virtual Object {
+		private:
+			HWND hWnd_;
+			XYO_WIN_EXPORT static LRESULT CALLBACK windowProcedure_(HWND hWnd,
+			                                                        UINT uMsg,
+			                                                        WPARAM wParam,
+			                                                        LPARAM lParam);
+			XYO_WIN_EXPORT bool destroyAndWait_();
 
-				TPointer<INotify> notifyOnCreate_;
-				TPointer<INotify> notifyOnDestroy_;
+			TPointer<INotify> notifyOnCreate_;
+			TPointer<INotify> notifyOnDestroy_;
 
-				XYO_DISALLOW_COPY_ASSIGN_MOVE(Window);
+			XYO_DISALLOW_COPY_ASSIGN_MOVE(Window);
 
-			public:
-				XYO_WIN_EXPORT Window();
-				XYO_WIN_EXPORT ~Window();
+		public:
+			XYO_WIN_EXPORT Window();
+			XYO_WIN_EXPORT ~Window();
 
-				inline operator HWND() {
-					return hWnd_;
-				};
+			inline operator HWND() {
+				return hWnd_;
+			};
 
-				XYO_WIN_EXPORT operator HINSTANCE();
+			XYO_WIN_EXPORT operator HINSTANCE();
 
-				XYO_WIN_EXPORT virtual LRESULT windowProcedure(UINT uMsg, WPARAM wParam, LPARAM lParam);
-				XYO_WIN_EXPORT virtual bool translateAccelerator(MSG &msg);
+			XYO_WIN_EXPORT virtual LRESULT windowProcedure(UINT uMsg, WPARAM wParam, LPARAM lParam);
+			XYO_WIN_EXPORT virtual bool translateAccelerator(MSG &msg);
 
-				XYO_WIN_EXPORT bool create(DWORD dwExStyle,
-				                           LPCTSTR lpClassName,
-				                           LPCTSTR lpWindowName,
-				                           DWORD dwStyle,
-				                           int x, int y,
-				                           int nWidth, int nHeight,
-				                           HWND hWndParent,
-				                           HMENU hMenu,
-				                           HINSTANCE hInstance);
+			XYO_WIN_EXPORT bool create(DWORD dwExStyle,
+			                           LPCTSTR lpClassName,
+			                           LPCTSTR lpWindowName,
+			                           DWORD dwStyle,
+			                           int x, int y,
+			                           int nWidth, int nHeight,
+			                           HWND hWndParent,
+			                           HMENU hMenu,
+			                           HINSTANCE hInstance);
 
-				XYO_WIN_EXPORT bool create(LPCTSTR lpClassName,
-				                           LPCTSTR lpWindowName,
-				                           DWORD dwStyle,
-				                           int x, int y,
-				                           int nWidth, int nHeight,
-				                           HWND hWndParent,
-				                           HMENU hMenu,
-				                           HINSTANCE hInstance);
+			XYO_WIN_EXPORT bool create(LPCTSTR lpClassName,
+			                           LPCTSTR lpWindowName,
+			                           DWORD dwStyle,
+			                           int x, int y,
+			                           int nWidth, int nHeight,
+			                           HWND hWndParent,
+			                           HMENU hMenu,
+			                           HINSTANCE hInstance);
 
-				XYO_WIN_EXPORT void setNotifyOnCreate(INotify *);
-				XYO_WIN_EXPORT void setNotifyOnDestroy(INotify *);
+			XYO_WIN_EXPORT void setNotifyOnCreate(INotify *);
+			XYO_WIN_EXPORT void setNotifyOnDestroy(INotify *);
 
-				XYO_WIN_EXPORT static bool registerClass(WNDCLASS &);
-				XYO_WIN_EXPORT static bool registerClass(WNDCLASSEX &);
+			XYO_WIN_EXPORT static bool registerClass(WNDCLASS &);
+			XYO_WIN_EXPORT static bool registerClass(WNDCLASSEX &);
 
-				XYO_WIN_EXPORT static void initMemory();
-		};
-
+			XYO_WIN_EXPORT static void initMemory();
 	};
+
+};
 
 #endif

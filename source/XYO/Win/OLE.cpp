@@ -12,29 +12,29 @@
 
 namespace XYO::Win::Ole {
 
-			class XOle {
-				public:
-					bool isValid;
+	class XOle {
+		public:
+			bool isValid;
 
-					XOle();
-					~XOle();
-			};
+			XOle();
+			~XOle();
+	};
 
-			XOle::XOle() {
-				isValid = false;
-				HRESULT initialized;
-				initialized = OleInitialize(NULL);
-				if (initialized != OLE_E_WRONGCOMPOBJ) {
-					isValid = true;
-				};
-			};
-
-			XOle::~XOle() {
-				OleUninitialize();
-			};
-
-			bool isValid() {
-				return (TSingletonProcess<XOle>::getValue())->isValid;
-			};
-
+	XOle::XOle() {
+		isValid = false;
+		HRESULT initialized;
+		initialized = OleInitialize(NULL);
+		if (initialized != OLE_E_WRONGCOMPOBJ) {
+			isValid = true;
 		};
+	};
+
+	XOle::~XOle() {
+		OleUninitialize();
+	};
+
+	bool isValid() {
+		return (TSingletonProcess<XOle>::getValue())->isValid;
+	};
+
+};

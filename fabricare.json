@@ -4,7 +4,10 @@
 		"type":"xyo-cpp",
 		"make" : "lib-and-dll",
 		"SPDX-License-Identifier": "MIT",
-		"sourcePath" : "XYO/Win",
+		"sourcePath" : [
+			"XYO/Win",
+			"XYO/Win/Discontinued"
+		],
 		"dependency" : [
 			"xyo-system",
 			"xyo-cryptography",

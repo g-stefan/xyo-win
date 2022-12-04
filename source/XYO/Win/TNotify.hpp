@@ -13,38 +13,38 @@
 
 namespace XYO::Win {
 
-		template <typename Class, typename Function, typename Data>
-		class TNotify : public virtual Object,
-		                public virtual INotify {
-				XYO_DISALLOW_COPY_ASSIGN_MOVE(TNotify);
+	template <typename Class, typename Function, typename Data>
+	class TNotify : public virtual Object,
+	                public virtual INotify {
+			XYO_DISALLOW_COPY_ASSIGN_MOVE(TNotify);
 
-			protected:
-				TPointer<Class> object;
-				Data data;
-				Function function;
+		protected:
+			TPointer<Class> object;
+			Data data;
+			Function function;
 
-			public:
-				inline TNotify(){};
-				inline ~TNotify(){};
+		public:
+			inline TNotify(){};
+			inline ~TNotify(){};
 
-				inline void set(TPointer<Class> object_, Function function_, Data data_) {
-					object = object_;
-					function = function_;
-					data = data_;
-				};
+			inline void set(TPointer<Class> object_, Function function_, Data data_) {
+				object = object_;
+				function = function_;
+				data = data_;
+			};
 
-				void notify();
+			void notify();
 
-				inline void clear() {
-					object.memoryDelete();
-				};
-		};
-
-		template <typename Class, typename Function, typename Data>
-		void TNotify<Class, Function, Data>::notify() {
-			return (*object.*function)(data);
-		};
-
+			inline void clear() {
+				object.memoryDelete();
+			};
 	};
+
+	template <typename Class, typename Function, typename Data>
+	void TNotify<Class, Function, Data>::notify() {
+		return (*object.*function)(data);
+	};
+
+};
 
 #endif

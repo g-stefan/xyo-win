@@ -17,31 +17,31 @@
 
 namespace XYO::Win {
 
-		class Dispatch : public virtual Object,
-		                 public virtual ::IDispatch {
-			protected:
-				XYO_DISALLOW_COPY_ASSIGN_MOVE(Dispatch);
+	class Dispatch : public virtual Object,
+	                 public virtual ::IDispatch {
+		protected:
+			XYO_DISALLOW_COPY_ASSIGN_MOVE(Dispatch);
 
-			public:
-				inline Dispatch(){};
-				inline ~Dispatch(){};
+		public:
+			inline Dispatch(){};
+			inline ~Dispatch(){};
 
-				// IUnknown
-				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, LPVOID *ppvObj);
-				XYO_WIN_EXPORT ULONG STDMETHODCALLTYPE AddRef();
-				XYO_WIN_EXPORT ULONG STDMETHODCALLTYPE Release();
+			// IUnknown
+			XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, LPVOID *ppvObj);
+			XYO_WIN_EXPORT ULONG STDMETHODCALLTYPE AddRef();
+			XYO_WIN_EXPORT ULONG STDMETHODCALLTYPE Release();
 
-				// IDispatch
-				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetTypeInfoCount(UINT *);
-				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetTypeInfo(UINT, LCID, LPTYPEINFO *);
-				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetIDsOfNames(REFIID, LPOLESTR *, UINT, LCID, DISPID *);
-				XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE Invoke(DISPID, REFIID, LCID, WORD, DISPPARAMS *, VARIANT *, EXCEPINFO *, UINT *);
+			// IDispatch
+			XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetTypeInfoCount(UINT *);
+			XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetTypeInfo(UINT, LCID, LPTYPEINFO *);
+			XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE GetIDsOfNames(REFIID, LPOLESTR *, UINT, LCID, DISPID *);
+			XYO_WIN_EXPORT HRESULT STDMETHODCALLTYPE Invoke(DISPID, REFIID, LCID, WORD, DISPPARAMS *, VARIANT *, EXCEPINFO *, UINT *);
 
-				XYO_WIN_EXPORT virtual HRESULT invokeAndId(UINT mode, DISPID dispIdMember, DISPPARAMS *pDispParams, VARIANT *pVarResult, LPOLESTR *names, UINT count, DISPID *outID);
+			XYO_WIN_EXPORT virtual HRESULT invokeAndId(UINT mode, DISPID dispIdMember, DISPPARAMS *pDispParams, VARIANT *pVarResult, LPOLESTR *names, UINT count, DISPID *outID);
 
-				XYO_WIN_EXPORT virtual void setDispatchFunctionsIdAndNames();
-				XYO_WIN_EXPORT virtual ::IDispatch *getIDispatchValue();
-		};
+			XYO_WIN_EXPORT virtual void setDispatchFunctionsIdAndNames();
+			XYO_WIN_EXPORT virtual ::IDispatch *getIDispatchValue();
+	};
 
 #define XYO_WIN_DISPATCH__PROTOTYPE \
 	virtual HRESULT invokeAndId(UINT mode, DISPID dispIdMember, DISPPARAMS *pDispParams, VARIANT *pVarResult, LPOLESTR *names, UINT count, DISPID *outID)
@@ -263,6 +263,6 @@ namespace XYO::Win {
 	};                                                                                                                                                                                                                                             \
 	++id_func
 
-	};
+};
 
 #endif

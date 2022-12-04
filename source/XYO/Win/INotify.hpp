@@ -13,13 +13,13 @@
 
 namespace XYO::Win {
 
-		class INotify : public virtual Object {
-				XYO_INTERFACE(INotify);
+	class INotify : public virtual Object {
+			XYO_INTERFACE(INotify);
 
-			public:
-				virtual void notify() = 0;
-		};
-
+		public:
+			virtual void notify() = 0;
 	};
+
+};
 
 #endif

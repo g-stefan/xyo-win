@@ -13,8 +13,8 @@
 
 namespace XYO::Win::CaptureDesktop {
 
-			XYO_WIN_EXPORT bool captureDesktopToPNGFile(char *fileName);
+	XYO_WIN_EXPORT bool captureDesktopToPNGFile(char *fileName);
 
-		};
-	
+};
+
 #endif

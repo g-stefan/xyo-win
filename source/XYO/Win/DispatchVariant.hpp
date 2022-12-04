@@ -13,74 +13,74 @@
 
 namespace XYO::Win {
 
-		class DispatchVariant {
-			protected:
-				VARIANTARG *variantArg_;
+	class DispatchVariant {
+		protected:
+			VARIANTARG *variantArg_;
 
-				XYO_DISALLOW_COPY_ASSIGN_MOVE(DispatchVariant);
+			XYO_DISALLOW_COPY_ASSIGN_MOVE(DispatchVariant);
 
-			public:
-				inline DispatchVariant(){};
+		public:
+			inline DispatchVariant(){};
 
-				inline ~DispatchVariant(){};
+			inline ~DispatchVariant(){};
 
-				inline DispatchVariant(VARIANTARG *x) {
-					variantArg_ = x;
-				};
+			inline DispatchVariant(VARIANTARG *x) {
+				variantArg_ = x;
+			};
 
-				inline VARIANTARG *value() {
-					return variantArg_;
-				};
+			inline VARIANTARG *value() {
+				return variantArg_;
+			};
 
-				inline operator VARIANT_BOOL() {
-					return variantArg_->boolVal;
-				};
+			inline operator VARIANT_BOOL() {
+				return variantArg_->boolVal;
+			};
 
-				inline operator VARIANT_BOOL *() {
-					return variantArg_->pboolVal;
-				};
+			inline operator VARIANT_BOOL *() {
+				return variantArg_->pboolVal;
+			};
 
-				inline operator VARIANTARG *() {
-					return variantArg_->pvarVal;
-				};
+			inline operator VARIANTARG *() {
+				return variantArg_->pvarVal;
+			};
 
-				inline operator unsigned long int() {
-					return variantArg_->ulVal;
-				};
+			inline operator unsigned long int() {
+				return variantArg_->ulVal;
+			};
 
-				inline operator long int() {
-					return variantArg_->lVal;
-				};
+			inline operator long int() {
+				return variantArg_->lVal;
+			};
 
-				inline operator int() {
-					return variantArg_->intVal;
-				};
+			inline operator int() {
+				return variantArg_->intVal;
+			};
 
-				inline operator unsigned int() {
-					return variantArg_->uintVal;
-				};
+			inline operator unsigned int() {
+				return variantArg_->uintVal;
+			};
 
-				inline operator BSTR() {
-					return variantArg_->bstrVal;
-				};
+			inline operator BSTR() {
+				return variantArg_->bstrVal;
+			};
 
-				inline operator IUnknown *() {
-					return variantArg_->punkVal;
-				};
+			inline operator IUnknown *() {
+				return variantArg_->punkVal;
+			};
 
-				inline operator IDispatch *() {
-					return variantArg_->pdispVal;
-				};
+			inline operator IDispatch *() {
+				return variantArg_->pdispVal;
+			};
 
-				inline operator IUnknown **() {
-					return variantArg_->ppunkVal;
-				};
+			inline operator IUnknown **() {
+				return variantArg_->ppunkVal;
+			};
 
-				inline operator IDispatch **() {
-					return variantArg_->ppdispVal;
-				};
-		};
-
+			inline operator IDispatch **() {
+				return variantArg_->ppdispVal;
+			};
 	};
+
+};
 
 #endif

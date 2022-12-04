@@ -13,27 +13,27 @@
 
 namespace XYO::Win {
 
-		class SimpleApplication : public virtual Application {
-			protected:
-				LPSTR className_;
-				LPSTR windowName_;
-				bool singleInstance_;
-				bool isTrayIconic_;
+	class SimpleApplication : public virtual Application {
+		protected:
+			LPSTR className_;
+			LPSTR windowName_;
+			bool singleInstance_;
+			bool isTrayIconic_;
 
-				XYO_DISALLOW_COPY_ASSIGN_MOVE(SimpleApplication);
+			XYO_DISALLOW_COPY_ASSIGN_MOVE(SimpleApplication);
 
-			public:
-				XYO_WIN_EXPORT SimpleApplication();
-				inline ~SimpleApplication(){};
+		public:
+			XYO_WIN_EXPORT SimpleApplication();
+			inline ~SimpleApplication(){};
 
-				XYO_WIN_EXPORT void setWndclassEx(WNDCLASSEX &);
-				XYO_WIN_EXPORT void setCreateStruct(CREATESTRUCT &);
-				XYO_WIN_EXPORT int main(int cmdN, char *cmdS[]);
-				XYO_WIN_EXPORT HWND getSingleInstanceWindow();
+			XYO_WIN_EXPORT void setWndclassEx(WNDCLASSEX &);
+			XYO_WIN_EXPORT void setCreateStruct(CREATESTRUCT &);
+			XYO_WIN_EXPORT int main(int cmdN, char *cmdS[]);
+			XYO_WIN_EXPORT HWND getSingleInstanceWindow();
 
-				XYO_WIN_EXPORT static void initMemory();
-		};
-
+			XYO_WIN_EXPORT static void initMemory();
 	};
+
+};
 
 #endif

@@ -13,32 +13,32 @@
 
 namespace XYO::Win {
 
-		class MessageManager : public virtual Object {
-				XYO_DISALLOW_COPY_ASSIGN_MOVE(MessageManager);
+	class MessageManager : public virtual Object {
+			XYO_DISALLOW_COPY_ASSIGN_MOVE(MessageManager);
 
-			public:
-				typedef TDoubleEndedQueue<TPointer<Window>> WindowList;
+		public:
+			typedef TDoubleEndedQueue<TPointer<Window>> WindowList;
 
-			protected:
-				CRITICAL_SECTION cs_;
-				WindowList windowList_;
-				void eventOnDestroy_(WindowList::Node *window);
+		protected:
+			CRITICAL_SECTION cs_;
+			WindowList windowList_;
+			void eventOnDestroy_(WindowList::Node *window);
 
-			public:
-				XYO_WIN_EXPORT MessageManager();
-				XYO_WIN_EXPORT ~MessageManager();
+		public:
+			XYO_WIN_EXPORT MessageManager();
+			XYO_WIN_EXPORT ~MessageManager();
 
-				XYO_WIN_EXPORT WindowList::Node *add(Window *window);
-				XYO_WIN_EXPORT void remove(WindowList::Node *window);
+			XYO_WIN_EXPORT WindowList::Node *add(Window *window);
+			XYO_WIN_EXPORT void remove(WindowList::Node *window);
 
-				XYO_WIN_EXPORT int processAllMessages();
+			XYO_WIN_EXPORT int processAllMessages();
 
-				XYO_WIN_EXPORT void postMessageToAll(UINT);
-				XYO_WIN_EXPORT void sendMessageToAll(UINT);
+			XYO_WIN_EXPORT void postMessageToAll(UINT);
+			XYO_WIN_EXPORT void sendMessageToAll(UINT);
 
-				XYO_WIN_EXPORT static void initMemory();
-		};
-
+			XYO_WIN_EXPORT static void initMemory();
 	};
+
+};
 
 #endif

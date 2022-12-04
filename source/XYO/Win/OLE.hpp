@@ -13,8 +13,8 @@
 
 namespace XYO::Win::Ole {
 
-			XYO_WIN_EXPORT bool isValid();
+	XYO_WIN_EXPORT bool isValid();
 
-		};
-	
+};
+
 #endif

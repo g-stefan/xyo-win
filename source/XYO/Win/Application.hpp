@@ -17,30 +17,30 @@
 
 namespace XYO::Win {
 
-		class Application : public virtual Window,
-		                    public virtual IApplication {
-				XYO_DISALLOW_COPY_ASSIGN_MOVE(Application);
+	class Application : public virtual Window,
+	                    public virtual IApplication {
+			XYO_DISALLOW_COPY_ASSIGN_MOVE(Application);
 
-			protected:
-				TPointer<MessageManager> messageManager_;
+		protected:
+			TPointer<MessageManager> messageManager_;
 
-			public:
-				inline Application(){};
-				inline ~Application(){};
+		public:
+			inline Application(){};
+			inline ~Application(){};
 
-				XYO_WIN_EXPORT int main(int cmdN, char *cmdS[]);
+			XYO_WIN_EXPORT int main(int cmdN, char *cmdS[]);
 
-				XYO_WIN_EXPORT virtual void setWndclassEx(WNDCLASSEX &);
-				XYO_WIN_EXPORT virtual void setCreateStruct(CREATESTRUCT &);
-				XYO_WIN_EXPORT virtual int setShowCmd(int);
-				XYO_WIN_EXPORT virtual int parseCommandLine(int cmdN, char *cmdS[]);
-				XYO_WIN_EXPORT virtual void initWndclassEx(WNDCLASSEX &wndclassEx);
-				XYO_WIN_EXPORT virtual void initCreateStruct(CREATESTRUCT &createStruct, WNDCLASSEX &wndclassEx);
-				XYO_WIN_EXPORT virtual bool newWindow(int cmdShow, bool regWndClass = false);
+			XYO_WIN_EXPORT virtual void setWndclassEx(WNDCLASSEX &);
+			XYO_WIN_EXPORT virtual void setCreateStruct(CREATESTRUCT &);
+			XYO_WIN_EXPORT virtual int setShowCmd(int);
+			XYO_WIN_EXPORT virtual int parseCommandLine(int cmdN, char *cmdS[]);
+			XYO_WIN_EXPORT virtual void initWndclassEx(WNDCLASSEX &wndclassEx);
+			XYO_WIN_EXPORT virtual void initCreateStruct(CREATESTRUCT &createStruct, WNDCLASSEX &wndclassEx);
+			XYO_WIN_EXPORT virtual bool newWindow(int cmdShow, bool regWndClass = false);
 
-				XYO_WIN_EXPORT static void initMemory();
-		};
-
+			XYO_WIN_EXPORT static void initMemory();
 	};
+
+};
 
 #endif
