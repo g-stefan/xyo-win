@@ -16,7 +16,6 @@ namespace XYO::Win::Copyright {
 	XYO_WIN_EXPORT const char *publisher();
 	XYO_WIN_EXPORT const char *company();
 	XYO_WIN_EXPORT const char *contact();
-	XYO_WIN_EXPORT const char *fullCopyright();
 };
 
 #endif

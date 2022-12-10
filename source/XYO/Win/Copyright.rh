@@ -7,10 +7,9 @@
 #ifndef XYO_WIN_COPYRIGHT_RH
 #define XYO_WIN_COPYRIGHT_RH
 
-#define XYO_WIN_COPYRIGHT "Copyright (c) 2022 Grigore Stefan"
+#define XYO_WIN_COPYRIGHT "Copyright (c) 2022 Grigore Stefan <g_stefan@yahoo.com>"
 #define XYO_WIN_PUBLISHER "Grigore Stefan"
 #define XYO_WIN_COMPANY XYO_WIN_PUBLISHER
 #define XYO_WIN_CONTACT "g_stefan@yahoo.com"
-#define XYO_WIN_FULL_COPYRIGHT XYO_WIN_COPYRIGHT " <" XYO_WIN_CONTACT ">"
 
 #endif
