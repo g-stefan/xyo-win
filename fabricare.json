@@ -11,11 +11,9 @@
 		"dependency" : [
 			"xyo-system",
 			"xyo-cryptography",
-			"xyo-pixel32"
+			"xyo-pixel32"			
 		],
-		"library" : [
-			"libpng",
-			"libz",
+		"library" : [			
 			"secur32",
 			"adsiid",
 			"activeds"
