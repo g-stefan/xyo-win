@@ -17,6 +17,8 @@
 			"secur32",
 			"adsiid",
 			"activeds"
-		]
+		],
+		"hasRelease" : true,
+		"githubRelease" : true
 	}
 }
