@@ -1,24 +1,28 @@
 {
-	"project": {
-		"name":"xyo-win",
-		"type":"xyo-cpp",
-		"make" : "lib-and-dll",
-		"SPDX-License-Identifier": "MIT",
-		"sourcePath" : [
-			"XYO/Win",
-			"XYO/Win/Discontinued"
+	"solution": {
+		"name" : "xyo-win",
+		"type" : "xyo-cpp",
+		"projects": [
+			{
+				"name" : "xyo-win",
+				"make" : "lib-and-dll",
+				"SPDX-License-Identifier": "MIT",
+				"sourcePath" : [
+					"XYO/Win",
+					"XYO/Win/Discontinued"
+				],
+				"dependency" : [
+					"xyo-system",
+					"xyo-cryptography",
+					"xyo-pixel32"			
+				],
+				"library" : [			
+					"secur32",
+					"adsiid",
+					"activeds"
+				]
+			}
 		],
-		"dependency" : [
-			"xyo-system",
-			"xyo-cryptography",
-			"xyo-pixel32"			
-		],
-		"library" : [			
-			"secur32",
-			"adsiid",
-			"activeds"
-		],
-		"hasRelease" : true,
-		"githubRelease" : true
+		"hasGithub" : true
 	}
 }
