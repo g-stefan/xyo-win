@@ -16,7 +16,7 @@
 					"xyo-cryptography",
 					"xyo-pixel32"			
 				],
-				"library" : [			
+				"library" : [
 					"secur32",
 					"adsiid",
 					"activeds"
