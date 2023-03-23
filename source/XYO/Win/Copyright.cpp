@@ -14,19 +14,19 @@ namespace XYO::Win::Copyright {
 	static const char *company_ = XYO_WIN_COMPANY;
 	static const char *contact_ = XYO_WIN_CONTACT;
 
-	std::string copyright() {
+	const char *copyright() {
 		return copyright_;
 	};
 
-	std::string publisher() {
+	const char *publisher() {
 		return publisher_;
 	};
 
-	std::string company() {
+	const char *company() {
 		return company_;
 	};
 
-	std::string contact() {
+	const char *contact() {
 		return contact_;
 	};
 
