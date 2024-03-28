@@ -16,7 +16,7 @@ namespace XYO::Win {
 	template <typename Class, typename Function, typename Data>
 	class TNotify : public virtual Object,
 	                public virtual INotify {
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(TNotify);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(TNotify);
 
 		protected:
 			TPointer<Class> object;

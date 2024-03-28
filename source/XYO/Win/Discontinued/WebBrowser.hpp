@@ -34,7 +34,7 @@ namespace XYO::Win::Discontinued {
 	                   public virtual ::IInternetSecurityManager,
 	                   public virtual ::IProtectFocus,
 	                   public virtual ::IHTMLOMWindowServices {
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(WebBrowser);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(WebBrowser);
 
 		protected:
 			IOleObject *browser_;

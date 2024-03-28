@@ -15,7 +15,7 @@ namespace XYO::Win::CaptureDesktop {
 	using namespace XYO::Pixel32;
 
 	class MonitorInfo : public Object {
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(MonitorInfo);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(MonitorInfo);
 
 		public:
 			HDC hdc;

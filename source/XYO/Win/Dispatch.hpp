@@ -20,7 +20,7 @@ namespace XYO::Win {
 	class Dispatch : public virtual Object,
 	                 public virtual ::IDispatch {
 		protected:
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(Dispatch);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(Dispatch);
 
 		public:
 			inline Dispatch(){};

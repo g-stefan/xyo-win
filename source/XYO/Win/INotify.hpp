@@ -14,7 +14,7 @@
 namespace XYO::Win {
 
 	class INotify : public virtual Object {
-			XYO_INTERFACE(INotify);
+			XYO_PLATFORM_INTERFACE(INotify);
 
 		public:
 			virtual void notify() = 0;

@@ -20,7 +20,7 @@ namespace XYO::Win {
 			bool singleInstance_;
 			bool isTrayIconic_;
 
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(SimpleApplication);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(SimpleApplication);
 
 		public:
 			XYO_WIN_EXPORT SimpleApplication();

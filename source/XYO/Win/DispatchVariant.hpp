@@ -17,7 +17,7 @@ namespace XYO::Win {
 		protected:
 			VARIANTARG *variantArg_;
 
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(DispatchVariant);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(DispatchVariant);
 
 		public:
 			inline DispatchVariant(){};

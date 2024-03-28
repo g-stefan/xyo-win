@@ -22,7 +22,7 @@ namespace XYO::Win {
 			IDispatch *refObject_;
 			UINT nArgErr_;
 
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(Function);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(Function);
 
 		public:
 			XYO_WIN_EXPORT Function();

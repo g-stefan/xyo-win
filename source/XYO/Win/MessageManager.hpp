@@ -14,7 +14,7 @@
 namespace XYO::Win {
 
 	class MessageManager : public virtual Object {
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(MessageManager);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(MessageManager);
 
 		public:
 			typedef TDoubleEndedQueue<TPointer<Window>> WindowList;

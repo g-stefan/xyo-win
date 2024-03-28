@@ -20,10 +20,10 @@ namespace XYO::Win {
 	};
 
 	Window::operator HINSTANCE() {
-#ifdef XYO_APPLICATION_32BIT
+#ifdef XYO_PLATFORM_32BIT
 		return (HINSTANCE)GetWindowLong(hWnd_, GWL_HINSTANCE);
 #endif
-#ifdef XYO_APPLICATION_64BIT
+#ifdef XYO_PLATFORM_64BIT
 		return (HINSTANCE)GetWindowLongPtr(hWnd_, GWLP_HINSTANCE);
 #endif
 	};
@@ -55,10 +55,10 @@ namespace XYO::Win {
 			vWindow->incReferenceCount();
 			vWindow->hWnd_ = hWnd;
 
-#ifdef XYO_APPLICATION_32BIT
+#ifdef XYO_PLATFORM_32BIT
 			SetWindowLong(hWnd, 0, (DWORD)vWindow);
 #endif
-#ifdef XYO_APPLICATION_64BIT
+#ifdef XYO_PLATFORM_64BIT
 			SetWindowLongPtr(hWnd, 0, (LONG_PTR)vWindow);
 #endif
 
@@ -67,19 +67,19 @@ namespace XYO::Win {
 			};
 		};
 
-#ifdef XYO_APPLICATION_32BIT
+#ifdef XYO_PLATFORM_32BIT
 		vWindow = (Window *)GetWindowLong(hWnd, 0);
 #endif
-#ifdef XYO_APPLICATION_64BIT
+#ifdef XYO_PLATFORM_64BIT
 		vWindow = (Window *)GetWindowLongPtr(hWnd, 0);
 #endif
 		if (vWindow != NULL) {
 			if (uMsg == WM_NCDESTROY) {
 
-#ifdef XYO_APPLICATION_32BIT
+#ifdef XYO_PLATFORM_32BIT
 				SetWindowLong(hWnd, 0, 0);
 #endif
-#ifdef XYO_APPLICATION_64BIT
+#ifdef XYO_PLATFORM_64BIT
 				SetWindowLongPtr(hWnd, 0, NULL);
 #endif
 

@@ -19,7 +19,7 @@ namespace XYO::Win {
 
 	class Application : public virtual Window,
 	                    public virtual IApplication {
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(Application);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(Application);
 
 		protected:
 			TPointer<MessageManager> messageManager_;

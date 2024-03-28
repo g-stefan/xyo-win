@@ -8,4 +8,4 @@
 #include <XYO/Win/Copyright.rh>
 #include <XYO/Win/Version.rh>
 
-XYO_APPLICATION_VERSION_INFO(XYO_WIN,"xyo-win.dll","XYO Win")
+XYO_PLATFORM_VERSION_INFO(XYO_WIN,"xyo-win.dll","XYO Win")

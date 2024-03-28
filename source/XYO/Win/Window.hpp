@@ -29,7 +29,7 @@ namespace XYO::Win {
 			TPointer<INotify> notifyOnCreate_;
 			TPointer<INotify> notifyOnDestroy_;
 
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(Window);
+			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(Window);
 
 		public:
 			XYO_WIN_EXPORT Window();
