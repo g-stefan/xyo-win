@@ -13,6 +13,7 @@
 
 namespace XYO::Win::CaptureDesktop {
 
+	XYO_WIN_EXPORT TPointer<Bmp> captureDesktop();
 	XYO_WIN_EXPORT bool captureDesktopToPNGFile(char *fileName);
 
 };

@@ -12,8 +12,6 @@
 
 namespace XYO::Win::CaptureDesktop {
 
-	using namespace XYO::Pixel32;
-
 	class MonitorInfo : public Object {
 			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(MonitorInfo);
 
@@ -66,7 +64,7 @@ namespace XYO::Win::CaptureDesktop {
 		return TRUE;
 	};
 
-	bool captureDesktopToPNGFile(char *fileName) {
+	TPointer<Bmp> captureDesktop() {
 		HDC hdcDesktop;
 		HDC hdcCapture;
 		HBITMAP bmpCapture;
@@ -80,20 +78,20 @@ namespace XYO::Win::CaptureDesktop {
 
 		hdcDesktop = GetDC(NULL);
 		if (hdcDesktop == NULL) {
-			return false;
+			return nullptr;
 		};
 
 		hdcCapture = CreateCompatibleDC(hdcDesktop);
 		if (hdcCapture == NULL) {
 			DeleteDC(hdcDesktop);
-			return false;
+			return nullptr;
 		};
 
 		bmpCapture = CreateCompatibleBitmap(hdcDesktop, screenWidth, screenHeight);
 		if (bmpCapture == NULL) {
 			DeleteDC(hdcDesktop);
 			DeleteDC(hdcCapture);
-			return false;
+			return nullptr;
 		};
 
 		bmpCaptureOld = (HBITMAP)SelectObject(hdcCapture, bmpCapture);
@@ -101,7 +99,7 @@ namespace XYO::Win::CaptureDesktop {
 			DeleteDC(hdcDesktop);
 			DeleteDC(hdcCapture);
 			DeleteObject(bmpCapture);
-			return false;
+			return nullptr;
 		};
 
 		if (!EnumDisplayMonitors(hdcDesktop, NULL, MonitorEnumProc, reinterpret_cast<LPARAM>(&monitorInfo))) {
@@ -109,7 +107,7 @@ namespace XYO::Win::CaptureDesktop {
 			DeleteDC(hdcDesktop);
 			DeleteDC(hdcCapture);
 			DeleteObject(bmpCapture);
-			return false;
+			return nullptr;
 		};
 
 		for (k = 0; k < monitorInfo.length(); ++k) {
@@ -127,7 +125,7 @@ namespace XYO::Win::CaptureDesktop {
 				DeleteDC(hdcDesktop);
 				DeleteDC(hdcCapture);
 				DeleteObject(bmpCapture);
-				return false;
+				return nullptr;
 			};
 		};
 
@@ -145,7 +143,7 @@ namespace XYO::Win::CaptureDesktop {
 			DeleteDC(hdcDesktop);
 			DeleteDC(hdcCapture);
 			DeleteObject(bmpCapture);
-			return false;
+			return nullptr;
 		};
 
 		if (((LPBITMAPINFO)imageBI)->bmiHeader.biCompression != BI_RGB) {
@@ -153,7 +151,7 @@ namespace XYO::Win::CaptureDesktop {
 			DeleteDC(hdcCapture);
 			DeleteObject(bmpCapture);
 			delete[] imageBI;
-			return false;
+			return nullptr;
 		};
 
 		DWORD imageSize = ((LPBITMAPINFO)imageBI)->bmiHeader.biSizeImage;
@@ -186,26 +184,24 @@ namespace XYO::Win::CaptureDesktop {
 			DeleteObject(bmpCapture);
 			delete[] imageBI;
 			delete[] imageFile;
-			return false;
+			return nullptr;
 		};
 
 		TPointer<Bmp> image = Bmp::newImageOwner((BmpImage *)imageFile);
-		TPointer<Bmp> image2 = image->convertTo32Bits();
-		image2->setAlpha32(0);
-		if (Process::bmp32SavePng(image2, fileName)) {
-			DeleteDC(hdcDesktop);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			delete[] imageBI;
-			return true;
-		};
 
 		DeleteDC(hdcDesktop);
 		DeleteDC(hdcCapture);
 		DeleteObject(bmpCapture);
 		delete[] imageBI;
 
-		return false;
+		return image;
+	};
+
+	bool captureDesktopToPNGFile(char *fileName) {
+		TPointer<Bmp> image = captureDesktop();
+		TPointer<Bmp> image2 = image->convertTo32Bits();
+		image2->setAlpha32(0);
+		return Process::bmp32SavePng(image2, fileName);
 	};
 
 };

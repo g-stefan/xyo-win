@@ -37,6 +37,10 @@
 #	include <XYO/System.hpp>
 #endif
 
+#ifndef XYO_PIXEL32_HPP
+#include <XYO/Pixel32.hpp>
+#endif
+
 // -- Export
 
 #ifdef XYO_WIN_INTERNAL
@@ -53,6 +57,7 @@ namespace XYO::Win {
 	using namespace XYO::Encoding;
 	using namespace XYO::Multithreading;
 	using namespace XYO::System;
+	using namespace XYO::Pixel32;
 };
 
 #endif
