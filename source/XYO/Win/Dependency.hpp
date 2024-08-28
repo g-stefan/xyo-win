@@ -48,6 +48,10 @@
 #else
 #	define XYO_WIN_EXPORT XYO_PLATFORM_LIBRARY_IMPORT
 #endif
+#ifdef XYO_WIN_LIBRARY
+#	undef XYO_WIN_EXPORT
+#	define XYO_WIN_EXPORT
+#endif
 
 // --
 
