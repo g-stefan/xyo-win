@@ -1,7 +1,7 @@
 // Win
-// Copyright (c) 2014-2024 Grigore Stefan <g_stefan@yahoo.com>
+// Copyright (c) 2014-2025 Grigore Stefan <g_stefan@yahoo.com>
 // MIT License (MIT) <http://opensource.org/licenses/MIT>
-// SPDX-FileCopyrightText: 2014-2024 Grigore Stefan <g_stefan@yahoo.com>
+// SPDX-FileCopyrightText: 2014-2025 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
 #ifndef XYO_WIN_CAPTUREDESKTOP_HPP
@@ -13,7 +13,7 @@
 
 namespace XYO::Win::CaptureDesktop {
 
-	XYO_WIN_EXPORT TPointer<Bmp> captureDesktop();
+	XYO_WIN_EXPORT TPointer<Bitmap> captureDesktop();
 	XYO_WIN_EXPORT bool captureDesktopToPNGFile(char *fileName);
 
 };

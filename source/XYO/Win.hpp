@@ -1,7 +1,7 @@
 // Win
-// Copyright (c) 2014-2024 Grigore Stefan <g_stefan@yahoo.com.hpp>
+// Copyright (c) 2014-2025 Grigore Stefan <g_stefan@yahoo.com.hpp>
 // MIT License (MIT) <http://opensource.org/licenses/MIT.hpp>
-// SPDX-FileCopyrightText: 2014-2024 Grigore Stefan <g_stefan@yahoo.com.hpp>
+// SPDX-FileCopyrightText: 2014-2025 Grigore Stefan <g_stefan@yahoo.com.hpp>
 // SPDX-License-Identifier: MIT
 
 #ifndef XYO_WIN_HPP

@@ -1,7 +1,7 @@
 // Win
-// Copyright (c) 2014-2024 Grigore Stefan <g_stefan@yahoo.com>
+// Copyright (c) 2014-2025 Grigore Stefan <g_stefan@yahoo.com>
 // MIT License (MIT) <http://opensource.org/licenses/MIT>
-// SPDX-FileCopyrightText: 2014-2024 Grigore Stefan <g_stefan@yahoo.com>
+// SPDX-FileCopyrightText: 2014-2025 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
 #include <windows.h>
@@ -64,7 +64,7 @@ namespace XYO::Win::CaptureDesktop {
 		return TRUE;
 	};
 
-	TPointer<Bmp> captureDesktop() {
+	TPointer<Bitmap> captureDesktop() {
 		HDC hdcDesktop;
 		HDC hdcCapture;
 		HBITMAP bmpCapture;
@@ -171,7 +171,7 @@ namespace XYO::Win::CaptureDesktop {
 		DWORD imageFileSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + palSize * sizeof(RGBQUAD) + imageSize;
 		uint8_t *imageFile = new uint8_t[imageFileSize];
 		memset(imageFile, 0, imageFileSize);
-		((BITMAPFILEHEADER *)imageFile)->bfType = XYO_PIXEL32_BMP_FILE_ID;
+		((BITMAPFILEHEADER *)imageFile)->bfType = XYO_PIXEL32_BITMAP_FILE_ID;
 		((BITMAPFILEHEADER *)imageFile)->bfReserved1 = 0;
 		((BITMAPFILEHEADER *)imageFile)->bfReserved2 = 0;
 		((BITMAPFILEHEADER *)imageFile)->bfSize = imageSize;
@@ -187,7 +187,7 @@ namespace XYO::Win::CaptureDesktop {
 			return nullptr;
 		};
 
-		TPointer<Bmp> image = Bmp::newImageOwner((BmpImage *)imageFile);
+		TPointer<Bitmap> image = Bitmap::newImageOwner((BitmapImage *)imageFile);
 
 		DeleteDC(hdcDesktop);
 		DeleteDC(hdcCapture);
@@ -198,8 +198,8 @@ namespace XYO::Win::CaptureDesktop {
 	};
 
 	bool captureDesktopToPNGFile(char *fileName) {
-		TPointer<Bmp> image = captureDesktop();
-		TPointer<Bmp> image2 = image->convertTo32Bits();
+		TPointer<Bitmap> image = captureDesktop();
+		TPointer<Bitmap> image2 = image->convertTo32Bits();
 		image2->setAlpha32(0);
 		return Process::bmp32SavePng(image2, fileName);
 	};
