@@ -26,7 +26,7 @@
 #include <XYO/Win/DispatchVariant.hpp>
 #include <XYO/Win/Dispatch.hpp>
 #include <XYO/Win/Util.hpp>
-#include <XYO/Win/CaptureDesktop.hpp>
+#include <XYO/Win/Capture.hpp>
 #include <XYO/Win/Shell.hpp>
 
 #endif

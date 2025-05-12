@@ -29,7 +29,7 @@ namespace XYO::Win {
 		return messageManager_->processAllMessages();
 	};
 
-	void Application::setWndclassEx(WNDCLASSEX &){};
+	void Application::setWindowClassEx(WNDCLASSEX &){};
 
 	void Application::setCreateStruct(CREATESTRUCT &){};
 
@@ -41,7 +41,7 @@ namespace XYO::Win {
 		return 0;
 	};
 
-	void Application::initWndclassEx(WNDCLASSEX &wndclassEx) {
+	void Application::initWindowClassEx(WNDCLASSEX &wndclassEx) {
 		memset(&wndclassEx, 0, sizeof(wndclassEx));
 
 		wndclassEx.cbSize = sizeof(wndclassEx);
@@ -77,8 +77,8 @@ namespace XYO::Win {
 		WNDCLASSEX wndclassEx;
 		CREATESTRUCT createStruct;
 
-		initWndclassEx(wndclassEx);
-		setWndclassEx(wndclassEx);
+		initWindowClassEx(wndclassEx);
+		setWindowClassEx(wndclassEx);
 
 		if (regWndClass) {
 			if (!registerClass(wndclassEx)) {

@@ -30,11 +30,11 @@ namespace XYO::Win {
 
 			XYO_WIN_EXPORT int main(int cmdN, char *cmdS[]);
 
-			XYO_WIN_EXPORT virtual void setWndclassEx(WNDCLASSEX &);
+			XYO_WIN_EXPORT virtual void setWindowClassEx(WNDCLASSEX &);
 			XYO_WIN_EXPORT virtual void setCreateStruct(CREATESTRUCT &);
 			XYO_WIN_EXPORT virtual int setShowCmd(int);
 			XYO_WIN_EXPORT virtual int parseCommandLine(int cmdN, char *cmdS[]);
-			XYO_WIN_EXPORT virtual void initWndclassEx(WNDCLASSEX &wndclassEx);
+			XYO_WIN_EXPORT virtual void initWindowClassEx(WNDCLASSEX &wndclassEx);
 			XYO_WIN_EXPORT virtual void initCreateStruct(CREATESTRUCT &createStruct, WNDCLASSEX &wndclassEx);
 			XYO_WIN_EXPORT virtual bool newWindow(int cmdShow, bool regWndClass = false);
 

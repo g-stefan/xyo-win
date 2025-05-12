@@ -32,7 +32,7 @@ namespace XYO::Win::Util {
 		PSMessage psMessage = (PSMessage)lParam;
 		char buf[1024];
 		buf[0] = 0;
-		GetClassName(hwnd, buf, 1024);
+		GetClassNameA(hwnd, buf, 1024);
 		if (strcmp(buf, "Internet Explorer_Server") == 0) {
 			SendMessage(hwnd, psMessage->MessageId, psMessage->wParam, psMessage->lParam);
 		};

@@ -19,7 +19,7 @@ namespace XYO::Win {
 		isTrayIconic_ = false;
 	};
 
-	void SimpleApplication::setWndclassEx(WNDCLASSEX &wndclassEx) {
+	void SimpleApplication::setWindowClassEx(WNDCLASSEX &wndclassEx) {
 		HICON hIcon;
 		wndclassEx.lpszClassName = className_;
 

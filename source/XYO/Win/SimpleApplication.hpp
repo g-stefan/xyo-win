@@ -26,7 +26,7 @@ namespace XYO::Win {
 			XYO_WIN_EXPORT SimpleApplication();
 			inline ~SimpleApplication(){};
 
-			XYO_WIN_EXPORT void setWndclassEx(WNDCLASSEX &);
+			XYO_WIN_EXPORT void setWindowClassEx(WNDCLASSEX &);
 			XYO_WIN_EXPORT void setCreateStruct(CREATESTRUCT &);
 			XYO_WIN_EXPORT int main(int cmdN, char *cmdS[]);
 			XYO_WIN_EXPORT HWND getSingleInstanceWindow();
