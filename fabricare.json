@@ -19,7 +19,8 @@
 				"library" : [
 					"secur32",
 					"adsiid",
-					"activeds"
+					"activeds",
+					"netapi32"
 				]
 			}
 		]

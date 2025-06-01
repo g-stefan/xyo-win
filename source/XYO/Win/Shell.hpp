@@ -15,6 +15,8 @@ namespace XYO::Win::Shell {
 
 	XYO_WIN_EXPORT bool createLink(const char *outputFile, const char *workingDirectory, const char *path, const char *arguments, const char *iconPath, int iconIndex, bool runAsAdministrator);
 	XYO_WIN_EXPORT bool createLinkW(const wchar_t *outputFile, const wchar_t *workingDirectory, const wchar_t *path, const wchar_t *arguments, const wchar_t *iconPath, int iconIndex, bool runAsAdministrator);
+	XYO_WIN_EXPORT bool runAs(const char *username, const char *password, const char *command);
+	XYO_WIN_EXPORT bool runAsW(const wchar_t *username, const wchar_t *password, const wchar_t *command);
 
 };
 
