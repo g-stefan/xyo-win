@@ -18,103 +18,130 @@ namespace XYO::Win {
 			VARIANTARG var_;
 
 		public:
-			inline Variant::Variant() {
+			inline Variant() {
 				VariantInit(&var_);
 			};
 
-			inline Variant::~Variant() {
+			inline ~Variant() {
 				VariantClear(&var_);
 			};
 
-			inline Variant::Variant(const Variant &x) {
+			inline Variant(const Variant &x) {
 				VariantInit(&var_);
 				variantCopy(&var_, &x.var_);
 			};
 
-			inline Variant::Variant(const VARIANTARG &x) {
+			// Steal the payload, no deep copy or extra allocation
+			inline Variant(Variant &&x) noexcept {
+				var_ = x.var_;
+				VariantInit(&x.var_);
+			};
+
+			inline Variant(const VARIANTARG &x) {
 				VariantInit(&var_);
 				variantCopy(&var_, const_cast<VARIANTARG *>(&x));
 			};
 
-			inline Variant::Variant(VARIANT_BOOL x) {
+			inline Variant(VARIANT_BOOL x) {
 				VariantInit(&var_);
 				var_.vt = VT_BOOL;
 				var_.boolVal = x;
 			};
 
-			inline Variant::Variant(const VARIANT_BOOL *x) {
+			inline Variant(const VARIANT_BOOL *x) {
 				VariantInit(&var_);
 				var_.vt = VT_BYREF | VT_BOOL;
 				var_.pboolVal = const_cast<VARIANT_BOOL *>(x);
 			};
 
-			inline Variant::Variant(const VARIANTARG *x) {
+			inline Variant(const VARIANTARG *x) {
 				VariantInit(&var_);
 				var_.vt = VT_BYREF | VT_VARIANT;
 				var_.pvarVal = const_cast<VARIANTARG *>(x);
 			};
 
-			inline Variant::Variant(unsigned long int x) {
+			inline Variant(unsigned long int x) {
 				VariantInit(&var_);
 				var_.vt = VT_UI4;
 				var_.ulVal = x;
 			};
 
-			inline Variant::Variant(long int x) {
+			inline Variant(long int x) {
 				VariantInit(&var_);
 				var_.vt = VT_I4;
-				var_.ulVal = x;
+				var_.lVal = x;
 			};
 
-			inline Variant::Variant(const LPSTR x) {
-				BSTR theString;
-				int length;
+			// Same as operator=(int); without it Variant(5) is ambiguous
+			// (long int, unsigned long int and VARIANT_BOOL all match)
+			inline Variant(int x) {
+				VariantInit(&var_);
+				var_.vt = VT_INT;
+				var_.intVal = x;
+			};
 
-				length = MultiByteToWideChar(CP_ACP, 0, x, -1, 0, 0);
-				theString = new wchar_t[length];
-				MultiByteToWideChar(CP_ACP, 0, x, -1, theString, length);
-
+			inline Variant(LPCSTR x) {
 				VariantInit(&var_);
 				var_.vt = VT_BSTR;
-				var_.bstrVal = SysAllocString(theString);
-				delete[] theString;
+				var_.bstrVal = fromString(x);
 			};
 
-			inline Variant::Variant(const BSTR x) {
+			inline Variant(const BSTR x) {
 				VariantInit(&var_);
 				var_.vt = VT_BSTR;
 				var_.bstrVal = SysAllocString(x);
 			};
 
-			inline Variant::Variant(const IUnknown *x) {
+			inline Variant(const IUnknown *x) {
 				VariantInit(&var_);
 				var_.vt = VT_UNKNOWN;
 				var_.punkVal = const_cast<IUnknown *>(x);
-				var_.punkVal->AddRef();
+				if (var_.punkVal != NULL) {
+					var_.punkVal->AddRef();
+				};
 			};
 
-			inline Variant::Variant(const IDispatch *x) {
+			inline Variant(const IDispatch *x) {
 				VariantInit(&var_);
 				var_.vt = VT_DISPATCH;
 				var_.pdispVal = const_cast<IDispatch *>(x);
-				var_.pdispVal->AddRef();
+				if (var_.pdispVal != NULL) {
+					var_.pdispVal->AddRef();
+				};
 			};
 
-			inline Variant::Variant(const IUnknown **x) {
+			inline Variant(const IUnknown **x) {
 				VariantInit(&var_);
 				var_.vt = VT_BYREF | VT_UNKNOWN;
 				var_.ppunkVal = const_cast<IUnknown **>(x);
 			};
 
-			inline Variant::Variant(const IDispatch **x) {
+			inline Variant(const IDispatch **x) {
 				VariantInit(&var_);
 				var_.vt = VT_BYREF | VT_DISPATCH;
 				var_.ppdispVal = const_cast<IDispatch **>(x);
 			};
 
+			inline Variant &operator=(const Variant &x) {
+				if (this != &x) {
+					variantCopy(&var_, &x.var_);
+				};
+				return *this;
+			};
+
+			inline Variant &operator=(Variant &&x) noexcept {
+				if (this != &x) {
+					VariantClear(&var_);
+					var_ = x.var_;
+					VariantInit(&x.var_);
+				};
+				return *this;
+			};
+
 			inline Variant &operator=(const VARIANTARG &x) {
-				VariantClear(&var_);
-				variantCopy(&var_, const_cast<VARIANTARG *>(&x));
+				if (&var_ != &x) {
+					variantCopy(&var_, &x);
+				};
 				return *this;
 			};
 
@@ -150,20 +177,12 @@ namespace XYO::Win {
 				return *this;
 			};
 
-			inline Variant &operator=(const LPSTR x) {
-				BSTR theString;
-				int length;
-
-				length = MultiByteToWideChar(CP_ACP, 0, x, -1, 0, 0);
-				theString = new wchar_t[length];
-				MultiByteToWideChar(CP_ACP, 0, x, -1, theString, length);
-
+			inline Variant &operator=(LPCSTR x) {
+				BSTR value = fromString(x);
 				VariantClear(&var_);
 				VariantInit(&var_);
 				var_.vt = VT_BSTR;
-				var_.bstrVal = SysAllocString(theString);
-
-				delete[] theString;
+				var_.bstrVal = value;
 				return *this;
 			};
 
@@ -180,7 +199,9 @@ namespace XYO::Win {
 				VariantInit(&var_);
 				var_.vt = VT_UNKNOWN;
 				var_.punkVal = const_cast<IUnknown *>(x);
-				var_.punkVal->AddRef();
+				if (var_.punkVal != NULL) {
+					var_.punkVal->AddRef();
+				};
 				return *this;
 			};
 
@@ -189,7 +210,9 @@ namespace XYO::Win {
 				VariantInit(&var_);
 				var_.vt = VT_DISPATCH;
 				var_.pdispVal = const_cast<IDispatch *>(x);
-				var_.pdispVal->AddRef();
+				if (var_.pdispVal != NULL) {
+					var_.pdispVal->AddRef();
+				};
 				return *this;
 			};
 
@@ -226,6 +249,10 @@ namespace XYO::Win {
 			};
 
 			inline VARIANTARG *value() {
+				return &var_;
+			};
+
+			inline const VARIANTARG *value() const {
 				return &var_;
 			};
 
@@ -278,6 +305,25 @@ namespace XYO::Win {
 					VariantClear(pvargDest);
 					VariantInit(pvargDest);
 				};
+			};
+
+			// ANSI string to BSTR, one allocation, NULL is the empty BSTR (NULL)
+			static BSTR fromString(LPCSTR x) {
+				BSTR retV;
+				int length;
+
+				if (x == NULL) {
+					return NULL;
+				};
+				length = MultiByteToWideChar(CP_ACP, 0, x, -1, NULL, 0);
+				if (length <= 0) {
+					return NULL;
+				};
+				retV = SysAllocStringLen(NULL, length - 1);
+				if (retV != NULL) {
+					MultiByteToWideChar(CP_ACP, 0, x, -1, retV, length);
+				};
+				return retV;
 			};
 	};
 

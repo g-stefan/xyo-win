@@ -8,7 +8,7 @@
 #define XYO_WIN_TNOTIFY_HPP
 
 #ifndef XYO_WIN_INOTIFY_HPP
-#	include <XYO/Win/inotify.hpp>
+#	include <XYO/Win/INotify.hpp>
 #endif
 
 namespace XYO::Win {
@@ -36,7 +36,7 @@ namespace XYO::Win {
 			void notify();
 
 			inline void clear() {
-				object.memoryDelete();
+				object.deleteMemory();
 			};
 	};
 

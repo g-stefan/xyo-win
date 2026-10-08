@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #ifndef SECURITY_WIN32
 #	define SECURITY_WIN32
 #endif
@@ -30,9 +34,10 @@ namespace XYO::Win::Util {
 
 	static BOOL CALLBACK EnumChildProcIE_(HWND hwnd, LPARAM lParam) {
 		PSMessage psMessage = (PSMessage)lParam;
-		char buf[1024];
+		// A window class name is at most 256 characters (WNDCLASS limit)
+		char buf[256];
 		buf[0] = 0;
-		GetClassNameA(hwnd, buf, 1024);
+		GetClassNameA(hwnd, buf, sizeof(buf));
 		if (strcmp(buf, "Internet Explorer_Server") == 0) {
 			SendMessage(hwnd, psMessage->MessageId, psMessage->wParam, psMessage->lParam);
 		};

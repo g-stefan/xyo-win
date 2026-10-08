@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <stdio.h>
 
@@ -12,315 +16,156 @@
 
 namespace XYO::Win::Capture {
 
-	class MonitorInfo : public Object {
-			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(MonitorInfo);
+	static_assert(sizeof(BITMAPFILEHEADER) == sizeof(BitmapFileHeader), "BITMAPFILEHEADER layout");
+	static_assert(sizeof(BITMAPINFOHEADER) == sizeof(BitmapInfoHeader), "BITMAPINFOHEADER layout");
 
-		public:
-			HDC hdc;
-			RECT rect;
-
-			inline MonitorInfo() {
-				hdc = NULL;
-				memset(&rect, 0, sizeof(RECT));
-			};
-
-			inline ~MonitorInfo() {
-				if (hdc != NULL) {
-					DeleteDC(hdc);
-				};
-			};
-	};
-
-	static BOOL CALLBACK MonitorEnumProc(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData) {
-		TDynamicArray<MonitorInfo, 4, TMemorySystem> *monitorInfo = reinterpret_cast<TDynamicArray<MonitorInfo, 4, TMemorySystem> *>(dwData);
-
-		HDC hdcMonitorCopy = CreateCompatibleDC(hdcMonitor);
-		if (hdcMonitorCopy) {
-			int monitorWidth = GetDeviceCaps(hdcMonitor, HORZRES);
-			int monitorHeight = GetDeviceCaps(hdcMonitor, VERTRES);
-			HBITMAP bmpMonitor = CreateCompatibleBitmap(hdcMonitor, monitorWidth, monitorHeight);
-			if (bmpMonitor) {
-				HBITMAP bmpMonitorOld = (HBITMAP)SelectObject(hdcMonitorCopy, bmpMonitor);
-				if (bmpMonitorOld) {
-					if (BitBlt(hdcMonitorCopy, 0, 0, monitorWidth, monitorHeight, hdcMonitor, lprcMonitor->left, lprcMonitor->top, SRCCOPY | CAPTUREBLT)) {
-
-						int index_ = monitorInfo->length();
-						(monitorInfo->index(index_)).hdc = hdcMonitorCopy;
-						(monitorInfo->index(index_)).rect = *lprcMonitor;
-
-						DeleteDC(hdcMonitor);
-						DeleteObject(bmpMonitor);
-
-						return TRUE;
-					};
-					DeleteObject(bmpMonitorOld);
-				};
-				DeleteObject(bmpMonitor);
-			};
-			DeleteDC(hdcMonitorCopy);
-		};
-
-		DeleteDC(hdcMonitor);
-		return TRUE;
-	};
-
-	TPointer<Bitmap> captureDesktop() {
-		HDC hdcDesktop;
+	// Copy a rectangle of hdcSource to a new 32 bits bitmap (BI_RGB, bottom-up)
+	static TPointer<Bitmap> captureDC(HDC hdcSource, int x, int y, int width, int height, DWORD rop) {
 		HDC hdcCapture;
 		HBITMAP bmpCapture;
 		HBITMAP bmpCaptureOld;
-		TDynamicArray<MonitorInfo, 4, TMemorySystem> monitorInfo;
-		int screenWidth = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-		int screenHeight = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-		int minLeft = 0;
-		int minTop = 0;
-		int k;
+		bool isOk;
+
+		if ((width <= 0) || (height <= 0)) {
+			return nullptr;
+		};
+
+		hdcCapture = CreateCompatibleDC(hdcSource);
+		if (hdcCapture == NULL) {
+			return nullptr;
+		};
+
+		bmpCapture = CreateCompatibleBitmap(hdcSource, width, height);
+		if (bmpCapture == NULL) {
+			DeleteDC(hdcCapture);
+			return nullptr;
+		};
+
+		bmpCaptureOld = (HBITMAP)SelectObject(hdcCapture, bmpCapture);
+		if (bmpCaptureOld == NULL) {
+			DeleteObject(bmpCapture);
+			DeleteDC(hdcCapture);
+			return nullptr;
+		};
+
+		isOk = BitBlt(hdcCapture, 0, 0, width, height, hdcSource, x, y, rop);
+
+		// GetDIBits requires the bitmap not selected into a device context
+		SelectObject(hdcCapture, bmpCaptureOld);
+
+		if (!isOk) {
+			DeleteObject(bmpCapture);
+			DeleteDC(hdcCapture);
+			return nullptr;
+		};
+
+		// 32 bits rows are always DWORD aligned, no palette
+		size_t imageSize = (size_t)width * 4 * (size_t)height;
+		size_t offBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+		size_t fileSize = offBits + imageSize;
+		if (fileSize > 0xFFFFFFFFu) {
+			DeleteObject(bmpCapture);
+			DeleteDC(hdcCapture);
+			return nullptr;
+		};
+
+		uint8_t *imageFile = new uint8_t[fileSize];
+		BITMAPFILEHEADER *fileHeader = (BITMAPFILEHEADER *)imageFile;
+		BITMAPINFO *info = (BITMAPINFO *)(imageFile + sizeof(BITMAPFILEHEADER));
+
+		memset(imageFile, 0, offBits);
+		fileHeader->bfType = XYO_PIXEL32_BITMAP_FILE_ID;
+		fileHeader->bfSize = (DWORD)fileSize;
+		fileHeader->bfOffBits = (DWORD)offBits;
+		info->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+		info->bmiHeader.biWidth = width;
+		info->bmiHeader.biHeight = height;
+		info->bmiHeader.biPlanes = 1;
+		info->bmiHeader.biBitCount = 32;
+		info->bmiHeader.biCompression = BI_RGB;
+		info->bmiHeader.biSizeImage = (DWORD)imageSize;
+
+		// For 32 bits BI_RGB GetDIBits does not write a color table,
+		// the header in the image is the BITMAPINFO it needs
+		isOk = (GetDIBits(hdcCapture, bmpCapture, 0, height, imageFile + offBits, info, DIB_RGB_COLORS) == height);
+
+		DeleteObject(bmpCapture);
+		DeleteDC(hdcCapture);
+
+		if (!isOk) {
+			delete[] imageFile;
+			return nullptr;
+		};
+
+		return Bitmap::newImageOwner((BitmapImage *)imageFile);
+	};
+
+	TPointer<Bitmap> captureDesktop() {
+		TPointer<Bitmap> retV;
+		HDC hdcDesktop;
 
 		hdcDesktop = GetDC(NULL);
 		if (hdcDesktop == NULL) {
 			return nullptr;
 		};
 
-		hdcCapture = CreateCompatibleDC(hdcDesktop);
-		if (hdcCapture == NULL) {
-			DeleteDC(hdcDesktop);
-			return nullptr;
-		};
+		// The screen DC covers the whole virtual screen (all monitors),
+		// coordinates are relative to the primary monitor
+		retV = captureDC(hdcDesktop,
+		                 GetSystemMetrics(SM_XVIRTUALSCREEN),
+		                 GetSystemMetrics(SM_YVIRTUALSCREEN),
+		                 GetSystemMetrics(SM_CXVIRTUALSCREEN),
+		                 GetSystemMetrics(SM_CYVIRTUALSCREEN),
+		                 SRCCOPY | CAPTUREBLT);
 
-		bmpCapture = CreateCompatibleBitmap(hdcDesktop, screenWidth, screenHeight);
-		if (bmpCapture == NULL) {
-			DeleteDC(hdcDesktop);
-			DeleteDC(hdcCapture);
-			return nullptr;
-		};
-
-		bmpCaptureOld = (HBITMAP)SelectObject(hdcCapture, bmpCapture);
-		if (bmpCaptureOld == NULL) {
-			DeleteDC(hdcDesktop);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			return nullptr;
-		};
-
-		if (!EnumDisplayMonitors(hdcDesktop, NULL, MonitorEnumProc, reinterpret_cast<LPARAM>(&monitorInfo))) {
-			SelectObject(hdcCapture, bmpCaptureOld);
-			DeleteDC(hdcDesktop);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			return nullptr;
-		};
-
-		for (k = 0; k < monitorInfo.length(); ++k) {
-			if (monitorInfo[k].rect.left < minLeft) {
-				minLeft = monitorInfo[k].rect.left;
-			};
-			if (monitorInfo[k].rect.top < minTop) {
-				minTop = monitorInfo[k].rect.top;
-			};
-		};
-
-		for (k = 0; k < monitorInfo.length(); ++k) {
-			if (!BitBlt(hdcCapture, monitorInfo[k].rect.left - minLeft, monitorInfo[k].rect.top - minTop, monitorInfo[k].rect.right - monitorInfo[k].rect.left, monitorInfo[k].rect.bottom - monitorInfo[k].rect.top, monitorInfo[k].hdc, 0, 0, SRCCOPY)) {
-				SelectObject(hdcCapture, bmpCaptureOld);
-				DeleteDC(hdcDesktop);
-				DeleteDC(hdcCapture);
-				DeleteObject(bmpCapture);
-				return nullptr;
-			};
-		};
-
-		SelectObject(hdcCapture, bmpCaptureOld);
-
-		uint8_t *imageBI = new uint8_t[sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD)];
-		memset(imageBI, 0, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD));
-		((LPBITMAPINFO)imageBI)->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-		((LPBITMAPINFO)imageBI)->bmiHeader.biHeight = screenHeight;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biWidth = screenWidth;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biPlanes = 1;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biBitCount = 32;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biCompression = BI_RGB;
-		if (!GetDIBits(hdcCapture, bmpCapture, 0, screenHeight, NULL, (LPBITMAPINFO)imageBI, DIB_RGB_COLORS)) {
-			DeleteDC(hdcDesktop);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			return nullptr;
-		};
-
-		if (((LPBITMAPINFO)imageBI)->bmiHeader.biCompression != BI_RGB) {
-			DeleteDC(hdcDesktop);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			delete[] imageBI;
-			return nullptr;
-		};
-
-		DWORD imageSize = ((LPBITMAPINFO)imageBI)->bmiHeader.biSizeImage;
-		DWORD imageBits = (((LPBITMAPINFO)imageBI)->bmiHeader.biPlanes) * (((LPBITMAPINFO)imageBI)->bmiHeader.biBitCount);
-		DWORD palSize = 0;
-		switch (imageBits) {
-		case 1:
-			palSize = 2;
-			break;
-		case 4:
-			palSize = 16;
-			break;
-		case 8:
-			palSize = 256;
-			break;
-		};
-		DWORD imageFileSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + palSize * sizeof(RGBQUAD) + imageSize;
-		uint8_t *imageFile = new uint8_t[imageFileSize];
-		memset(imageFile, 0, imageFileSize);
-		((BITMAPFILEHEADER *)imageFile)->bfType = XYO_PIXEL32_BITMAP_FILE_ID;
-		((BITMAPFILEHEADER *)imageFile)->bfReserved1 = 0;
-		((BITMAPFILEHEADER *)imageFile)->bfReserved2 = 0;
-		((BITMAPFILEHEADER *)imageFile)->bfSize = imageSize;
-		((BITMAPFILEHEADER *)imageFile)->bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + palSize * sizeof(RGBQUAD);
-		memcpy((((BITMAPFILEHEADER *)imageFile) + 1), imageBI, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD));
-
-		if (!GetDIBits(hdcCapture, bmpCapture, 0, screenHeight, &imageFile[((BITMAPFILEHEADER *)imageFile)->bfOffBits], (LPBITMAPINFO)imageBI, DIB_RGB_COLORS)) {
-			DeleteDC(hdcDesktop);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			delete[] imageBI;
-			delete[] imageFile;
-			return nullptr;
-		};
-
-		TPointer<Bitmap> image = Bitmap::newImageOwner((BitmapImage *)imageFile);
-
-		DeleteDC(hdcDesktop);
-		DeleteDC(hdcCapture);
-		DeleteObject(bmpCapture);
-		delete[] imageBI;
-
-		return image;
+		ReleaseDC(NULL, hdcDesktop);
+		return retV;
 	};
 
-	bool captureDesktopToPNGFile(char *fileName) {
+	bool captureDesktopToPNGFile(const char *fileName) {
 		TPointer<Bitmap> image = captureDesktop();
+		if (image.value() == nullptr) {
+			return false;
+		};
 		TPointer<Bitmap> image2 = image->convertTo32Bits();
-		image2->setAlpha32(0);
+		if (image2.value() == nullptr) {
+			return false;
+		};
+		image2->setAlpha32(255);
 		return Process::bitmap32SavePNG(image2, fileName);
 	};
 
+	// Client area of the window
 	TPointer<Bitmap> captureWindow(HWND hwnd) {
+		TPointer<Bitmap> retV;
 		HDC hdcWindow;
-		HDC hdcCapture;
-		HBITMAP bmpCapture;
-		HBITMAP bmpCaptureOld;
-		int windowWidth;
-		int windowHeight;
+		RECT rect;
+
+		if (!GetClientRect(hwnd, &rect)) {
+			return nullptr;
+		};
 
 		hdcWindow = GetDC(hwnd);
 		if (hdcWindow == NULL) {
 			return nullptr;
 		};
 
-		windowWidth = GetDeviceCaps(hdcWindow, HORZRES);
-		windowHeight = GetDeviceCaps(hdcWindow, VERTRES);
+		retV = captureDC(hdcWindow, 0, 0, rect.right - rect.left, rect.bottom - rect.top, SRCCOPY);
 
-		hdcCapture = CreateCompatibleDC(hdcWindow);
-		if (hdcCapture == NULL) {
-			DeleteDC(hdcWindow);
-			return nullptr;
-		};
-
-		bmpCapture = CreateCompatibleBitmap(hdcWindow, windowWidth, windowHeight);
-		if (bmpCapture == NULL) {
-			DeleteDC(hdcWindow);
-			DeleteDC(hdcCapture);
-			return nullptr;
-		};
-
-		bmpCaptureOld = (HBITMAP)SelectObject(hdcCapture, bmpCapture);
-		if (bmpCaptureOld == NULL) {
-			DeleteDC(hdcWindow);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			return nullptr;
-		};
-
-		if (!BitBlt(hdcCapture, 0, 0, windowWidth, windowHeight, hdcWindow, 0, 0, SRCCOPY)) {
-			SelectObject(hdcCapture, bmpCaptureOld);
-			DeleteDC(hdcWindow);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			return nullptr;
-		};
-
-		SelectObject(hdcCapture, bmpCaptureOld);
-
-		uint8_t *imageBI = new uint8_t[sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD)];
-		memset(imageBI, 0, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD));
-		((LPBITMAPINFO)imageBI)->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-		((LPBITMAPINFO)imageBI)->bmiHeader.biHeight = windowHeight;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biWidth = windowWidth;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biPlanes = 1;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biBitCount = 32;
-		((LPBITMAPINFO)imageBI)->bmiHeader.biCompression = BI_RGB;
-		if (!GetDIBits(hdcCapture, bmpCapture, 0, windowHeight, NULL, (LPBITMAPINFO)imageBI, DIB_RGB_COLORS)) {
-			DeleteDC(hdcWindow);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			return nullptr;
-		};
-
-		if (((LPBITMAPINFO)imageBI)->bmiHeader.biCompression != BI_RGB) {
-			DeleteDC(hdcWindow);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			delete[] imageBI;
-			return nullptr;
-		};
-
-		DWORD imageSize = ((LPBITMAPINFO)imageBI)->bmiHeader.biSizeImage;
-		DWORD imageBits = (((LPBITMAPINFO)imageBI)->bmiHeader.biPlanes) * (((LPBITMAPINFO)imageBI)->bmiHeader.biBitCount);
-		DWORD palSize = 0;
-		switch (imageBits) {
-		case 1:
-			palSize = 2;
-			break;
-		case 4:
-			palSize = 16;
-			break;
-		case 8:
-			palSize = 256;
-			break;
-		};
-		DWORD imageFileSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + palSize * sizeof(RGBQUAD) + imageSize;
-		uint8_t *imageFile = new uint8_t[imageFileSize];
-		memset(imageFile, 0, imageFileSize);
-		((BITMAPFILEHEADER *)imageFile)->bfType = XYO_PIXEL32_BITMAP_FILE_ID;
-		((BITMAPFILEHEADER *)imageFile)->bfReserved1 = 0;
-		((BITMAPFILEHEADER *)imageFile)->bfReserved2 = 0;
-		((BITMAPFILEHEADER *)imageFile)->bfSize = imageSize;
-		((BITMAPFILEHEADER *)imageFile)->bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + palSize * sizeof(RGBQUAD);
-		memcpy((((BITMAPFILEHEADER *)imageFile) + 1), imageBI, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD));
-
-		if (!GetDIBits(hdcCapture, bmpCapture, 0, windowHeight, &imageFile[((BITMAPFILEHEADER *)imageFile)->bfOffBits], (LPBITMAPINFO)imageBI, DIB_RGB_COLORS)) {
-			DeleteDC(hdcWindow);
-			DeleteDC(hdcCapture);
-			DeleteObject(bmpCapture);
-			delete[] imageBI;
-			delete[] imageFile;
-			return nullptr;
-		};
-
-		TPointer<Bitmap> image = Bitmap::newImageOwner((BitmapImage *)imageFile);
-
-		DeleteDC(hdcWindow);
-		DeleteDC(hdcCapture);
-		DeleteObject(bmpCapture);
-		delete[] imageBI;
-
-		return image;
+		ReleaseDC(hwnd, hdcWindow);
+		return retV;
 	};
 
-	bool captureWindowToPNGFile(HWND hwnd, char *fileName) {
+	bool captureWindowToPNGFile(HWND hwnd, const char *fileName) {
 		TPointer<Bitmap> image = captureWindow(hwnd);
+		if (image.value() == nullptr) {
+			return false;
+		};
 		TPointer<Bitmap> image2 = image->convertTo32Bits();
-		image2->setAlpha32(0);
+		if (image2.value() == nullptr) {
+			return false;
+		};
+		image2->setAlpha32(255);
 		return Process::bitmap32SavePNG(image2, fileName);
 	};
 

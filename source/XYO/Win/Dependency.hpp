@@ -19,19 +19,16 @@
 #include <ole2.h>
 #include <shlobj.h>
 #include <Shobjidl.h>
-#include <docobj.h>
-#include <mshtml.h>
-#include <MsHtmHst.h>
-#include <exdisp.h>
-#include <exdispid.h>
-#include <servprov.h>
+// iads.h is needed by User.hpp (IADsUser in its public interface).
 #include <iads.h>
 #include <adshlp.h>
-#include <wininet.h>
-#include <Iptypes.h>
-#include <Iphlpapi.h>
 #include <Security.h>
 #include <shellapi.h>
+
+// The Internet Explorer / MSHTML document-hosting headers (docobj.h, mshtml.h,
+// MsHtmHst.h, exdisp.h, exdispid.h, servprov.h, wininet.h) are large and only
+// the discontinued WebBrowser needs them, so they are included by
+// WebBrowser.hpp and its .cpp instead of by every consumer of this library.
 
 #ifndef XYO_SYSTEM_HPP
 #	include <XYO/System.hpp>

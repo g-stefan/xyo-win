@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <string.h>
 #include <oleauto.h>
@@ -20,10 +24,13 @@ namespace XYO::Win {
 	// IUnknown
 
 	HRESULT STDMETHODCALLTYPE Dispatch::QueryInterface(REFIID riid, LPVOID *ppvObj) {
-		if (memcmp(&riid, &IID_IUnknown, sizeof(GUID)) == 0) {
+		if (ppvObj == NULL) {
+			return (E_POINTER);
+		};
+		if (IsEqualGUID(riid, IID_IUnknown)) {
 			AddRef();
 			*ppvObj = static_cast<IUnknown *>(this);
-		} else if (memcmp(&riid, &IID_IDispatch, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IDispatch)) {
 			AddRef();
 			*ppvObj = static_cast<IDispatch *>(this);
 		} else {
@@ -53,13 +60,28 @@ namespace XYO::Win {
 
 	HRESULT STDMETHODCALLTYPE Dispatch::GetIDsOfNames(REFIID, LPOLESTR *names, UINT count, LCID, DISPID *outID) {
 		UINT k;
-		for (k = 0; k < count; ++k) {
-			outID[k] = 0;
+		HRESULT retV;
+		if ((names == NULL) || (outID == NULL)) {
+			return (E_INVALIDARG);
 		};
-		return invokeAndId(0, 0, NULL, NULL, names, count, outID);
+		for (k = 0; k < count; ++k) {
+			outID[k] = DISPID_UNKNOWN;
+		};
+		retV = invokeAndId(0, 0, NULL, NULL, names, count, outID);
+		if (retV == S_FALSE) {
+			// No table knows the name
+			return DISP_E_UNKNOWNNAME;
+		};
+		return retV;
 	};
 
 	HRESULT STDMETHODCALLTYPE Dispatch::Invoke(DISPID dispIdMember, REFIID, LCID, WORD, DISPPARAMS *pDispParams, VARIANT *pVarResult, EXCEPINFO *, UINT *) {
+		// The dispatch tables read pDispParams->cArgs / rgvarg, a caller
+		// passing NULL for a call without arguments must not crash them
+		DISPPARAMS noParams = {NULL, NULL, 0, 0};
+		if (pDispParams == NULL) {
+			pDispParams = &noParams;
+		};
 		return invokeAndId(1, dispIdMember, pDispParams, pVarResult, NULL, 0, NULL);
 	};
 

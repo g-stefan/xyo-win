@@ -24,6 +24,9 @@ namespace XYO::Win {
 
 			XYO_PLATFORM_DISALLOW_COPY_ASSIGN_MOVE(Function);
 
+			// arguments in call order (first argument first)
+			XYO_WIN_EXPORT HRESULT invokeWithArguments_(const Variant *const *arguments, UINT count);
+
 		public:
 			XYO_WIN_EXPORT Function();
 			XYO_WIN_EXPORT ~Function();
@@ -62,14 +65,14 @@ namespace XYO::Win {
 			};
 
 			XYO_WIN_EXPORT HRESULT invoke();
-			XYO_WIN_EXPORT HRESULT invoke(Variant);
-			XYO_WIN_EXPORT HRESULT invoke(Variant, Variant);
-			XYO_WIN_EXPORT HRESULT invoke(Variant, Variant, Variant);
-			XYO_WIN_EXPORT HRESULT invoke(Variant, Variant, Variant, Variant);
-			XYO_WIN_EXPORT HRESULT invoke(Variant, Variant, Variant, Variant, Variant);
-			XYO_WIN_EXPORT HRESULT invoke(Variant, Variant, Variant, Variant, Variant, Variant);
-			XYO_WIN_EXPORT HRESULT invoke(Variant, Variant, Variant, Variant, Variant, Variant, Variant);
-			XYO_WIN_EXPORT HRESULT invoke(Variant, Variant, Variant, Variant, Variant, Variant, Variant, Variant);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &, const Variant &);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &, const Variant &, const Variant &);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &, const Variant &, const Variant &, const Variant &);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &, const Variant &, const Variant &, const Variant &, const Variant &);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &, const Variant &, const Variant &, const Variant &, const Variant &, const Variant &);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &, const Variant &, const Variant &, const Variant &, const Variant &, const Variant &, const Variant &);
+			XYO_WIN_EXPORT HRESULT invoke(const Variant &, const Variant &, const Variant &, const Variant &, const Variant &, const Variant &, const Variant &, const Variant &);
 	};
 
 };

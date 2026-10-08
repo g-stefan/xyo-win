@@ -1,5 +1,6 @@
 {
 	"solution": {
+		"namespace" : "xyo",
 		"name" : "xyo-win",
 		"type" : "xyo-cpp",
 		"projects": [
@@ -21,6 +22,42 @@
 					"adsiid",
 					"activeds",
 					"netapi32"
+				]
+			},
+			{
+				"name" : "test.01",
+				"make" : "exe",
+				"category" : "test",
+				"SPDX-License-Identifier": "Unlicense",
+				"dependency" : [
+					"xyo-win"
+				]
+			},
+			{
+				"name" : "test.02",
+				"make" : "exe",
+				"category" : "test",
+				"SPDX-License-Identifier": "Unlicense",
+				"dependency" : [
+					"xyo-win"
+				]
+			},
+			{
+				"name" : "test.03",
+				"make" : "exe",
+				"category" : "test",
+				"SPDX-License-Identifier": "Unlicense",
+				"dependency" : [
+					"xyo-win"
+				]
+			},
+			{
+				"name" : "test.04",
+				"make" : "exe",
+				"category" : "test",
+				"SPDX-License-Identifier": "Unlicense",
+				"dependency" : [
+					"xyo-win"
 				]
 			}
 		]

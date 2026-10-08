@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <string.h>
 #include <stdio.h>
@@ -39,8 +43,9 @@ namespace XYO::Win {
 			wndApp = FindWindowExA(NULL, NULL, className_, windowName_);
 			if (wndApp) {
 				if (!isTrayIconic_) {
+					// SW_SHOW leaves a minimized window minimized
+					ShowWindow(wndApp, IsIconic(wndApp) ? SW_RESTORE : SW_SHOW);
 					SetForegroundWindow(wndApp);
-					ShowWindow(wndApp, SW_SHOW);
 					SetFocus(wndApp);
 				};
 				return 0;

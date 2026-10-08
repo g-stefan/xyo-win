@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <string.h>
 #include <stdio.h>
@@ -49,8 +53,8 @@ namespace XYO::Win {
 		wndclassEx.cbClsExtra = 0;
 		wndclassEx.cbWndExtra = 0;
 		wndclassEx.hInstance = GetModuleHandle(NULL);
-		wndclassEx.hIcon = LoadIcon(wndclassEx.hInstance, IDI_APPLICATION);
-		wndclassEx.hCursor = LoadCursor(wndclassEx.hInstance, IDC_ARROW);
+		wndclassEx.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+		wndclassEx.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wndclassEx.hbrBackground = (HBRUSH)(COLOR_APPWORKSPACE + 1);
 		wndclassEx.lpszMenuName = NULL;
 		wndclassEx.lpszClassName = "Class.Unknown";

@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <ole2.h>
 #include <stdio.h>
@@ -21,20 +25,21 @@ namespace XYO::Win::Ole {
 	};
 
 	XOle::XOle() {
-		isValid = false;
-		HRESULT initialized;
-		initialized = OleInitialize(NULL);
-		if (initialized != OLE_E_WRONGCOMPOBJ) {
-			isValid = true;
-		};
+		// S_OK or S_FALSE (already initialized on this thread) must be balanced
+		// by OleUninitialize; any failure (RPC_E_CHANGED_MODE when the thread
+		// is in the multithreaded apartment, OLE_E_WRONGCOMPOBJ, ...) must not.
+		isValid = SUCCEEDED(OleInitialize(NULL));
 	};
 
 	XOle::~XOle() {
-		OleUninitialize();
+		if (isValid) {
+			OleUninitialize();
+		};
 	};
 
 	bool isValid() {
-		return (TSingletonProcess<XOle>::getValue())->isValid;
+		// OLE is initialized per thread (apartment)
+		return (TSingletonThread<XOle>::getValue())->isValid;
 	};
 
 };

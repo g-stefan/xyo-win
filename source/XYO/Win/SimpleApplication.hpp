@@ -15,8 +15,8 @@ namespace XYO::Win {
 
 	class SimpleApplication : public virtual Application {
 		protected:
-			LPSTR className_;
-			LPSTR windowName_;
+			LPCSTR className_;
+			LPCSTR windowName_;
 			bool singleInstance_;
 			bool isTrayIconic_;
 

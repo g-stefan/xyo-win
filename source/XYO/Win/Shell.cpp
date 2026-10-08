@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #ifndef SECURITY_WIN32
 #	define SECURITY_WIN32
 #endif
@@ -30,14 +34,30 @@
 
 namespace XYO::Win::Shell {
 
-	bool createLink(const char *outputFile, const char *workingDirectory, const char *path, const char *arguments, const char *iconPath, int iconIndex, bool runAsAdministrator) {
-		StringUTF16 _outputFile = TUTFConvert<utf16, utf8>::from(outputFile);
-		StringUTF16 _workingDirectory = TUTFConvert<utf16, utf8>::from(workingDirectory);
-		StringUTF16 _path = TUTFConvert<utf16, utf8>::from(path);
-		StringUTF16 _arguments = TUTFConvert<utf16, utf8>::from(arguments);
-		StringUTF16 _iconPath = TUTFConvert<utf16, utf8>::from(iconPath);
+	// NULL stays NULL (optional argument), the UTF-8 conversion does not
+	// accept a null pointer.
+	static StringUTF16 fromUTF8_(const char *value) {
+		if (value == nullptr) {
+			return StringUTF16();
+		};
+		return TUTFConvert<utf16, utf8>::from(value);
+	};
 
-		return createLinkW((const wchar_t *)_outputFile.value(), (const wchar_t *)_workingDirectory.value(), (const wchar_t *)_path.value(), (const wchar_t *)_arguments.value(), (const wchar_t *)_iconPath.value(), iconIndex, runAsAdministrator);
+	static const wchar_t *valueOrNull_(const StringUTF16 &converted, const char *value) {
+		if (value == nullptr) {
+			return nullptr;
+		};
+		return (const wchar_t *)converted.value();
+	};
+
+	bool createLink(const char *outputFile, const char *workingDirectory, const char *path, const char *arguments, const char *iconPath, int iconIndex, bool runAsAdministrator) {
+		StringUTF16 _outputFile = fromUTF8_(outputFile);
+		StringUTF16 _workingDirectory = fromUTF8_(workingDirectory);
+		StringUTF16 _path = fromUTF8_(path);
+		StringUTF16 _arguments = fromUTF8_(arguments);
+		StringUTF16 _iconPath = fromUTF8_(iconPath);
+
+		return createLinkW(valueOrNull_(_outputFile, outputFile), valueOrNull_(_workingDirectory, workingDirectory), valueOrNull_(_path, path), valueOrNull_(_arguments, arguments), valueOrNull_(_iconPath, iconPath), iconIndex, runAsAdministrator);
 	};
 
 	bool createLinkW(const wchar_t *outputFile, const wchar_t *workingDirectory, const wchar_t *path, const wchar_t *arguments, const wchar_t *iconPath, int iconIndex, bool runAsAdministrator) {
@@ -46,13 +66,20 @@ namespace XYO::Win::Shell {
 		IShellLinkDataList *pShellLinkDataList = nullptr;
 		DWORD dwFlags = 0;
 
-		if (!Ole::isValid()) {
+		// The link file and its target are required, the other fields are
+		// optional (NULL = not set)
+		if ((outputFile == nullptr) || (path == nullptr)) {
 			return false;
 		};
 
+		// Initialize OLE on this thread when not done yet; a thread already
+		// in the multithreaded apartment can not be switched (isValid is
+		// false) but can create the shell link as well.
+		Ole::isValid();
+
 		if (CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLinkW, (void **)&pShellLink) == S_OK) {
 
-			if (pShellLink->SetWorkingDirectory(workingDirectory) != S_OK) {
+			if ((workingDirectory != nullptr) && (pShellLink->SetWorkingDirectory(workingDirectory) != S_OK)) {
 				pShellLink->Release();
 				return false;
 			};
@@ -62,12 +89,12 @@ namespace XYO::Win::Shell {
 				return false;
 			};
 
-			if (pShellLink->SetArguments(arguments) != S_OK) {
+			if ((arguments != nullptr) && (pShellLink->SetArguments(arguments) != S_OK)) {
 				pShellLink->Release();
 				return false;
 			};
 
-			if (pShellLink->SetIconLocation(iconPath, iconIndex) != S_OK) {
+			if ((iconPath != nullptr) && (pShellLink->SetIconLocation(iconPath, iconIndex) != S_OK)) {
 				pShellLink->Release();
 				return false;
 			};
@@ -101,17 +128,12 @@ namespace XYO::Win::Shell {
 				return false;
 			};
 
-			wchar_t *outputFileS;
-			outputFileS = (wchar_t *)SysAllocString((BSTR)outputFile);
-
-			if (pPersistFile->Save(outputFileS, TRUE) != S_OK) {
-				SysFreeString((BSTR)outputFileS);
+			// IPersistFile::Save takes a plain wide string, not a BSTR
+			if (pPersistFile->Save(outputFile, TRUE) != S_OK) {
 				pPersistFile->Release();
 				pShellLink->Release();
 				return false;
 			};
-
-			SysFreeString((BSTR)outputFileS);
 
 			pPersistFile->Release();
 			pShellLink->Release();
@@ -123,23 +145,25 @@ namespace XYO::Win::Shell {
 	};
 
 	bool runAs(const char *username, const char *password, const char *command) {
-		StringUTF16 _username = TUTFConvert<utf16, utf8>::from(username);
-		StringUTF16 _password = TUTFConvert<utf16, utf8>::from(password);
-		StringUTF16 _command = TUTFConvert<utf16, utf8>::from(command);
+		StringUTF16 _username = fromUTF8_(username);
+		StringUTF16 _password = fromUTF8_(password);
+		StringUTF16 _command = fromUTF8_(command);
 
-		return runAsW((const wchar_t *)_username.value(), (const wchar_t *)_password.value(), (const wchar_t *)_command.value());
+		return runAsW(valueOrNull_(_username, username), valueOrNull_(_password, password), valueOrNull_(_command, command));
 	};
 
 	bool runAsW(const wchar_t *username, const wchar_t *password, const wchar_t *command) {
 
 		STARTUPINFOW startupInfo;
 		PROCESS_INFORMATION processInfo;
-		STARTUPINFOEXW startupInfoEx;
-		PROFILEINFOW profileInfo;
 
-		HANDLE logonToken;
-		wchar_t computerName[1024];
-		DWORD computerNameLn;
+		wchar_t *commandLine;
+		size_t commandLength;
+		BOOL created;
+
+		if ((username == NULL) || (command == NULL)) {
+			return false;
+		};
 
 		memset(&startupInfo, 0, sizeof(startupInfo));
 		memset(&processInfo, 0, sizeof(processInfo));
@@ -148,31 +172,38 @@ namespace XYO::Win::Shell {
 		startupInfo.dwFlags = STARTF_USESHOWWINDOW;
 		startupInfo.wShowWindow = SW_SHOW;
 
-		computerNameLn = 1024;
-		computerName[0] = 0;
-		GetComputerNameExW(ComputerNameNetBIOS, computerName, &computerNameLn);
+		// CreateProcessWithLogonW may modify lpCommandLine in place, so it must
+		// point at a writable buffer, never at a string literal.
+		commandLength = wcslen(command) + 1;
+		commandLine = new wchar_t[commandLength];
+		wcscpy_s(commandLine, commandLength, command);
 
-		if (!LogonUserW((BSTR)username,
-		                computerName,
-		                (BSTR)password,
-		                LOGON32_LOGON_INTERACTIVE,
-		                LOGON32_PROVIDER_DEFAULT,
-		                &logonToken)) {
-			return false;
-		};
-
-		return CreateProcessWithLogonW(
-		    (BSTR)username,
-		    computerName,
-		    (BSTR)password,
+		// Passing NULL as the domain lets Windows resolve local, UPN and
+		// DOMAIN\user names itself. CreateProcessWithLogonW validates the
+		// credentials on its own, no separate LogonUser is needed (a second
+		// logon would double the count against the account lockout policy).
+		created = CreateProcessWithLogonW(
+		    username,
+		    NULL,
+		    password,
 		    LOGON_WITH_PROFILE,
 		    NULL,
-		    (BSTR)command,
+		    commandLine,
 		    0,
 		    NULL,
 		    NULL,
 		    &startupInfo,
 		    &processInfo);
+
+		delete[] commandLine;
+
+		if (!created) {
+			return false;
+		};
+
+		CloseHandle(processInfo.hProcess);
+		CloseHandle(processInfo.hThread);
+		return true;
 	};
 
 };

@@ -14,9 +14,9 @@
 namespace XYO::Win::Capture {
 	
 	XYO_WIN_EXPORT TPointer<Bitmap> captureDesktop();
-	XYO_WIN_EXPORT bool captureDesktopToPNGFile(char *fileName);
+	XYO_WIN_EXPORT bool captureDesktopToPNGFile(const char *fileName);
 	XYO_WIN_EXPORT TPointer<Bitmap> captureWindow(HWND hwnd);
-	XYO_WIN_EXPORT bool captureWindowToPNGFile(char *fileName);
+	XYO_WIN_EXPORT bool captureWindowToPNGFile(HWND hwnd, const char *fileName);
 	
 };
 

@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <ole2.h>
 #include <shlobj.h>
@@ -35,58 +39,64 @@ namespace XYO::Win::Discontinued {
 	// IUnknown
 
 	HRESULT WebBrowser::QueryInterface(REFIID riid, LPVOID *ppvObj) {
-		if (memcmp(&riid, &IID_IUnknown, sizeof(GUID)) == 0) {
+		if (IsEqualGUID(riid, IID_IUnknown)) {
+			AddRef();
+			// WebBrowser derives from many IUnknown-based interfaces, so a direct
+			// cast to IUnknown* is ambiguous; route it through a fixed interface
+			// (IStorage) to give the object a single, stable IUnknown identity.
+			*ppvObj = static_cast<IUnknown *>(static_cast<IStorage *>(this));
+		} else if (IsEqualGUID(riid, IID_IStorage)) {
 			AddRef();
 			*ppvObj = static_cast<IStorage *>(this);
-		} else if (memcmp(&riid, &IID_IStorage, sizeof(GUID)) == 0) {
-			AddRef();
-			*ppvObj = static_cast<IStorage *>(this);
-		} else if (memcmp(&riid, &IID_IOleClientSite, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IOleClientSite)) {
 			AddRef();
 			*ppvObj = static_cast<IOleClientSite *>(this);
-		} else if (memcmp(&riid, &IID_IOleInPlaceSite, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IOleInPlaceSite)) {
 			AddRef();
 			*ppvObj = static_cast<IOleInPlaceSite *>(this);
-		} else if (memcmp(&riid, &IID_IOleInPlaceFrame, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IOleInPlaceFrame)) {
 			AddRef();
 			*ppvObj = static_cast<IOleInPlaceFrame *>(this);
-		} else if (memcmp(&riid, &IID_IDocHostUIHandler, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IDocHostUIHandler)) {
 			AddRef();
 			*ppvObj = static_cast<IDocHostUIHandler *>(this);
-		} else if (memcmp(&riid, &DIID_DWebBrowserEvents2, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IDocHostShowUI)) {
+			AddRef();
+			*ppvObj = static_cast<IDocHostShowUI *>(this);
+		} else if (IsEqualGUID(riid, DIID_DWebBrowserEvents2)) {
 			AddRef();
 			*ppvObj = static_cast<DWebBrowserEvents2 *>(this);
-		} else if (memcmp(&riid, &IID_IDispatch, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IDispatch)) {
 			AddRef();
 			*ppvObj = static_cast<IDispatch *>(this);
-		} else if (memcmp(&riid, &IID_IServiceProvider, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IServiceProvider)) {
 			AddRef();
 			*ppvObj = static_cast<IServiceProvider *>(this);
-		} else if (memcmp(&riid, &IID_IOleCommandTarget, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IOleCommandTarget)) {
 			AddRef();
 			*ppvObj = static_cast<IOleCommandTarget *>(this);
-		} else if (memcmp(&riid, &IID_IDropTarget, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IDropTarget)) {
 			AddRef();
 			*ppvObj = static_cast<IDropTarget *>(this);
-		} else if (memcmp(&riid, &IID_IHttpSecurity, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IHttpSecurity)) {
 			AddRef();
 			*ppvObj = static_cast<IHttpSecurity *>(this);
-		} else if (memcmp(&riid, &IID_IWindowForBindingUI, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IWindowForBindingUI)) {
 			AddRef();
 			*ppvObj = static_cast<IWindowForBindingUI *>(this);
-		} else if (memcmp(&riid, &IID_INewWindowManager, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_INewWindowManager)) {
 			AddRef();
 			*ppvObj = static_cast<INewWindowManager *>(this);
-		} else if (memcmp(&riid, &IID_IAuthenticate, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IAuthenticate)) {
 			AddRef();
 			*ppvObj = static_cast<IAuthenticate *>(this);
-		} else if (memcmp(&riid, &IID_IInternetSecurityManager, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IInternetSecurityManager)) {
 			AddRef();
 			*ppvObj = static_cast<IInternetSecurityManager *>(this);
-		} else if (memcmp(&riid, &IID_IProtectFocus, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IProtectFocus)) {
 			AddRef();
 			*ppvObj = static_cast<IProtectFocus *>(this);
-		} else if (memcmp(&riid, &IID_IHTMLOMWindowServices, sizeof(GUID)) == 0) {
+		} else if (IsEqualGUID(riid, IID_IHTMLOMWindowServices)) {
 			AddRef();
 			*ppvObj = static_cast<IHTMLOMWindowServices *>(this);
 		} else {
@@ -360,6 +370,9 @@ namespace XYO::Win::Discontinued {
 
 	HRESULT WebBrowser::OnPosRectChange(LPCRECT lprcPosRect) {
 		IOleInPlaceObject *inplace;
+		if (browser_ == NULL) {
+			return (S_OK);
+		};
 		if (SUCCEEDED(browser_->QueryInterface(IID_IOleInPlaceObject, (void **)&inplace))) {
 			inplace->SetObjectRects(lprcPosRect, lprcPosRect);
 			inplace->Release();
@@ -500,7 +513,7 @@ namespace XYO::Win::Discontinued {
 
 	HRESULT WebBrowser::QueryService(REFGUID guidService, REFIID riid, void **ppv) {
 		guidService;
-		if (memcmp(&riid, &IID_IOleCommandTarget, sizeof(GUID) == 0)) {
+		if (IsEqualGUID(riid, IID_IOleCommandTarget)) {
 			AddRef();
 			*ppv = static_cast<IOleCommandTarget *>(this);
 		} else {
@@ -860,7 +873,7 @@ namespace XYO::Win::Discontinued {
 		if (OleCreate(CLSID_WebBrowser, IID_IOleObject, OLERENDER_DRAW, 0, (IOleClientSite *)this, (IStorage *)this, (void **)&browser_) == S_OK) {
 			browser_->SetHostNames(L"Microsoft Internet Explorer", 0);
 			GetClientRect(*this, &rect);
-			browser_->AddRef();
+			// OleCreate already returned a reference, do not take an extra one
 			if (SUCCEEDED(OleSetContainedObject((struct IUnknown *)browser_, TRUE))) {
 				if (SUCCEEDED(browser_->DoVerb(OLEIVERB_SHOW, NULL, (IOleClientSite *)this, -1, *this, &rect))) {
 					if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **)&webBrowser2))) {
@@ -932,6 +945,9 @@ namespace XYO::Win::Discontinued {
 			break;
 		case WM_SIZE: {
 			::IWebBrowser2 *iWebBrowser2_;
+			if (browser_ == NULL) {
+				break;
+			};
 			if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **)&iWebBrowser2_))) {
 				iWebBrowser2_->put_Width(LOWORD(lParam));
 				iWebBrowser2_->put_Height(HIWORD(lParam));
@@ -967,14 +983,18 @@ namespace XYO::Win::Discontinued {
 
 		if (SUCCEEDED(browser_->QueryInterface(IID_IWebBrowser2, (void **)&WebBrowser2))) {
 
-			size_t newSize = url.length() + 1;
-			wchar_t *url_ = new wchar_t[newSize];
-			size_t convertedChars = 0;
-			mbstowcs_s(&convertedChars, url_, newSize, url, _TRUNCATE);
+			// Convert the ANSI url straight into the BSTR, one allocation
+			int length = MultiByteToWideChar(CP_ACP, 0, url, -1, NULL, 0);
 			VariantInit(&myURL);
 			myURL.vt = VT_BSTR;
-			myURL.bstrVal = SysAllocString((BSTR)url_);
-			delete[] url_;
+			if (length > 0) {
+				myURL.bstrVal = SysAllocStringLen(NULL, length - 1);
+				if (myURL.bstrVal != NULL) {
+					MultiByteToWideChar(CP_ACP, 0, url, -1, myURL.bstrVal, length);
+				};
+			} else {
+				myURL.bstrVal = NULL;
+			};
 
 			WebBrowser2->Navigate2(&myURL, 0, 0, 0, 0);
 

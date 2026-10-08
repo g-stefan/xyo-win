@@ -11,6 +11,16 @@
 #	include <XYO/Win/Window.hpp>
 #endif
 
+// Internet Explorer / MSHTML document hosting, needed for the interface
+// declarations below (no longer pulled in through Dependency.hpp).
+#include <docobj.h>
+#include <mshtml.h>
+#include <MsHtmHst.h>
+#include <exdisp.h>
+#include <exdispid.h>
+#include <servprov.h>
+#include <wininet.h>
+
 #define WUM_BROWSER_DO_NAVIGATE1 (WM_USER + 2000)
 #define WUM_BROWSER_DO_NAVIGATE2 (WM_USER + 2001)
 

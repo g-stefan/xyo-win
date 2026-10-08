@@ -4,6 +4,10 @@
 // SPDX-FileCopyrightText: 2014-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
+#ifndef WIN32_LEAN_AND_MEAN
+#	define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <string.h>
 #include <ole2.h>
@@ -20,10 +24,12 @@ namespace XYO::Win {
 
 	Function::Function() {
 		functionName_ = NULL;
-		dispIdMember_ = 0;
+		// DISPID 0 is valid (DISPID_VALUE), mark as not resolved
+		dispIdMember_ = DISPID_UNKNOWN;
 		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
 		VariantInit(&varResult_);
 		refObject_ = NULL;
+		nArgErr_ = 0;
 	};
 
 	Function::~Function() {
@@ -42,6 +48,7 @@ namespace XYO::Win {
 			refObject_->Release();
 		};
 		refObject_ = x;
+		dispIdMember_ = DISPID_UNKNOWN;
 	};
 
 	void Function::releaseObject() {
@@ -49,6 +56,7 @@ namespace XYO::Win {
 			refObject_->Release();
 		};
 		refObject_ = NULL;
+		dispIdMember_ = DISPID_UNKNOWN;
 	};
 
 	void Function::functionName(BSTR Name) {
@@ -56,324 +64,84 @@ namespace XYO::Win {
 			SysFreeString(functionName_);
 		}
 		functionName_ = SysAllocString(Name);
-		dispIdMember_ = 0;
+		dispIdMember_ = DISPID_UNKNOWN;
+	};
+
+	HRESULT Function::invokeWithArguments_(const Variant *const *arguments, UINT count) {
+		HRESULT retVal;
+		DISPPARAMS dispParams;
+		VARIANTARG rgvarg[8];
+		UINT k;
+
+		if ((refObject_ == NULL) || (count > 8) || (functionName_ == NULL)) {
+			return E_INVALIDARG;
+		}
+		if (dispIdMember_ == DISPID_UNKNOWN) {
+			retVal = getDispatchId();
+			if (retVal != S_OK) {
+				dispIdMember_ = DISPID_UNKNOWN;
+				return retVal;
+			}
+		};
+		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
+		nArgErr_ = (UINT)-1;
+
+		// Arguments are [in] for IDispatch::Invoke, the callee does not own or
+		// free them, a shallow copy is enough. rgvarg is in reverse order.
+		for (k = 0; k < count; ++k) {
+			rgvarg[count - 1 - k] = *(arguments[k]->value());
+		};
+
+		memset(&dispParams, 0, sizeof(dispParams));
+		dispParams.cArgs = count;
+		dispParams.rgvarg = (count > 0) ? rgvarg : NULL;
+		dispParams.cNamedArgs = 0;
+		VariantClear(&varResult_);
+		return refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &dispParams, &varResult_, &exceptInfo_, &nArgErr_);
 	};
 
 	HRESULT Function::invoke() {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 0;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		delete[] pDispParams.rgvarg;
-		return retVal;
+		return invokeWithArguments_(NULL, 0);
 	};
 
-	HRESULT Function::invoke(Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 1;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v0) {
+		const Variant *arguments[] = {&v0};
+		return invokeWithArguments_(arguments, 1);
 	};
 
-	HRESULT Function::invoke(Variant v1, Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 2;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v1, const Variant &v0) {
+		const Variant *arguments[] = {&v1, &v0};
+		return invokeWithArguments_(arguments, 2);
 	};
 
-	HRESULT Function::invoke(Variant v2, Variant v1, Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 3;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
-		Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v2, const Variant &v1, const Variant &v0) {
+		const Variant *arguments[] = {&v2, &v1, &v0};
+		return invokeWithArguments_(arguments, 3);
 	};
 
-	HRESULT Function::invoke(Variant v3, Variant v2, Variant v1, Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 4;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
-		Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
-		Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v3, const Variant &v2, const Variant &v1, const Variant &v0) {
+		const Variant *arguments[] = {&v3, &v2, &v1, &v0};
+		return invokeWithArguments_(arguments, 4);
 	};
 
-	HRESULT Function::invoke(Variant v4, Variant v3, Variant v2, Variant v1, Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 5;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
-		Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
-		Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
-		Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v4, const Variant &v3, const Variant &v2, const Variant &v1, const Variant &v0) {
+		const Variant *arguments[] = {&v4, &v3, &v2, &v1, &v0};
+		return invokeWithArguments_(arguments, 5);
 	};
 
-	HRESULT Function::invoke(Variant v5, Variant v4, Variant v3, Variant v2, Variant v1, Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 6;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[5], v5.value());
-		Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
-		Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
-		Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
-		Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v5, const Variant &v4, const Variant &v3, const Variant &v2, const Variant &v1, const Variant &v0) {
+		const Variant *arguments[] = {&v5, &v4, &v3, &v2, &v1, &v0};
+		return invokeWithArguments_(arguments, 6);
 	};
 
-	HRESULT Function::invoke(Variant v6, Variant v5, Variant v4, Variant v3, Variant v2, Variant v1, Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 7;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[6], v6.value());
-		Variant::variantCopy(&pDispParams.rgvarg[5], v5.value());
-		Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
-		Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
-		Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
-		Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v6, const Variant &v5, const Variant &v4, const Variant &v3, const Variant &v2, const Variant &v1, const Variant &v0) {
+		const Variant *arguments[] = {&v6, &v5, &v4, &v3, &v2, &v1, &v0};
+		return invokeWithArguments_(arguments, 7);
 	};
 
-	HRESULT Function::invoke(Variant v7, Variant v6, Variant v5, Variant v4, Variant v3, Variant v2, Variant v1, Variant v0) {
-		HRESULT retVal;
-		DISPPARAMS pDispParams;
-		UINT k;
-		if (refObject_ == NULL) {
-			return E_INVALIDARG;
-		}
-		if (dispIdMember_ == 0) {
-			retVal = getDispatchId();
-			if (retVal != S_OK) {
-				return retVal;
-			}
-		};
-		memset(&exceptInfo_, 0, sizeof(exceptInfo_));
-		nArgErr_ = (UINT)-1;
-		memset(&pDispParams, 0, sizeof(pDispParams));
-		pDispParams.cArgs = 8;
-		pDispParams.rgvarg = new VARIANTARG[pDispParams.cArgs];
-		pDispParams.cNamedArgs = 0;
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantInit(&pDispParams.rgvarg[k]);
-		}
-		Variant::variantCopy(&pDispParams.rgvarg[7], v7.value());
-		Variant::variantCopy(&pDispParams.rgvarg[6], v6.value());
-		Variant::variantCopy(&pDispParams.rgvarg[5], v5.value());
-		Variant::variantCopy(&pDispParams.rgvarg[4], v4.value());
-		Variant::variantCopy(&pDispParams.rgvarg[3], v3.value());
-		Variant::variantCopy(&pDispParams.rgvarg[2], v2.value());
-		Variant::variantCopy(&pDispParams.rgvarg[1], v1.value());
-		Variant::variantCopy(&pDispParams.rgvarg[0], v0.value());
-		VariantClear(&varResult_);
-		VariantInit(&varResult_);
-		retVal = refObject_->Invoke(dispIdMember_, IID_NULL, LOCALE_SYSTEM_DEFAULT, DISPATCH_METHOD, &pDispParams, &varResult_, &exceptInfo_, &nArgErr_);
-		for (k = 0; k < pDispParams.cArgs; k++) {
-			VariantClear(&pDispParams.rgvarg[k]);
-		}
-		delete[] pDispParams.rgvarg;
-		return retVal;
+	HRESULT Function::invoke(const Variant &v7, const Variant &v6, const Variant &v5, const Variant &v4, const Variant &v3, const Variant &v2, const Variant &v1, const Variant &v0) {
+		const Variant *arguments[] = {&v7, &v6, &v5, &v4, &v3, &v2, &v1, &v0};
+		return invokeWithArguments_(arguments, 8);
 	};
 
 };

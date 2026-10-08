@@ -17,6 +17,9 @@
 
 namespace XYO::Win {
 
+	// AddRef/Release are deliberate no-ops returning 1: the lifetime is the C++
+	// object's own (usually stack or a containing class), not COM reference
+	// counting. Do not hand this out to code that expects to own it via Release.
 	class Dispatch : public virtual Object,
 	                 public virtual ::IDispatch {
 		protected:
@@ -52,8 +55,10 @@ namespace XYO::Win {
 		HRESULT id_returnValue;                                                                                                                          \
 		UINT id_count;                                                                                                                                   \
 		DISPID id_func;                                                                                                                                  \
+		bool id_found;                                                                                                                                   \
 		id_func = StartId;                                                                                                                               \
 		id_returnValue = S_FALSE;                                                                                                                        \
+		id_found = false;                                                                                                                                \
 		if (mode == 1) {                                                                                                                                 \
 			if (dispIdMember == 0) {                                                                                                                 \
 				return (DISP_E_MEMBERNOTFOUND);                                                                                                  \
@@ -72,7 +77,7 @@ namespace XYO::Win {
 		return (id_returnValue);                                                                             \
 	};                                                                                                           \
 	if (mode == 1) {                                                                                             \
-		if (id_func != dispIdMember) {                                                                       \
+		if (!id_found) {                                                                                     \
 			return XBase::invokeAndId(mode, dispIdMember, pDispParams, pVarResult, names, count, outID); \
 		};                                                                                                   \
 		if (pVarResult != NULL) {                                                                            \
@@ -87,7 +92,7 @@ namespace XYO::Win {
 	;                                                               \
 	if (mode == 0) {                                                \
 		for (id_count = 0; id_count < count; ++id_count) {      \
-			if (wcscmp(names[id_count], L#Function) == 0) { \
+			if (_wcsicmp(names[id_count], L#Function) == 0) { \
 				outID[id_count] = id_func;              \
 				id_returnValue = S_OK;                  \
 				break;                                  \
@@ -97,6 +102,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                          \
 			if (pDispParams->cArgs != 0)                    \
 				return (DISP_E_BADPARAMCOUNT);          \
+			id_found = true;                                \
 			Function(returnValue);                          \
 			break;                                          \
 		};                                                      \
@@ -107,7 +113,7 @@ namespace XYO::Win {
 	;                                                               \
 	if (mode == 0) {                                                \
 		for (id_count = 0; id_count < count; ++id_count) {      \
-			if (wcscmp(names[id_count], L#Function) == 0) { \
+			if (_wcsicmp(names[id_count], L#Function) == 0) { \
 				outID[id_count] = id_func;              \
 				id_returnValue = S_OK;                  \
 				break;                                  \
@@ -117,6 +123,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                          \
 			if (pDispParams->cArgs != 1)                    \
 				return (DISP_E_BADPARAMCOUNT);          \
+			id_found = true;                                \
 			Function(returnValue, &pDispParams->rgvarg[0]); \
 			break;                                          \
 		};                                                      \
@@ -127,7 +134,7 @@ namespace XYO::Win {
 	;                                                                                        \
 	if (mode == 0) {                                                                         \
 		for (id_count = 0; id_count < count; ++id_count) {                               \
-			if (wcscmp(names[id_count], L#Function) == 0) {                          \
+			if (_wcsicmp(names[id_count], L#Function) == 0) {                          \
 				outID[id_count] = id_func;                                       \
 				id_returnValue = S_OK;                                           \
 				break;                                                           \
@@ -137,6 +144,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                                                   \
 			if (pDispParams->cArgs != 2)                                             \
 				return (DISP_E_BADPARAMCOUNT);                                   \
+			id_found = true;                                                         \
 			Function(returnValue, &pDispParams->rgvarg[1], &pDispParams->rgvarg[0]); \
 			break;                                                                   \
 		};                                                                               \
@@ -147,7 +155,7 @@ namespace XYO::Win {
 	;                                                                                                                 \
 	if (mode == 0) {                                                                                                  \
 		for (id_count = 0; id_count < count; ++id_count) {                                                        \
-			if (wcscmp(names[id_count], L#Function) == 0) {                                                   \
+			if (_wcsicmp(names[id_count], L#Function) == 0) {                                                   \
 				outID[id_count] = id_func;                                                                \
 				id_returnValue = S_OK;                                                                    \
 				break;                                                                                    \
@@ -157,6 +165,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                                                                            \
 			if (pDispParams->cArgs != 3)                                                                      \
 				return (DISP_E_BADPARAMCOUNT);                                                            \
+			id_found = true;                                                                                  \
 			Function(returnValue, &pDispParams->rgvarg[2], &pDispParams->rgvarg[1], &pDispParams->rgvarg[0]); \
 			break;                                                                                            \
 		};                                                                                                        \
@@ -167,7 +176,7 @@ namespace XYO::Win {
 	;                                                                                                                                          \
 	if (mode == 0) {                                                                                                                           \
 		for (id_count = 0; id_count < count; ++id_count) {                                                                                 \
-			if (wcscmp(names[id_count], L#Function) == 0) {                                                                            \
+			if (_wcsicmp(names[id_count], L#Function) == 0) {                                                                            \
 				outID[id_count] = id_func;                                                                                         \
 				id_returnValue = S_OK;                                                                                             \
 				break;                                                                                                             \
@@ -177,6 +186,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                                                                                                     \
 			if (pDispParams->cArgs != 4)                                                                                               \
 				return (DISP_E_BADPARAMCOUNT);                                                                                     \
+			id_found = true;                                                                                                           \
 			Function(returnValue, &pDispParams->rgvarg[3], &pDispParams->rgvarg[2], &pDispParams->rgvarg[1], &pDispParams->rgvarg[0]); \
 			break;                                                                                                                     \
 		};                                                                                                                                 \
@@ -187,7 +197,7 @@ namespace XYO::Win {
 	;                                                                                                                                                                   \
 	if (mode == 0) {                                                                                                                                                    \
 		for (id_count = 0; id_count < count; ++id_count) {                                                                                                          \
-			if (wcscmp(names[id_count], L#Function) == 0) {                                                                                                     \
+			if (_wcsicmp(names[id_count], L#Function) == 0) {                                                                                                     \
 				outID[id_count] = id_func;                                                                                                                  \
 				id_returnValue = S_OK;                                                                                                                      \
 				break;                                                                                                                                      \
@@ -197,6 +207,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                                                                                                                              \
 			if (pDispParams->cArgs != 5)                                                                                                                        \
 				return (DISP_E_BADPARAMCOUNT);                                                                                                              \
+			id_found = true;                                                                                                                                    \
 			Function(returnValue, &pDispParams->rgvarg[4], &pDispParams->rgvarg[3], &pDispParams->rgvarg[2], &pDispParams->rgvarg[1], &pDispParams->rgvarg[0]); \
 			break;                                                                                                                                              \
 		};                                                                                                                                                          \
@@ -207,7 +218,7 @@ namespace XYO::Win {
 	;                                                                                                                                                                                            \
 	if (mode == 0) {                                                                                                                                                                             \
 		for (id_count = 0; id_count < count; ++id_count) {                                                                                                                                   \
-			if (wcscmp(names[id_count], L#Function) == 0) {                                                                                                                              \
+			if (_wcsicmp(names[id_count], L#Function) == 0) {                                                                                                                              \
 				outID[id_count] = id_func;                                                                                                                                           \
 				id_returnValue = S_OK;                                                                                                                                               \
 				break;                                                                                                                                                               \
@@ -217,6 +228,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                                                                                                                                                       \
 			if (pDispParams->cArgs != 6)                                                                                                                                                 \
 				return (DISP_E_BADPARAMCOUNT);                                                                                                                                       \
+			id_found = true;                                                                                                                                                             \
 			Function(returnValue, &pDispParams->rgvarg[5], &pDispParams->rgvarg[4], &pDispParams->rgvarg[3], &pDispParams->rgvarg[2], &pDispParams->rgvarg[1], &pDispParams->rgvarg[0]); \
 			break;                                                                                                                                                                       \
 		};                                                                                                                                                                                   \
@@ -227,7 +239,7 @@ namespace XYO::Win {
 	;                                                                                                                                                                                                                     \
 	if (mode == 0) {                                                                                                                                                                                                      \
 		for (id_count = 0; id_count < count; ++id_count) {                                                                                                                                                            \
-			if (wcscmp(names[id_count], L#Function) == 0) {                                                                                                                                                       \
+			if (_wcsicmp(names[id_count], L#Function) == 0) {                                                                                                                                                       \
 				outID[id_count] = id_func;                                                                                                                                                                    \
 				id_returnValue = S_OK;                                                                                                                                                                        \
 				break;                                                                                                                                                                                        \
@@ -237,6 +249,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                                                                                                                                                                                \
 			if (pDispParams->cArgs != 7)                                                                                                                                                                          \
 				return (DISP_E_BADPARAMCOUNT);                                                                                                                                                                \
+			id_found = true;                                                                                                                                                                                      \
 			Function(returnValue, &pDispParams->rgvarg[6], &pDispParams->rgvarg[5], &pDispParams->rgvarg[4], &pDispParams->rgvarg[3], &pDispParams->rgvarg[2], &pDispParams->rgvarg[1], &pDispParams->rgvarg[0]); \
 			break;                                                                                                                                                                                                \
 		};                                                                                                                                                                                                            \
@@ -247,7 +260,7 @@ namespace XYO::Win {
 	;                                                                                                                                                                                                                                              \
 	if (mode == 0) {                                                                                                                                                                                                                               \
 		for (id_count = 0; id_count < count; ++id_count) {                                                                                                                                                                                     \
-			if (wcscmp(names[id_count], L#Function) == 0) {                                                                                                                                                                                \
+			if (_wcsicmp(names[id_count], L#Function) == 0) {                                                                                                                                                                                \
 				outID[id_count] = id_func;                                                                                                                                                                                             \
 				id_returnValue = S_OK;                                                                                                                                                                                                 \
 				break;                                                                                                                                                                                                                 \
@@ -257,6 +270,7 @@ namespace XYO::Win {
 		if (id_func == dispIdMember) {                                                                                                                                                                                                         \
 			if (pDispParams->cArgs != 8)                                                                                                                                                                                                   \
 				return (DISP_E_BADPARAMCOUNT);                                                                                                                                                                                         \
+			id_found = true;                                                                                                                                                                                                               \
 			Function(returnValue, &pDispParams->rgvarg[7], &pDispParams->rgvarg[6], &pDispParams->rgvarg[5], &pDispParams->rgvarg[4], &pDispParams->rgvarg[3], &pDispParams->rgvarg[2], &pDispParams->rgvarg[1], &pDispParams->rgvarg[0]); \
 			break;                                                                                                                                                                                                                         \
 		};                                                                                                                                                                                                                                     \
